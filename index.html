@@ -1458,6 +1458,401 @@
       simulador_init();
     </script>
 
+    <section data-tela="avaliacao" class="hidden">
+      <div id="avaliacao-detalhe-produto"></div>
+      <div id="avaliacao-questions"></div>
+      <div id="avaliacao-score-section"></div>
+      <div id="avaliacao-observacoes"></div>
+      <div id="avaliacao-actions"></div>
+      <div id="avaliacao-historico-section"></div>
+
+      <script>
+      (function() {
+        'use strict';
+
+        var perguntas = [
+          { id: 'necessidade', texto: 'Você realmente precisa deste produto?', icone: '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>', nota: 0 },
+          { id: 'similar', texto: 'Já tem algo similar em casa?', icone: '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg>', nota: 0 },
+          { id: 'ambiental', texto: 'O impacto ambiental é aceitável?', icone: '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2h10a2 2 0 002-2v-1a2 2 0 012-2h1.5M9 13.5a2.25 2.25 0 100-4.5 2.25 2.25 0 000 4.5z"/></svg>', nota: 0 },
+          { id: 'orcamento', texto: 'Cabe no seu orçamento?', icone: '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>', nota: 0 }
+        ];
+
+        var produto = { nome: 'Fone de Ouvido Bluetooth Premium', preco: 349.90, categoria: 'Eletrônicos', imagem: 'FA' };
+        var observacoesSalvas = '';
+
+        function avaliacao_init() {
+          avaliacao_renderProduto();
+          avaliacao_renderPerguntas();
+          avaliacao_renderScore();
+          avaliacao_renderObservacoes();
+          avaliacao_renderActions();
+          avaliacao_renderHistorico();
+        }
+
+        function avaliacao_renderProduto() {
+          document.getElementById('avaliacao-detalhe-produto').innerHTML =
+            '<div class="bg-white border border-gray-100 rounded-2xl p-4 mb-4">' +
+              '<div class="flex items-center gap-3">' +
+                '<div class="w-12 h-12 rounded-xl bg-gradient-to-br from-marca-600 to-marca-800 flex items-center justify-center flex-shrink-0">' +
+                  '<span class="text-white font-bold text-sm">' + produto.imagem + '</span>' +
+                '</div>' +
+                '<div class="flex-1 min-w-0">' +
+                  '<h3 class="font-display font-bold text-gray-900 text-sm truncate">' + produto.nome + '</h3>' +
+                  '<div class="flex items-center gap-2 mt-0.5">' +
+                    '<span class="badge badge-marca text-xs">' + produto.categoria + '</span>' +
+                    '<span class="text-marca-700 font-bold text-sm">' + brl(produto.preco) + '</span>' +
+                  '</div>' +
+                '</div>' +
+                '<button onclick="avaliacao_voltarVitrine()" class="w-8 h-8 rounded-lg border border-gray-200 flex items-center justify-center text-gray-500 hover:bg-gray-50 active:scale-90 transition-all flex-shrink-0" title="Voltar">' +
+                  '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>' +
+                '</button>' +
+              '</div>' +
+            '</div>';
+        }
+
+        function avaliacao_renderPerguntas() {
+          var html = '<div class="space-y-3">';
+          perguntas.forEach(function(p, idx) {
+            html +=
+              '<div class="bg-white border border-gray-100 rounded-2xl p-4">' +
+                '<div class="flex items-start gap-3">' +
+                  '<div class="w-9 h-9 rounded-lg bg-marca-50 flex items-center justify-center flex-shrink-0 text-marca-600">' + p.icone + '</div>' +
+                  '<div class="flex-1">' +
+                    '<p class="text-sm font-medium text-gray-800 mb-3 leading-snug">' + p.texto + '</p>' +
+                    '<div class="flex items-center gap-1.5">' +
+                      '<span class="text-xs text-gray-400 mr-1">Discordo</span>' +
+                      Array.from({length: 5}, function(_, i) {
+                        var starId = 'star-' + p.id + '-' + (i + 1);
+                        var filled = i < p.nota;
+                        return '<button onclick="avaliacao_setNota(\'' + p.id + '\',' + (i + 1) + ')" id="' + starId + '" class="transition-all duration-150 active:scale-125 ' + (filled ? 'text-yellow-400' : 'text-gray-200') + '">' +
+                          '<svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>' +
+                        '</button>';
+                      }).join('') +
+                      '<span class="text-xs text-gray-400 ml-1">Concordo</span>' +
+                    '</div>' +
+                  '</div>' +
+                '</div>' +
+              '</div>';
+          });
+          html += '</div>';
+          document.getElementById('avaliacao-questions').innerHTML = html;
+        }
+
+        function avaliacao_setNota(perguntaId, valor) {
+          var p = perguntas.find(function(q) { return q.id === perguntaId; });
+          if (!p) return;
+          p.nota = valor;
+          for (var i = 1; i <= 5; i++) {
+            var el = document.getElementById('star-' + perguntaId + '-' + i);
+            if (el) {
+              el.classList.toggle('text-yellow-400', i <= valor);
+              el.classList.toggle('text-gray-200', i > valor);
+            }
+          }
+          avaliacao_calcularScore();
+        }
+
+        function avaliacao_renderScore() {
+          document.getElementById('avaliacao-score-section').innerHTML =
+            '<div class="mt-4 bg-white border border-gray-100 rounded-2xl p-5">' +
+              '<div class="flex items-center justify-between">' +
+                '<div>' +
+                  '<p class="text-xs font-medium text-gray-500 uppercase tracking-wide">Pontuação de Necessidade</p>' +
+                  '<div class="flex items-baseline gap-2 mt-1">' +
+                    '<span id="score-valor" class="text-3xl font-display font-black text-gray-300">--</span>' +
+                    '<span id="score-max" class="text-sm text-gray-400">/ 20</span>' +
+                  '</div>' +
+                  '<span id="score-status" class="badge badge-gray mt-2 inline-block">Responda as perguntas</span>' +
+                '</div>' +
+                '<div class="w-20 h-20">' +
+                  '<svg viewBox="0 0 80 80" class="w-full h-full -rotate-90">' +
+                    '<circle cx="40" cy="40" r="34" fill="none" stroke="#E5E7EB" stroke-width="7"/>' +
+                    '<circle id="score-ring" cx="40" cy="40" r="34" fill="none" stroke="#9CA3AF" stroke-width="7" stroke-linecap="round" stroke-dasharray="213.6" stroke-dashoffset="213.6"/>' +
+                  '</svg>' +
+                  '<div class="flex items-center justify-center h-full -mt-20 mb-5">' +
+                    '<svg class="w-6 h-6 text-gray-300" id="score-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>' +
+                  '</div>' +
+                '</div>' +
+              '</div>' +
+              '<div class="mt-3 grid grid-cols-3 gap-2">' +
+                '<div class="text-center p-2 rounded-lg bg-gray-50">' +
+                  '<p class="text-xs text-gray-500">0\u201310</p>' +
+                  '<p class="text-xs font-medium text-red-600">Baixa</p>' +
+                '</div>' +
+                '<div class="text-center p-2 rounded-lg bg-gray-50">' +
+                  '<p class="text-xs text-gray-500">11\u201315</p>' +
+                  '<p class="text-xs font-medium text-yellow-600">Média</p>' +
+                '</div>' +
+                '<div class="text-center p-2 rounded-lg bg-gray-50">' +
+                  '<p class="text-xs text-gray-500">16\u201320</p>' +
+                  '<p class="text-xs font-medium text-green-600">Alta</p>' +
+                '</div>' +
+              '</div>' +
+            '</div>';
+        }
+
+        function avaliacao_calcularScore() {
+          var total = perguntas.reduce(function(s, p) { return s + p.nota; }, 0);
+          var max = perguntas.length * 5;
+          var scoreEl = document.getElementById('score-valor');
+          var statusEl = document.getElementById('score-status');
+          var ringEl = document.getElementById('score-ring');
+          var iconEl = document.getElementById('score-icon');
+          if (!scoreEl) return;
+
+          scoreEl.textContent = total;
+          var pct = total / max;
+          var offset = 213.6 * (1 - pct);
+          ringEl.setAttribute('stroke-dashoffset', offset);
+
+          if (total === 0) {
+            scoreEl.className = 'text-3xl font-display font-black text-gray-300';
+            statusEl.className = 'badge badge-gray mt-2 inline-block';
+            statusEl.textContent = 'Responda as perguntas';
+            ringEl.setAttribute('stroke', '#9CA3AF');
+            iconEl.className = 'w-6 h-6 text-gray-300';
+            iconEl.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>';
+            return;
+          }
+
+          if (total <= 10) {
+            scoreEl.className = 'text-3xl font-display font-black text-red-600';
+            statusEl.className = 'badge badge-red mt-2 inline-block';
+            statusEl.textContent = 'Baixa necessidade';
+            ringEl.setAttribute('stroke', '#EF4444');
+            iconEl.className = 'w-6 h-6 text-red-500';
+            iconEl.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"/>';
+          } else if (total <= 15) {
+            scoreEl.className = 'text-3xl font-display font-black text-yellow-600';
+            statusEl.className = 'badge badge-yellow mt-2 inline-block';
+            statusEl.textContent = 'Necessidade média';
+            ringEl.setAttribute('stroke', '#EAB308');
+            iconEl.className = 'w-6 h-6 text-yellow-500';
+            iconEl.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>';
+          } else {
+            scoreEl.className = 'text-3xl font-display font-black text-green-600';
+            statusEl.className = 'badge badge-green mt-2 inline-block';
+            statusEl.textContent = 'Alta necessidade';
+            ringEl.setAttribute('stroke', '#22C55E');
+            iconEl.className = 'w-6 h-6 text-green-500';
+            iconEl.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>';
+          }
+        }
+
+        function avaliacao_renderObservacoes() {
+          document.getElementById('avaliacao-observacoes').innerHTML =
+            '<div class="mt-4 bg-white border border-gray-100 rounded-2xl p-4">' +
+              '<label class="text-xs font-medium text-gray-500 uppercase tracking-wide block mb-2">Suas observações</label>' +
+              '<textarea id="avaliacao-obs" placeholder="Adicione suas reflexões sobre esta compra..." rows="3" class="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm text-gray-700 placeholder-gray-400 focus:border-marca-500 focus:ring-1 focus:ring-marca-500 outline-none resize-none transition-colors"></textarea>' +
+            '</div>';
+        }
+
+        function avaliacao_renderActions() {
+          document.getElementById('avaliacao-actions').innerHTML =
+            '<div class="mt-4 grid grid-cols-2 gap-3">' +
+              '<button onclick="avaliacao_desejos()" class="btn btn-marca rounded-xl py-3.5 text-sm font-semibold active:scale-95 transition-all">' +
+                '<span class="flex items-center justify-center gap-1.5">' +
+                  '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>' +
+                  'Lista de Desejos' +
+                '</span>' +
+              '</button>' +
+              '<button onclick="avaliacao_descartar()" class="bg-white border border-gray-200 text-gray-700 rounded-xl py-3.5 text-sm font-semibold hover:bg-gray-50 hover:border-gray-300 active:scale-95 transition-all">' +
+                '<span class="flex items-center justify-center gap-1.5">' +
+                  '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>' +
+                  'Descartar' +
+                '</span>' +
+              '</button>' +
+            '</div>';
+        }
+
+        function avaliacao_desejos() {
+          var obsEl = document.getElementById('avaliacao-obs');
+          if (obsEl) observacoesSalvas = obsEl.value;
+          var total = perguntas.reduce(function(s, p) { return s + p.nota; }, 0);
+          if (total === 0) { toast('Avalie o produto antes de adicionar \u00e0 lista', 'info'); return; }
+          toast(produto.nome + ' adicionado \u00e0 Lista de Desejos!', 'ok');
+          mostrarTela('lista-de-desejos');
+        }
+
+        function avaliacao_descartar() {
+          var html =
+            '<div class="text-center py-2">' +
+              '<div class="w-14 h-14 mx-auto rounded-full bg-red-50 flex items-center justify-center mb-3">' +
+                '<svg class="w-7 h-7 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>' +
+              '</div>' +
+              '<h3 class="font-display font-bold text-gray-900 mb-1">Descartar produto?</h3>' +
+              '<p class="text-sm text-gray-500 mb-4">' + produto.nome + ' ser\u00e1 removido da avalia\u00e7\u00e3o.</p>' +
+              '<div class="flex gap-2 justify-center">' +
+                '<button onclick="fecharModal(); toast('Produto descartado.', 'info');" class="bg-gray-100 text-gray-700 px-5 py-2.5 rounded-xl text-sm font-semibold active:scale-95 transition-all">Cancelar</button>' +
+                '<button onclick="fecharModal(); avaliacao_finalizarDescarte();" class="bg-red-600 text-white px-5 py-2.5 rounded-xl text-sm font-semibold active:scale-95 transition-all">Descartar</button>' +
+              '</div>' +
+            '</div>';
+          abrirModal(html, 'Confirmar descarte');
+        }
+
+        function avaliacao_finalizarDescarte() {
+          toast(produto.nome + ' descartado.', 'info');
+          perguntas.forEach(function(p) { p.nota = 0; });
+          avaliacao_renderPerguntas();
+          avaliacao_calcularScore();
+          var obsEl = document.getElementById('avaliacao-obs');
+          if (obsEl) { obsEl.value = ''; observacoesSalvas = ''; }
+          mostrarTela('vitrine');
+        }
+
+        function avaliacao_voltarVitrine() { mostrarTela('vitrine'); }
+
+        var historicoFiltro = 'todos';
+        var historicoBusca = '';
+
+        function avaliacao_renderHistorico() {
+          var section = document.getElementById('avaliacao-historico-section');
+          var todos = avaliacao_getHistorico();
+          var filtrados = avaliacao_filtrarHistorico(todos);
+
+          var categorias = ['todos'];
+          var catSet = {};
+          todos.forEach(function(h) { catSet[h.categoria] = true; });
+          Object.keys(catSet).forEach(function(c) { categorias.push(c); });
+
+          var filtroHtml = categorias.map(function(cat) {
+            var label = cat === 'todos' ? 'Todos' : cat;
+            var active = historicoFiltro === cat;
+            return '<button onclick="avaliacao_setFiltro(\'' + cat + '\')" class="px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap transition-all ' + (active ? 'bg-marca-600 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200') + '">' + label + '</button>';
+          }).join('');
+
+          section.innerHTML =
+            '<div class="mt-6">' +
+              '<div class="flex items-center justify-between mb-3">' +
+                '<h2 class="font-display font-bold text-gray-900 text-base">Hist\u00f3rico de Avalia\u00e7\u00f5es</h2>' +
+                '<span id="hist-count" class="text-xs text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full">' + filtrados.length + '</span>' +
+              '</div>' +
+              '<div class="relative mb-3">' +
+                '<svg class="w-4 h-4 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>' +
+                '<input type="text" id="avaliacao-busca" placeholder="Buscar produto..." value="' + historicoBusca + '" oninput="avaliacao_setBusca(this.value)" class="w-full border border-gray-200 rounded-xl pl-9 pr-3 py-2.5 text-sm text-gray-700 placeholder-gray-400 focus:border-marca-500 focus:ring-1 focus:ring-marca-500 outline-none transition-colors">' +
+              '</div>' +
+              '<div class="flex gap-1.5 overflow-x-auto pb-2 mb-3 -mx-5 px-5 scrollbar-hide" id="avaliacao-filtros-row">' + filtroHtml + '</div>' +
+              '<div id="avaliacao-lista-historico">' + avaliacao_renderLista(filtrados) + '</div>' +
+            '</div>';
+        }
+
+        function avaliacao_getHistorico() {
+          return [
+            { nome: 'Smartphone Samsung Galaxy S24', categoria: 'Eletrônicos', preco: 4499.00, data: '2025-01-15', score: 18, status: 'alta', obs: 'Aparelho atual ainda funciona bem, mas o desempenho está caindo. Avaliei o custo-benefício e decidi aguardar a Black Friday.', iniciais: 'SG' },
+            { nome: 'Tênis Corrida Nike Air Zoom', categoria: 'Esportes', preco: 599.90, data: '2025-01-10', score: 15, status: 'media', obs: 'Preciso para as corridas semanais, mas posso esperar uma promoção.', iniciais: 'NC' },
+            { nome: 'Notebook Dell Inspiron 15', categoria: 'Eletrônicos', preco: 3899.00, data: '2025-01-08', score: 9, status: 'baixa', obs: 'Tenho um desktop em casa que atende minhas necessidades. Descartado.', iniciais: 'DI' },
+            { nome: 'Liquidificador Philips Walita', categoria: 'Cozinha', preco: 289.00, data: '2024-12-28', score: 16, status: 'alta', obs: 'Meu liquidificador quebrou e preciso de um novo para o dia a dia.', iniciais: 'PW' },
+            { nome: 'Estante de Livros Móvel', categoria: 'Móveis', preco: 750.00, data: '2024-12-20', score: 11, status: 'media', obs: 'Gostaria de organizar melhor os livros, mas posso esperar.', iniciais: 'EL' },
+            { nome: 'Fone JBL Tune 770NC', categoria: 'Eletrônicos', preco: 299.00, data: '2024-12-15', score: 17, status: 'alta', obs: 'Uso diário para trabalho e lazer. Cancelamento de ruído essencial.', iniciais: 'JT' },
+            { nome: 'Cafeteira Nespresso Essenza', categoria: 'Eletrodomésticos', preco: 499.00, data: '2024-12-10', score: 6, status: 'baixa', obs: 'Já tenho um método tradicional que funciona. Luxo desnecessário por agora.', iniciais: 'NE' },
+            { nome: 'Cadeira de Escritório Ergonômica', categoria: 'Móveis', preco: 1299.00, data: '2024-12-05', score: 14, status: 'media', obs: 'Minha cadeira atual está desgastada e causa dor nas costas. Vale o investimento.', iniciais: 'CE' }
+          ];
+        }
+
+        function avaliacao_filtrarHistorico(lista) {
+          return lista.filter(function(h) {
+            var catOk = historicoFiltro === 'todos' || h.categoria === historicoFiltro;
+            var buscaOk = !historicoBusca || h.nome.toLowerCase().indexOf(historicoBusca.toLowerCase()) !== -1;
+            return catOk && buscaOk;
+          });
+        }
+
+        function avaliacao_setFiltro(cat) { historicoFiltro = cat; avaliacao_renderHistorico(); }
+        function avaliacao_setBusca(val) { historicoBusca = val; avaliacao_renderHistorico(); }
+
+        function avaliacao_renderLista(lista) {
+          if (lista.length === 0) {
+            return '<div class="text-center py-10">' +
+              '<div class="w-16 h-16 mx-auto rounded-full bg-gray-50 flex items-center justify-center mb-3">' +
+                '<svg class="w-8 h-8 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 12h6m-3-3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>' +
+              '</div>' +
+              '<p class="text-sm text-gray-400 font-medium">Nenhuma avalia\u00e7\u00e3o encontrada</p>' +
+              '<p class="text-xs text-gray-300 mt-1">Tente ajustar os filtros</p>' +
+            '</div>';
+          }
+          return lista.map(function(h) {
+            var scoreCor = h.score <= 10 ? 'red' : h.score <= 15 ? 'yellow' : 'green';
+            var scoreLabel = h.score <= 10 ? 'Baixa' : h.score <= 15 ? 'Média' : 'Alta';
+            var corFundo = ['bg-red-50','bg-yellow-50','bg-green-50'][{baixa:0,media:1,alta:2}[h.status]];
+            var corTexto = ['text-red-600','text-yellow-600','text-green-600'][{baixa:0,media:1,alta:2}[h.status]];
+            return '<div onclick="avaliacao_verDetalhe(\'' + h.nome.replace(/'/g, "\\'") + '\', ' + h.score + ', \'' + h.status + '\', \'' + h.obs.replace(/'/g, "\\'") + '\', ' + h.preco + ')" class="bg-white border border-gray-100 rounded-2xl p-4 mb-3 hover:border-marca-200 hover:shadow-sm active:scale-[0.98] transition-all cursor-pointer">' +
+              '<div class="flex items-start gap-3">' +
+                '<div class="w-10 h-10 rounded-lg bg-gradient-to-br from-marca-600 to-marca-800 flex items-center justify-center flex-shrink-0">' +
+                  '<span class="text-white font-bold text-xs">' + h.iniciais + '</span>' +
+                '</div>' +
+                '<div class="flex-1 min-w-0">' +
+                  '<div class="flex items-start justify-between gap-2">' +
+                    '<h4 class="text-sm font-semibold text-gray-800 truncate">' + h.nome + '</h4>' +
+                    '<span class="' + corFundo + ' ' + corTexto + ' text-xs font-bold px-2 py-0.5 rounded-full whitespace-nowrap">' + scoreLabel + '</span>' +
+                  '</div>' +
+                  '<div class="flex items-center gap-3 mt-1.5">' +
+                    '<span class="badge badge-marca text-xs">' + h.categoria + '</span>' +
+                    '<span class="text-marca-700 font-bold text-sm">' + brl(h.preco) + '</span>' +
+                  '</div>' +
+                  '<div class="flex items-center gap-3 mt-2">' +
+                    '<div class="flex items-center gap-0.5">' + Array.from({length:5}, function(_,i){ return '<svg class="w-3.5 h-3.5 ' + (i < Math.round(h.score/4) ? 'text-yellow-400' : 'text-gray-200') + '" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>'; }).join('') + '</div>' +
+                    '<span class="text-xs text-gray-400">' + h.score + '/20</span>' +
+                  '</div>' +
+                  '<div class="flex items-center gap-1 mt-2 text-gray-400">' +
+                    '<svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>' +
+                    '<span class="text-xs">' + dataBR(h.data) + '</span>' +
+                  '</div>' +
+                '</div>' +
+              '</div>' +
+            '</div>';
+          }).join('');
+        }
+
+        function avaliacao_verDetalhe(nome, score, status, obs, preco) {
+          var corFundo = {baixa:'bg-red-50',media:'bg-yellow-50',alta:'bg-green-50'}[status] || 'bg-gray-50';
+          var corTexto = {baixa:'text-red-600',media:'text-yellow-600',alta:'text-green-600'}[status] || 'text-gray-600';
+          var corBadge = {baixa:'badge-red',media:'badge-yellow',alta:'badge-green'}[status] || 'badge-gray';
+          var statusLabel = {baixa:'Baixa necessidade',media:'Necessidade média',alta:'Alta necessidade'}[status] || status;
+          var html =
+            '<div class="space-y-4">' +
+              '<div class="flex items-center gap-3 p-4 ' + corFundo + ' rounded-xl">' +
+                '<div class="w-10 h-10 rounded-lg bg-white flex items-center justify-center">' +
+                  '<svg class="w-5 h-5 ' + corTexto + '" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/></svg>' +
+                '</div>' +
+                '<div>' +
+                  '<p class="text-sm font-semibold text-gray-800">' + nome + '</p>' +
+                  '<p class="text-xs text-gray-500">' + brl(preco) + '</p>' +
+                '</div>' +
+              '</div>' +
+              '<div class="flex items-center justify-between">' +
+                '<span class="text-sm text-gray-600">Pontua\u00e7\u00e3o</span>' +
+                '<span class="text-2xl font-display font-black ' + corTexto + '">' + score + '/20</span>' +
+              '</div>' +
+              '<div class="flex justify-center">' +
+                '<span class="' + corBadge + ' text-sm font-semibold px-4 py-1.5 rounded-full">' + statusLabel + '</span>' +
+              '</div>' +
+              '<div class="border-t border-gray-100 pt-3">' +
+                '<p class="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2">Observa\u00e7\u00f5es</p>' +
+                '<p class="text-sm text-gray-700 leading-relaxed">' + (obs || 'Sem observa\u00e7\u00f5es registradas.') + '</p>' +
+              '</div>' +
+              '<div class="border-t border-gray-100 pt-3 flex gap-2">' +
+                '<button onclick="fecharModal(); mostrarTela(\'lista-de-desejos\');" class="btn btn-marca rounded-xl py-2.5 text-sm font-semibold flex-1 active:scale-95 transition-all">Ver na Lista</button>' +
+                '<button onclick="fecharModal();" class="bg-gray-100 text-gray-700 rounded-xl py-2.5 text-sm font-semibold flex-1 active:scale-95 transition-all">Fechar</button>' +
+              '</div>' +
+            '</div>';
+          abrirModal(html, 'Detalhe da Avalia\u00e7\u00e3o');
+        }
+
+        window.avaliacao_init = avaliacao_init;
+        window.avaliacao_setNota = avaliacao_setNota;
+        window.avaliacao_desejos = avaliacao_desejos;
+        window.avaliacao_descartar = avaliacao_descartar;
+        window.avaliacao_finalizarDescarte = avaliacao_finalizarDescarte;
+        window.avaliacao_voltarVitrine = avaliacao_voltarVitrine;
+        window.avaliacao_setFiltro = avaliacao_setFiltro;
+        window.avaliacao_setBusca = avaliacao_setBusca;
+        window.avaliacao_verDetalhe = avaliacao_verDetalhe;
+      })();
+      </script>
+
+      <div class="pb-4"></div>
+    </section>
+
     <!-- TELAS -->
       </main>
 
