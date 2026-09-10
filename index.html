@@ -1853,6 +1853,367 @@
       <div class="pb-4"></div>
     </section>
 
+    <section data-tela="lista-de-desejos" class="hidden">
+  <div class="px-4 pt-4 pb-2 space-y-4">
+    <div class="flex items-center justify-between">
+      <div>
+        <h1 class="font-display text-xl font-bold text-marca-900 tracking-tight">Lista de Desejos</h1>
+        <p class="text-xs text-marca-500 mt-0.5">Gerencie e reflita antes de comprar</p>
+      </div>
+      <button onclick="lista_de_desejos_abrirAdicionar()" class="active:scale-95 transition-all w-10 h-10 rounded-xl bg-marca-600 text-white flex items-center justify-center hover:bg-marca-700 shadow-md shadow-marca-600/20">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+      </button>
+    </div>
+    <div class="grid grid-cols-3 gap-2" id="ld-stats">
+      <div class="bg-white rounded-xl p-3 shadow-sm border border-marca-100 text-center">
+        <p class="font-display text-lg font-bold text-marca-900" id="ld-stat-total">8</p>
+        <p class="text-[10px] text-marca-500 uppercase tracking-wider font-medium">Itens</p>
+      </div>
+      <div class="bg-white rounded-xl p-3 shadow-sm border border-marca-100 text-center">
+        <p class="font-display text-lg font-bold text-marca-900" id="ld-stat-valor">R$ 4.389</p>
+        <p class="text-[10px] text-marca-500 uppercase tracking-wider font-medium">Valor Total</p>
+      </div>
+      <div class="bg-white rounded-xl p-3 shadow-sm border border-marca-100 text-center">
+        <p class="font-display text-lg font-bold text-marca-900" id="ld-stat-media">4,2</p>
+        <p class="text-[10px] text-marca-500 uppercase tracking-wider font-medium">Média Dias</p>
+      </div>
+    </div>
+    <div class="bg-gradient-to-r from-marca-600 to-marca-700 rounded-xl p-3 text-white shadow-md">
+      <div class="flex items-center gap-2">
+        <div class="w-8 h-8 rounded-lg bg-white/15 flex items-center justify-center flex-shrink-0">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+        </div>
+        <div class="flex-1 min-w-0">
+          <p class="text-xs font-medium text-white/90">Gastos evitados este mês</p>
+          <p class="font-display text-sm font-bold">R$ 1.240,00</p>
+        </div>
+        <svg class="w-5 h-5 text-green-300 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+      </div>
+    </div>
+    <div class="relative">
+      <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-marca-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+      <input type="text" id="ld-search" placeholder="Buscar na lista..." oninput="lista_de_desejos_filtrar()" class="w-full pl-10 pr-4 py-2.5 bg-white border border-marca-200 rounded-xl text-sm text-marca-900 placeholder:text-marca-400 focus:outline-none focus:ring-2 focus:ring-marca-500/30 focus:border-marca-500 transition-all">
+    </div>
+    <div class="flex gap-1.5 overflow-x-auto pb-1 -mx-1 px-1 scrollbar-hide">
+      <button onclick="lista_de_desejos_setFiltro('todos')" data-filtro="todos" class="ld-filtro-btn active-filtro whitespace-nowrap px-3 py-1.5 rounded-lg text-xs font-medium transition-all active:scale-95">Todos</button>
+      <button onclick="lista_de_desejos_setFiltro('reflexao')" data-filtro="reflexao" class="ld-filtro-btn whitespace-nowrap px-3 py-1.5 rounded-lg text-xs font-medium transition-all active:scale-95">Em Reflexão</button>
+      <button onclick="lista_de_desejos_setFiltro('encerrada')" data-filtro="encerrada" class="ld-filtro-btn whitespace-nowrap px-3 py-1.5 rounded-lg text-xs font-medium transition-all active:scale-95">Reflexão Encerrada</button>
+      <button onclick="lista_de_desejos_setFiltro('comprados')" data-filtro="comprados" class="ld-filtro-btn whitespace-nowrap px-3 py-1.5 rounded-lg text-xs font-medium transition-all active:scale-95">Comprados</button>
+    </div>
+    <div id="ld-alerta-urgente" class="hidden bg-amber-50 border border-amber-200 rounded-xl p-3">
+      <div class="flex items-start gap-2.5">
+        <div class="w-6 h-6 rounded-full bg-amber-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+          <svg class="w-3.5 h-3.5 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+        </div>
+        <div>
+          <p class="text-xs font-semibold text-amber-800">Reflexão terminando</p>
+          <p class="text-[11px] text-amber-600 mt-0.5">1 item precisa da sua avaliação nos próximos 2 dias</p>
+        </div>
+        <button onclick="document.getElementById('ld-alerta-urgente').classList.add('hidden')" class="text-amber-400 hover:text-amber-600 ml-auto flex-shrink-0">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+    </div>
+    <div id="ld-lista" class="space-y-3 pb-4"></div>
+    <div id="ld-vazio" class="hidden text-center py-10">
+      <div class="w-16 h-16 rounded-full bg-marca-100 mx-auto flex items-center justify-center mb-3">
+        <svg class="w-8 h-8 text-marca-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+      </div>
+      <p class="font-display font-semibold text-marca-800 text-sm">Nenhum item encontrado</p>
+      <p class="text-xs text-marca-500 mt-1">Tente outro filtro ou adicione um novo desejo</p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .ld-filtro-btn { background: white; color: #64748b; border: 1px solid #e2e8f0; }
+  .ld-filtro-btn.active-filtro { background: #1E3A5F; color: white; border-color: #1E3A5F; }
+  .ld-filtro-btn:not(.active-filtro):hover { background: #F8FAFC; border-color: #1E3A5F; color: #1E3A5F; }
+  .ld-card { animation: ldFadeUp 0.35s ease forwards; opacity: 0; }
+  @keyframes ldFadeUp { to { opacity: 1; transform: translateY(0); } from { opacity: 0; transform: translateY(8px); } }
+  .scrollbar-hide::-webkit-scrollbar { display: none; }
+</style>
+
+<script>
+function lista_de_desejos_init() {
+  lista_de_desejos_dados = [
+    { id: 1, nome: 'Fone de Ouvido Sony WH-1000XM5', categoria: 'Eletrônicos', preco: 2499.90, dataAdicao: '2025-12-01', periodoReflexao: 30, avaliado: true, necessario: true, status: 'reflexao', prioridade: 'alta', imagem: '🎧', corAvatar: 'bg-indigo-500' },
+    { id: 2, nome: 'Kit de Panelas Tramontina Antiaderente', categoria: 'Cozinha', preco: 899.90, dataAdicao: '2025-12-05', periodoReflexao: 14, avaliado: false, necessario: true, status: 'reflexao', prioridade: 'media', imagem: '🍳', corAvatar: 'bg-orange-500' },
+    { id: 3, nome: 'Assinatura Spotify Premium Anual', categoria: 'Serviços', preco: 219.90, dataAdicao: '2025-11-15', periodoReflexao: 7, avaliado: true, necessario: false, status: 'encerrada', prioridade: 'baixa', imagem: '🎵', corAvatar: 'bg-green-500' },
+    { id: 4, nome: 'Smart TV Samsung 55" 4K', categoria: 'Eletrônicos', preco: 3299.00, dataAdicao: '2025-11-20', periodoReflexao: 30, avaliado: true, necessario: false, status: 'encerrada', prioridade: 'media', imagem: '📺', corAvatar: 'bg-blue-500' },
+    { id: 5, nome: 'Tênis Nike Air Max 270', categoria: 'Calçados', preco: 799.90, dataAdicao: '2025-12-08', periodoReflexao: 14, avaliado: false, necessario: false, status: 'reflexao', prioridade: 'baixa', imagem: '👟', corAvatar: 'bg-red-500' },
+    { id: 6, nome: 'Cafeteira Nespresso Essenza Mini', categoria: 'Cozinha', preco: 459.00, dataAdicao: '2025-10-25', periodoReflexao: 15, avaliado: true, necessario: true, status: 'comprado', prioridade: 'media', imagem: '☕', corAvatar: 'bg-amber-600' },
+    { id: 7, nome: 'Kindle Paperwhite 11ª Geração', categoria: 'Eletrônicos', preco: 599.00, dataAdicao: '2025-12-02', periodoReflexao: 21, avaliado: false, necessario: true, status: 'reflexao', prioridade: 'media', imagem: '📱', corAvatar: 'bg-teal-500' },
+    { id: 8, nome: 'Mochila Thule Crossover 25L', categoria: 'Acessórios', preco: 649.90, dataAdicao: '2025-11-28', periodoReflexao: 10, avaliado: true, necessario: false, status: 'encerrada', prioridade: 'baixa', imagem: '🎒', corAvatar: 'bg-slate-600' }
+  ];
+  lista_de_desejos_filtroAtual = 'todos';
+  lista_de_desejos_ordem = null;
+  lista_de_desejos_renderizar();
+}
+
+function lista_de_desejos_calcularStatus(item) {
+  if (item.status === 'comprado') return { texto: 'Comprado', cor: 'bg-emerald-100 text-emerald-700', progresso: 100 };
+  const adicao = new Date(item.dataAdicao);
+  const hoje = new Date('2025-12-10');
+  const diasPassados = Math.floor((hoje - adicao) / 86400000);
+  const restantes = item.periodoReflexao - diasPassados;
+  const progresso = Math.min(100, Math.max(0, (diasPassados / item.periodoReflexao) * 100));
+  if (restantes <= 0) return { texto: 'Reflexão Encerrada', cor: 'bg-blue-100 text-blue-700', progresso: 100, urgente: false };
+  if (restantes <= 2) return { texto: `Encerra em ${restantes}d`, cor: 'bg-red-100 text-red-700', progresso, urgente: true };
+  if (restantes <= 5) return { texto: `${restantes} dias restantes`, cor: 'bg-amber-100 text-amber-700', progresso, urgente: false };
+  return { texto: `${restantes} dias restantes`, cor: 'bg-marca-100 text-marca-700', progresso, urgente: false };
+}
+
+function lista_de_desejos_setFiltro(f) {
+  lista_de_desejos_filtroAtual = f;
+  document.querySelectorAll('.ld-filtro-btn').forEach(b => b.classList.remove('active-filtro'));
+  const btn = document.querySelector(`.ld-filtro-btn[data-filtro="${f}"]`);
+  if (btn) btn.classList.add('active-filtro');
+  lista_de_desejos_filtrar();
+}
+
+function lista_de_desejos_filtrar() {
+  const termo = (document.getElementById('ld-search').value || '').toLowerCase();
+  let itens = lista_de_desejos_dados.filter(d => {
+    if (lista_de_desejos_filtroAtual === 'todos') return true;
+    if (lista_de_desejos_filtroAtual === 'comprados') return d.status === 'comprado';
+    if (lista_de_desejos_filtroAtual === 'reflexao') return d.status === 'reflexao';
+    return d.status === 'encerrada';
+  });
+  if (termo) itens = itens.filter(i => i.nome.toLowerCase().includes(termo) || i.categoria.toLowerCase().includes(termo));
+  lista_de_desejos_renderizar(itens);
+}
+
+function lista_de_desejos_renderizar(itens) {
+  const lista = document.getElementById('ld-lista');
+  const vazio = document.getElementById('ld-vazio');
+  const urgentes = lista_de_desejos_dados.filter(d => { const s = lista_de_desejos_calcularStatus(d); return s.urgente; });
+  document.getElementById('ld-alerta-urgente').classList.toggle('hidden', urgentes.length === 0);
+  const filtrados = itens || lista_de_desejos_dados;
+  if (filtrados.length === 0) { lista.innerHTML = ''; vazio.classList.remove('hidden'); return; }
+  vazio.classList.add('hidden');
+  lista.innerHTML = filtrados.map((item, i) => {
+    const s = lista_de_desejos_calcularStatus(item);
+    const diasPassados = Math.floor((new Date('2025-12-10') - new Date(item.dataAdicao)) / 86400000);
+    const ehComprado = item.status === 'comprado';
+    const ehReflexao = item.status === 'reflexao';
+    const ehEncerrada = item.status === 'encerrada';
+    const corBarra = ehComprado ? 'bg-emerald-500' : s.urgente ? 'bg-red-500' : 'bg-marca-600';
+    const opacidade = ehComprado ? 'opacity-60' : '';
+    return `<div class="ld-card bg-white rounded-xl shadow-sm border border-marca-100 overflow-hidden active:scale-[0.985] transition-all ${opacidade}" style="animation-delay:${i * 0.04}s">
+      <div class="p-3.5">
+        <div class="flex gap-3">
+          <div class="w-12 h-12 rounded-xl ${item.corAvatar} flex items-center justify-center text-xl flex-shrink-0 shadow-sm">${item.imagem}</div>
+          <div class="flex-1 min-w-0">
+            <div class="flex items-start justify-between gap-2">
+              <div class="min-w-0">
+                <h3 class="font-display font-semibold text-sm text-marca-900 leading-tight truncate">${item.nome}</h3>
+                <p class="text-[11px] text-marca-500 mt-0.5">${item.categoria}</p>
+              </div>
+              <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-semibold ${s.cor} flex-shrink-0">${s.texto}</span>
+            </div>
+            <div class="flex items-end justify-between mt-2">
+              <p class="font-display font-bold text-base text-marca-900">${brl(item.preco)}</p>
+              <p class="text-[10px] text-marca-400">Adicionado ${dataBR(item.dataAdicao)}</p>
+            </div>
+            ${!ehComprado ? `<div class="mt-2.5">
+              <div class="flex justify-between items-center mb-1">
+                <span class="text-[10px] text-marca-500">Reflexão</span>
+                <span class="text-[10px] text-marca-500 font-medium">${Math.round(s.progresso)}%</span>
+              </div>
+              <div class="h-1.5 bg-marca-100 rounded-full overflow-hidden">
+                <div class="h-full ${corBarra} rounded-full transition-all duration-500" style="width:${s.progresso}%"></div>
+              </div>
+              <div class="flex items-center gap-1 mt-1.5">
+                ${item.avaliado ? `<span class="inline-flex items-center gap-1 text-[10px] text-emerald-600 font-medium"><svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>Avaliado: ${item.necessario ? 'Necessário' : 'Não necessário'}</span>` : `<span class="text-[10px] text-marca-400">Aguardando avaliação</span>`}
+                <span class="text-[10px] text-marca-300 ml-auto">Prioridade: ${item.prioridade}</span>
+              </div>
+            </div>` : `<div class="mt-2 flex items-center gap-1 text-emerald-600 text-xs font-medium"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>Compra realizada em ${dataBR(item.dataAdicao)}</div>`}
+          </div>
+        </div>
+        <div class="flex gap-1.5 mt-3 pt-2.5 border-t border-marca-50">
+          ${ehReflexao ? `<button onclick="lista_de_desejos_avaliar(${item.id})" class="flex-1 py-1.5 px-2 rounded-lg bg-marca-50 text-marca-700 text-[11px] font-semibold hover:bg-marca-100 active:scale-95 transition-all">Avaliar Agora</button>` : ''}
+          ${ehEncerrada ? `<button onclick="lista_de_desejos_avaliar(${item.id})" class="flex-1 py-1.5 px-2 rounded-lg bg-marca-50 text-marca-700 text-[11px] font-semibold hover:bg-marca-100 active:scale-95 transition-all">Avaliar Agora</button>` : ''}
+          ${!ehComprado ? `<button onclick="lista_de_desejos_moverSimulador(${item.id})" class="flex-1 py-1.5 px-2 rounded-lg bg-blue-50 text-blue-700 text-[11px] font-semibold hover:bg-blue-100 active:scale-95 transition-all">Simulador</button>` : ''}
+          ${!ehComprado ? `<button onclick="lista_de_desejos_comprado(${item.id})" class="py-1.5 px-2.5 rounded-lg bg-emerald-50 text-emerald-700 text-[11px] font-semibold hover:bg-emerald-100 active:scale-95 transition-all">
+            <svg class="w-3.5 h-3.5 inline -mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+          </button>` : ''}
+          <button onclick="lista_de_desejos_remover(${item.id})" class="py-1.5 px-2.5 rounded-lg bg-red-50 text-red-600 text-[11px] font-semibold hover:bg-red-100 active:scale-95 transition-all">
+            <svg class="w-3.5 h-3.5 inline -mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+  lista_de_desejos_atualizarStats();
+}
+
+function lista_de_desejos_atualizarStats() {
+  const dados = lista_de_desejos_dados;
+  document.getElementById('ld-stat-total').textContent = dados.length;
+  document.getElementById('ld-stat-valor').textContent = brl(dados.reduce((s, d) => s + d.preco, 0));
+  const medias = dados.map(d => d.periodoReflexao);
+  const avg = medias.length ? (medias.reduce((a, b) => a + b, 0) / medias.length).toFixed(1) : '0';
+  document.getElementById('ld-stat-media').textContent = avg;
+}
+
+function lista_de_desejos_avaliar(id) {
+  const item = lista_de_desejos_dados.find(d => d.id === id);
+  if (!item) return;
+  const adicao = new Date(item.dataAdicao);
+  const hoje = new Date('2025-12-10');
+  const diasPassados = Math.floor((hoje - adicao) / 86400000);
+  const restantes = Math.max(0, item.periodoReflexao - diasPassados);
+  const html = `<div class="space-y-4">
+    <div class="text-center mb-4">
+      <div class="w-16 h-16 rounded-2xl ${item.corAvatar} flex items-center justify-center text-3xl mx-auto shadow-sm">${item.imagem}</div>
+      <h3 class="font-display font-bold text-marca-900 mt-3 text-base">${item.nome}</h3>
+      <p class="text-sm text-marca-500">${item.categoria}</p>
+      <p class="font-display font-bold text-lg text-marca-900 mt-1">${brl(item.preco)}</p>
+    </div>
+    <div class="bg-marca-50 rounded-xl p-3 space-y-2">
+      <p class="text-xs font-semibold text-marca-700">Perguntas para reflexão:</p>
+      <p class="text-xs text-marca-600">1. Eu realmente preciso deste produto agora?</p>
+      <p class="text-xs text-marca-600">2. Existe uma alternativa mais barata?</p>
+      <p class="text-xs text-marca-600">3. O impacto na minha saúde financeira é positivo?</p>
+      <p class="text-xs text-marca-600">4. Daqui a 30 dias, ainda vou querer?</p>
+    </div>
+    <div>
+      <label class="text-xs font-semibold text-marca-700 block mb-1.5">Este produto é realmente necessário?</label>
+      <div class="flex gap-2">
+        <button onclick="lista_de_desejos_salvarAvaliacao(${item.id}, true)" class="flex-1 py-2.5 rounded-xl border-2 border-emerald-200 bg-emerald-50 text-emerald-700 text-sm font-semibold hover:bg-emerald-100 active:scale-95 transition-all">Sim, preciso</button>
+        <button onclick="lista_de_desejos_salvarAvaliacao(${item.id}, false)" class="flex-1 py-2.5 rounded-xl border-2 border-red-200 bg-red-50 text-red-700 text-sm font-semibold hover:bg-red-100 active:scale-95 transition-all">Não preciso</button>
+      </div>
+    </div>
+    <div>
+      <label class="text-xs font-semibold text-marca-700 block mb-1.5">Estender período de reflexão?</label>
+      <div class="flex gap-2">
+        <button onclick="lista_de_desejos_extender(${item.id}, 7)" class="flex-1 py-2 rounded-lg border border-marca-200 text-marca-700 text-xs font-medium hover:bg-marca-50 active:scale-95 transition-all">+7 dias</button>
+        <button onclick="lista_de_desejos_extender(${item.id}, 14)" class="flex-1 py-2 rounded-lg border border-marca-200 text-marca-700 text-xs font-medium hover:bg-marca-50 active:scale-95 transition-all">+14 dias</button>
+        <button onclick="lista_de_desejos_extender(${item.id}, 30)" class="flex-1 py-2 rounded-lg border border-marca-200 text-marca-700 text-xs font-medium hover:bg-marca-50 active:scale-95 transition-all">+30 dias</button>
+      </div>
+    </div>
+  </div>`;
+  abrirModal(html, 'Avaliação de Necessidade');
+}
+
+function lista_de_desejos_salvarAvaliacao(id, necessario) {
+  const item = lista_de_desejos_dados.find(d => d.id === id);
+  if (item) { item.avaliado = true; item.necessario = necessario; item.status = 'encerrada'; }
+  fecharModal();
+  lista_de_desejos_renderizar();
+  toast(necessario ? 'Avaliação salva: você marcou como necessário' : 'Avaliação salva: marcado como não necessário. Considere remover da lista.', necessario ? 'ok' : 'info');
+}
+
+function lista_de_desejos_extender(id, dias) {
+  const item = lista_de_desejos_dados.find(d => d.id === id);
+  if (item) {
+    item.periodoReflexao += dias;
+    item.status = 'reflexao';
+    item.avaliado = false;
+  }
+  fecharModal();
+  lista_de_desejos_renderizar();
+  toast(`Período de reflexão estendido em ${dias} dias`, 'ok');
+}
+
+function lista_de_desejos_moverSimulador(id) {
+  const item = lista_de_desejos_dados.find(d => d.id === id);
+  if (item) toast(`"${item.nome}" adicionado ao simulador`, 'ok');
+  mostrarTela('simulador');
+}
+
+function lista_de_desejos_comprado(id) {
+  const item = lista_de_desejos_dados.find(d => d.id === id);
+  if (item) {
+    const html = `<div class="text-center py-2">
+      <div class="w-12 h-12 rounded-full bg-emerald-100 mx-auto flex items-center justify-center mb-3"><svg class="w-6 h-6 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg></div>
+      <p class="font-display font-bold text-marca-900 text-sm">Confirmar compra?</p>
+      <p class="text-xs text-marca-500 mt-1">${item.nome}</p>
+      <p class="font-display font-bold text-base text-marca-900 mt-1">${brl(item.preco)}</p>
+      <div class="flex gap-2 mt-4">
+        <button onclick="fecharModal()" class="flex-1 py-2.5 rounded-xl border border-marca-200 text-marca-700 text-sm font-semibold hover:bg-marca-50 active:scale-95 transition-all">Cancelar</button>
+        <button onclick="lista_de_desejos_confirmarComprado(${id})" class="flex-1 py-2.5 rounded-xl bg-emerald-600 text-white text-sm font-semibold hover:bg-emerald-700 active:scale-95 transition-all shadow-sm">Confirmar</button>
+      </div>
+    </div>`;
+    abrirModal(html, 'Marcar como Comprado');
+  }
+}
+
+function lista_de_desejos_confirmarComprado(id) {
+  const item = lista_de_desejos_dados.find(d => d.id === id);
+  if (item) { item.status = 'comprado'; item.avaliado = true; item.necessario = true; }
+  fecharModal();
+  lista_de_desejos_renderizar();
+  toast('Item marcado como comprado com sucesso!', 'ok');
+}
+
+function lista_de_desejos_remover(id) {
+  const item = lista_de_desejos_dados.find(d => d.id === id);
+  if (!item) return;
+  const html = `<div class="text-center py-2">
+    <div class="w-12 h-12 rounded-full bg-red-100 mx-auto flex items-center justify-center mb-3"><svg class="w-6 h-6 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg></div>
+    <p class="font-display font-bold text-marca-900 text-sm">Remover da lista?</p>
+    <p class="text-xs text-marca-500 mt-1">"${item.nome}" será removido permanentemente.</p>
+    <div class="flex gap-2 mt-4">
+      <button onclick="fecharModal()" class="flex-1 py-2.5 rounded-xl border border-marca-200 text-marca-700 text-sm font-semibold hover:bg-marca-50 active:scale-95 transition-all">Cancelar</button>
+      <button onclick="lista_de_desejos_confirmarRemocao(${id})" class="flex-1 py-2.5 rounded-xl bg-red-600 text-white text-sm font-semibold hover:bg-red-700 active:scale-95 transition-all shadow-sm">Remover</button>
+    </div>
+  </div>`;
+  abrirModal(html, 'Confirmar Remoção');
+}
+
+function lista_de_desejos_confirmarRemocao(id) {
+  lista_de_desejos_dados = lista_de_desejos_dados.filter(d => d.id !== id);
+  fecharModal();
+  lista_de_desejos_renderizar();
+  toast('Item removido da lista', 'info');
+}
+
+function lista_de_desejos_abrirAdicionar() {
+  const html = `<div class="space-y-3">
+    <div><label class="text-xs font-semibold text-marca-700 block mb-1">Nome do produto</label><input id="ld-add-nome" type="text" placeholder="Ex: Notebook Dell Inspiron" class="w-full px-3 py-2.5 bg-marca-50 border border-marca-200 rounded-xl text-sm text-marca-900 placeholder:text-marca-400 focus:outline-none focus:ring-2 focus:ring-marca-500/30"></div>
+    <div><label class="text-xs font-semibold text-marca-700 block mb-1">Categoria</label><select id="ld-add-cat" class="w-full px-3 py-2.5 bg-marca-50 border border-marca-200 rounded-xl text-sm text-marca-900 focus:outline-none focus:ring-2 focus:ring-marca-500/30"><option>Eletrônicos</option><option>Cozinha</option><option>Serviços</option><option>Calçados</option><option>Acessórios</option><option>Casa</option><option>Saúde</option><option>Outros</option></select></div>
+    <div><label class="text-xs font-semibold text-marca-700 block mb-1">Preço estimado (R$)</label><input id="ld-add-preco" type="number" step="0.01" placeholder="0,00" class="w-full px-3 py-2.5 bg-marca-50 border border-marca-200 rounded-xl text-sm text-marca-900 placeholder:text-marca-400 focus:outline-none focus:ring-2 focus:ring-marca-500/30"></div>
+    <div><label class="text-xs font-semibold text-marca-700 block mb-1">Período de reflexão (dias)</label><input id="ld-add-dias" type="number" value="14" class="w-full px-3 py-2.5 bg-marca-50 border border-marca-200 rounded-xl text-sm text-marca-900 placeholder:text-marca-400 focus:outline-none focus:ring-2 focus:ring-marca-500/30"></div>
+    <div><label class="text-xs font-semibold text-marca-700 block mb-1">Prioridade</label><div class="flex gap-2"><button onclick="lista_de_desejos_setPrioridade('alta')" data-pri="alta" class="ld-pri-btn flex-1 py-2 rounded-lg border-2 border-marca-200 text-xs font-semibold text-marca-600">Alta</button><button onclick="lista_de_desejos_setPrioridade('media')" data-pri="media" class="ld-pri-btn flex-1 py-2 rounded-lg border-2 border-marca-200 text-xs font-semibold text-marca-600">Média</button><button onclick="lista_de_desejos_setPrioridade('baixa')" data-pri="baixa" class="ld-pri-btn flex-1 py-2 rounded-lg border-2 border-marca-200 text-xs font-semibold text-marca-600">Baixa</button></div></div>
+    <button onclick="lista_de_desejos_adicionar()" class="w-full py-3 rounded-xl bg-marca-600 text-white text-sm font-bold hover:bg-marca-700 active:scale-95 transition-all shadow-md shadow-marca-600/20 mt-2">Adicionar à Lista</button>
+  </div>`;
+  abrirModal(html, 'Adicionar Desejo');
+  lista_de_desejos_prioridadeSelecionada = 'media';
+}
+
+let lista_de_desejos_prioridadeSelecionada = 'media';
+function lista_de_desejos_setPrioridade(p) {
+  lista_de_desejos_prioridadeSelecionada = p;
+  document.querySelectorAll('.ld-pri-btn').forEach(b => { b.classList.remove('border-marca-600', 'text-marca-800', 'bg-marca-50'); b.classList.add('border-marca-200', 'text-marca-600'); });
+  const btn = document.querySelector(`.ld-pri-btn[data-pri="${p}"]`);
+  if (btn) { btn.classList.remove('border-marca-200', 'text-marca-600'); btn.classList.add('border-marca-600', 'text-marca-800', 'bg-marca-50'); }
+}
+
+function lista_de_desejos_adicionar() {
+  const nome = document.getElementById('ld-add-nome').value.trim();
+  const preco = parseFloat(document.getElementById('ld-add-preco').value);
+  const cat = document.getElementById('ld-add-cat').value;
+  const dias = parseInt(document.getElementById('ld-add-dias').value);
+  if (!nome) { toast('Informe o nome do produto', 'erro'); return; }
+  if (!preco || preco <= 0) { toast('Informe um preço válido', 'erro'); return; }
+  const emojis = { 'Eletrônicos': '💻', 'Cozinha': '🍳', 'Serviços': '📋', 'Calçados': '👟', 'Acessórios': '🎒', 'Casa': '🏠', 'Saúde': '💊', 'Outros': '📦' };
+  const cores = { 'Eletrônicos': 'bg-blue-500', 'Cozinha': 'bg-orange-500', 'Serviços': 'bg-green-500', 'Calçados': 'bg-red-500', 'Acessórios': 'bg-slate-600', 'Casa': 'bg-purple-500', 'Saúde': 'bg-teal-500', 'Outros': 'bg-gray-400' };
+  const novo = { id: Date.now(), nome, categoria: cat, preco, dataAdicao: '2025-12-10', periodoReflexao: dias || 14, avaliado: false, necessario: false, status: 'reflexao', prioridade: lista_de_desejos_prioridadeSelecionada, imagem: emojis[cat] || '📦', corAvatar: cores[cat] || 'bg-gray-400' };
+  lista_de_desejos_dados.unshift(novo);
+  fecharModal();
+  lista_de_desejos_renderizar();
+  toast('Desejo adicionado à lista!', 'ok');
+}
+
+if (typeof lista_de_desejos_dados === 'undefined') {
+  var lista_de_desejos_dados = [];
+  var lista_de_desejos_filtroAtual = 'todos';
+  lista_de_desejos_init();
+}
+</script>
+
     <!-- TELAS -->
       </main>
 
