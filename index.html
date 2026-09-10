@@ -1030,6 +1030,434 @@
       </script>
     </section>
 
+    <section data-tela="simulador" class="hidden">
+      <div class="screen-enter">
+        <!-- Header da Tela -->
+        <div class="flex items-center justify-between mb-5">
+          <div>
+            <h1 class="text-xl font-display font-bold text-marca-900">Simulador de Compra</h1>
+            <p class="text-sm text-gray-500 mt-0.5 mt-1">Monte, simule e reflita antes de gastar</p>
+          </div>
+          <button onclick="simulador_adicionarManual()" class="btn btn-primary text-sm px-4 py-2.5 flex items-center gap-2 active:scale-95 transition-transform">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+            Adicionar
+          </button>
+        </div>
+
+        <!-- Cartão: Limite de Gasto -->
+        <div id="sim-limite-card" class="card mb-4 border-2 border-marca-100 transition-colors duration-300">
+          <div class="flex items-center justify-between mb-3">
+            <div class="flex items-center gap-2">
+              <div class="w-8 h-8 rounded-lg bg-marca-100 flex items-center justify-center">
+                <svg class="w-4 h-4 text-marca-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+              </div>
+              <span class="font-display font-semibold text-sm text-marca-900">Limite de Gasto Mensal</span>
+            </div>
+            <span id="sim-limite-badge" class="badge badge-success text-xs">Definido</span>
+          </div>
+          <div class="flex items-center gap-3">
+            <div class="flex-1 relative">
+              <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm font-medium">R$</span>
+              <input id="sim-input-limite" type="text" placeholder="2.000,00" oninput="simulador_aplicarLimite()" class="input-moeda w-full pl-10 pr-4 py-2.5 text-sm font-body border border-gray-200 rounded-lg focus:ring-2 focus:ring-marca-200 focus:border-marca-400 outline-none transition-all" value="2.500,00">
+            </div>
+            <button onclick="simulador_aplicarLimite()" class="btn btn-secondary text-sm px-4 py-2.5 active:scale-95 transition-transform">Salvar</button>
+          </div>
+          <div id="sim-limite-alerta" class="hidden mt-3 p-3 bg-red-50 border border-red-200 rounded-lg">
+            <div class="flex items-center gap-2">
+              <svg class="w-5 h-5 text-red-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"/></svg>
+              <p class="text-sm text-red-700 font-medium">Atenção: o total ultrapassa seu limite de gasto!</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Resumo Rápido -->
+        <div class="grid grid-cols-3 gap-3 mb-5">
+          <div class="card text-center py-3">
+            <p class="text-xs text-gray-500 mb-1">Itens</p>
+            <p id="sim-total-itens" class="text-lg font-display font-bold text-marca-900">0</p>
+          </div>
+          <div class="card text-center py-3">
+            <p class="text-xs text-gray-500 mb-1">Subtotal</p>
+            <p id="sim-total-subtotal" class="text-lg font-display font-bold text-marca-700">R$ 0,00</p>
+          </div>
+          <div class="card text-center py-3">
+            <p class="text-xs text-gray-500 mb-1">No orçamento</p>
+            <p id="sim-status-orcamento" class="text-lg font-display font-bold text-green-600">OK</p>
+          </div>
+        </div>
+
+        <!-- Separador -->
+        <div class="flex items-center gap-3 mb-4">
+          <div class="flex-1 h-px bg-gray-200"></div>
+          <span class="text-xs font-medium text-gray-400">CARRINHO</span>
+          <div class="flex-1 h-px bg-gray-200"></div>
+        </div>
+
+        <!-- Lista do Carrinho -->
+        <div id="sim-carrinho-vazio" class="text-center py-10">
+          <div class="w-16 h-16 mx-auto rounded-full bg-gray-100 flex items-center justify-center mb-3">
+            <svg class="w-8 h-8 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 100 4 2 2 0 000-4z"/></svg>
+          </div>
+          <p class="text-sm text-gray-400 font-medium">Seu carrinho está vazio</p>
+          <p class="text-xs text-gray-400 mt-1">Adicione produtos para começar a simulação</p>
+          <button onclick="mostrarTela('vitrine')" class="btn btn-outline mt-4 text-sm active:scale-95 transition-transform">Ir para a Vitrine</button>
+        </div>
+
+        <div id="sim-carrinho-lista" class="space-y-3 mb-5"></div>
+
+        <!-- Projeção de Impacto -->
+        <div id="sim-projecao" class="hidden mb-5">
+          <div class="card border-marca-200 bg-marca-50/50">
+            <div class="flex items-center gap-2 mb-3">
+              <svg class="w-4 h-4 text-marca-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+              <span class="font-display font-semibold text-sm text-marca-900">Projeção no Orçamento</span>
+            </div>
+            <div class="flex items-end justify-between mb-2">
+              <div>
+                <p class="text-xs text-gray-500">Gasto simulado</p>
+                <p id="sim-proj-gasto" class="text-xl font-display font-bold text-marca-700">R$ 0,00</p>
+              </div>
+              <div class="text-right">
+                <p class="text-xs text-gray-500">Do limite</p>
+                <p id="sim-proj-percentual" class="text-xl font-display font-bold text-marca-600">0%</p>
+              </div>
+            </div>
+            <div class="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
+              <div id="sim-proj-barra" class="h-full bg-marca-500 rounded-full transition-all duration-500 ease-out" style="width:0%"></div>
+            </div>
+            <p id="sim-proj-msg" class="text-xs text-gray-500 mt-2">Adicione itens para ver a projeção</p>
+          </div>
+        </div>
+
+        <!-- Botões de Ação -->
+        <div id="sim-acoes" class="hidden space-y-3 mb-6">
+          <div class="grid grid-cols-2 gap-3">
+            <button onclick="simulador_reflexao()" class="btn btn-outline text-sm py-3 flex items-center justify-center gap-2 active:scale-95 transition-transform">
+              <svg class="w-4 h-4 text-marca-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+              Iniciar Reflexão
+            </button>
+            <button onclick="simulador_comparar()" class="btn btn-secondary text-sm py-3 flex items-center justify-center gap-2 active:scale-95 transition-transform">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+              Comparar
+            </button>
+          </div>
+          <button onclick="simulador_salvarSimulacao()" class="btn btn-primary w-full py-3.5 text-sm font-semibold active:scale-95 transition-transform flex items-center justify-center gap-2">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+            Salvar Simulação
+          </button>
+        </div>
+
+        <!-- Modal: Adicionar Manual -->
+        <div id="sim-modal-adicionar" class="hidden fixed inset-0 z-50 items-end sm:items-center justify-center">
+          <div class="absolute inset-0 bg-black/40 backdrop-blur-sm" onclick="simulador_fecharModalAdicionar()"></div>
+          <div class="relative bg-white rounded-t-2xl sm:rounded-2xl w-full max-w-md mx-auto p-6 animate-slide-up">
+            <div class="flex items-center justify-between mb-5">
+              <h3 class="font-display font-bold text-lg text-marca-900">Adicionar Produto</h3>
+              <button onclick="simulador_fecharModalAdicionar()" class="w-8 h-8 rounded-full hover:bg-gray-100 flex items-center justify-center transition-colors">
+                <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+              </button>
+            </div>
+            <div class="space-y-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1.5">Nome do produto</label>
+                <input id="sim-add-nome" type="text" placeholder="Ex: Arroz integral 5kg" class="w-full px-4 py-2.5 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-marca-200 focus:border-marca-400 outline-none transition-all">
+              </div>
+              <div class="grid grid-cols-2 gap-3">
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1.5">Preço unitário</label>
+                  <div class="relative">
+                    <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm">R$</span>
+                    <input id="sim-add-preco" type="text" placeholder="0,00" oninput="simulador_mascaraMoeda(this)" class="w-full pl-9 pr-4 py-2.5 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-marca-200 focus:border-marca-400 outline-none transition-all">
+                  </div>
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1.5">Quantidade</label>
+                  <input id="sim-add-qtd" type="number" value="1" min="1" class="w-full px-4 py-2.5 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-marca-200 focus:border-marca-400 outline-none transition-all">
+                </div>
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1.5">Categoria</label>
+                <select id="sim-add-categoria" class="w-full px-4 py-2.5 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-marca-200 focus:border-marca-400 outline-none transition-all bg-white">
+                  <option value="alimentos">Alimentos</option>
+                  <option value="bebidas">Bebidas</option>
+                  <option value="higiene">Higiene</option>
+                  <option value="limpeza">Limpeza</option>
+                  <option value="eletronicos">Eletrônicos</option>
+                  <option value="casa">Casa e Decoração</option>
+                  <option value="outros">Outros</option>
+                </select>
+              </div>
+              <button onclick="simulador_confimarAdicao()" class="btn btn-primary w-full py-3.5 text-sm font-semibold active:scale-95 transition-transform">Adicionar ao Carrinho</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Modal: Reflexão -->
+        <div id="sim-modal-reflexao" class="hidden fixed inset-0 z-50 items-end sm:items-center justify-center">
+          <div class="absolute inset-0 bg-black/40 backdrop-blur-sm" onclick="simulador_fecharModalReflexao()"></div>
+          <div class="relative bg-white rounded-t-2xl sm:rounded-2xl w-full max-w-md mx-auto p-6 animate-slide-up">
+            <div class="text-center mb-5">
+              <div class="w-14 h-14 mx-auto rounded-full bg-amber-50 flex items-center justify-center mb-3">
+                <svg class="w-7 h-7 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+              </div>
+              <h3 class="font-display font-bold text-lg text-marca-900">Período de Reflexão</h3>
+              <p class="text-sm text-gray-500 mt-1">Defina um período para refletir sobre esta compra</p>
+            </div>
+            <div class="space-y-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1.5">Período de espera</label>
+                <select id="sim-reflexao-periodo" class="w-full px-4 py-2.5 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-marca-200 focus:border-marca-400 outline-none transition-all bg-white">
+                  <option value="24">24 horas</option>
+                  <option value="72">3 dias</option>
+                  <option value="168">7 dias</option>
+                  <option value="336">14 dias</option>
+                  <option value="720">30 dias</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1.5">Motivo da compra (opcional)</label>
+                <textarea id="sim-reflexao-motivo" rows="2" placeholder="Por que você quer comprar isso?" class="w-full px-4 py-2.5 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-marca-200 focus:border-marca-400 outline-none transition-all resize-none"></textarea>
+              </div>
+              <button onclick="simulador_confirmarReflexao()" class="btn btn-primary w-full py-3.5 text-sm font-semibold active:scale-95 transition-transform">Enviar para Lista de Espera</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <script>
+      const simulador_itens = [];
+      let simulador_limiteGasto = 250000;
+      const simulador_catalogo = [
+        { id: 'cat1', nome: 'Arroz Integral 5kg', preco: 2890, categoria: 'alimentos', cor: '#10B981' },
+        { id: 'cat2', nome: 'Leite Integral 1L', preco: 560, categoria: 'alimentos', cor: '#3B82F6' },
+        { id: 'cat3', nome: 'Café Torrado 500g', preco: 1890, categoria: 'alimentos', cor: '#8B5CF6' },
+        { id: 'cat4', nome: 'Detergente Neutro 500ml', preco: 320, categoria: 'limpeza', cor: '#F59E0B' },
+        { id: 'cat5', nome: 'Sabonete Líquido 250ml', preco: 890, categoria: 'higiene', cor: '#EC4899' },
+        { id: 'cat6', nome: 'Água Mineral 20L', preco: 750, categoria: 'bebidas', cor: '#06B6D4' },
+        { id: 'cat7', nome: 'Papel Higiênico 12un', preco: 1590, categoria: 'higiene', cor: '#F43F5E' },
+        { id: 'cat8', nome: 'Macarrão Espaguete 500g', preco: 490, categoria: 'alimentos', cor: '#F97316' },
+        { id: 'cat9', nome: 'Óleo de Soja 900ml', preco: 690, categoria: 'alimentos', cor: '#84CC16' },
+        { id: 'cat10', nome: 'Amaciante 2L', preco: 1290, categoria: 'limpeza', cor: '#A855F7' }
+      ];
+
+      function simulador_adicionarManual() {
+        document.getElementById('sim-modal-adicionar').classList.remove('hidden');
+        document.getElementById('sim-modal-adicionar').classList.add('flex');
+        document.getElementById('sim-add-nome').value = '';
+        document.getElementById('sim-add-preco').value = '';
+        document.getElementById('sim-add-qtd').value = '1';
+        document.getElementById('sim-add-categoria').value = 'alimentos';
+      }
+
+      function simulador_fecharModalAdicionar() {
+        document.getElementById('sim-modal-adicionar').classList.add('hidden');
+        document.getElementById('sim-modal-adicionar').classList.remove('flex');
+      }
+
+      function simulador_mascaraMoeda(campo) {
+        let v = campo.value.replace(/\D/g, '');
+        if (v.length > 9) v = v.slice(0, 9);
+        v = (parseInt(v) / 100).toFixed(2);
+        v = v.replace('.', ',');
+        v = v.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+        campo.value = v;
+      }
+
+      function simulador_confimarAdicao() {
+        const nome = document.getElementById('sim-add-nome').value.trim();
+        const precoStr = document.getElementById('sim-add-preco').value.replace(/\./g, '').replace(',', '.');
+        const qtd = parseInt(document.getElementById('sim-add-qtd').value) || 1;
+        const categoria = document.getElementById('sim-add-categoria').value;
+        if (!nome) { toast('Informe o nome do produto', 'erro'); return; }
+        if (!precoStr || parseFloat(precoStr) <= 0) { toast('Informe um preço válido', 'erro'); return; }
+        const preco = Math.round(parseFloat(precoStr) * 100);
+        const item = {
+          uid: Date.now().toString() + Math.random().toString(36).slice(2, 7),
+          nome: nome,
+          preco: preco,
+          quantidade: qtd,
+          categoria: categoria,
+          cor: simulador_catalogo[Math.floor(Math.random() * simulador_catalogo.length)].cor,
+          origem: 'manual'
+        };
+        simulador_itens.push(item);
+        simulador_fecharModalAdicionar();
+        simulador_renderizar();
+        toast('Produto adicionado ao carrinho', 'ok');
+      }
+
+      function simulador_aplicarLimite() {
+        const input = document.getElementById('sim-input-limite');
+        const raw = input.value.replace(/\./g, '').replace(',', '.');
+        simulador_limiteGasto = Math.round(parseFloat(raw) * 100) || 250000;
+        simulador_renderizar();
+      }
+
+      function simulador_alterarQtd(uid, delta) {
+        const item = simulador_itens.find(i => i.uid === uid);
+        if (!item) return;
+        item.quantidade = Math.max(1, item.quantidade + delta);
+        simulador_renderizar();
+      }
+
+      function simulador_remover(uid) {
+        const idx = simulador_itens.findIndex(i => i.uid === uid);
+        if (idx === -1) return;
+        simulador_itens.splice(idx, 1);
+        simulador_renderizar();
+        toast('Item removido do carrinho', 'info');
+      }
+
+      function simulador_reflexao() {
+        if (simulador_itens.length === 0) { toast('Adicione itens antes de iniciar a reflexão', 'erro'); return; }
+        document.getElementById('sim-modal-reflexao').classList.remove('hidden');
+        document.getElementById('sim-modal-reflexao').classList.add('flex');
+      }
+
+      function simulador_fecharModalReflexao() {
+        document.getElementById('sim-modal-reflexao').classList.add('hidden');
+        document.getElementById('sim-modal-reflexao').classList.remove('flex');
+      }
+
+      function simulador_confirmarReflexao() {
+        const periodo = document.getElementById('sim-reflexao-periodo').value;
+        const dias = periodo == '24' ? '24h' : periodo == '72' ? '3 dias' : periodo == '168' ? '7 dias' : periodo == '336' ? '14 dias' : '30 dias';
+        simulador_itens.length = 0;
+        simulador_fecharModalReflexao();
+        simulador_renderizar();
+        toast(`Itens enviados para lista de espera (${dias})`, 'ok');
+        setTimeout(() => mostrarTela('lista-de-desejos'), 600);
+      }
+
+      function simulador_comparar() {
+        if (simulador_itens.length === 0) { toast('Adicione itens para comparar', 'erro'); return; }
+        mostrarTela('comparador');
+      }
+
+      function simulador_salvarSimulacao() {
+        if (simulador_itens.length === 0) { toast('Adicione itens para salvar a simulação', 'erro'); return; }
+        toast('Simulação salva com sucesso!', 'ok');
+      }
+
+      function simulador_renderizar() {
+        const listaEl = document.getElementById('sim-carrinho-lista');
+        const vazioEl = document.getElementById('sim-carrinho-vazio');
+        const acoesEl = document.getElementById('sim-acoes');
+        const projEl = document.getElementById('sim-projecao');
+        const alertaEl = document.getElementById('sim-limite-alerta');
+        const limiteCard = document.getElementById('sim-limite-card');
+        const limiteBadge = document.getElementById('sim-limite-badge');
+        const totalItensEl = document.getElementById('sim-total-itens');
+        const totalSubtotalEl = document.getElementById('sim-total-subtotal');
+        const statusOrcamentoEl = document.getElementById('sim-status-orcamento');
+        const projGastoEl = document.getElementById('sim-proj-gasto');
+        const projPercentualEl = document.getElementById('sim-proj-percentual');
+        const projBarraEl = document.getElementById('sim-proj-barra');
+        const projMsgEl = document.getElementById('sim-proj-msg');
+
+        if (simulador_itens.length === 0) {
+          vazioEl.classList.remove('hidden');
+          listaEl.innerHTML = '';
+          acoesEl.classList.add('hidden');
+          projEl.classList.add('hidden');
+          alertaEl.classList.add('hidden');
+          limiteCard.classList.remove('border-red-300', 'bg-red-50');
+          limiteCard.classList.add('border-marca-100');
+          limiteBadge.textContent = 'Definido';
+          limiteBadge.className = 'badge badge-success text-xs';
+          totalItensEl.textContent = '0';
+          totalSubtotalEl.textContent = 'R$ 0,00';
+          statusOrcamentoEl.textContent = 'OK';
+          statusOrcamentoEl.className = 'text-lg font-display font-bold text-green-600';
+          return;
+        }
+
+        vazioEl.classList.add('hidden');
+        acoesEl.classList.remove('hidden');
+        projEl.classList.remove('hidden');
+
+        let html = '';
+        let totalGeral = 0;
+        simulador_itens.forEach(item => {
+          const subtotal = item.preco * item.quantidade;
+          totalGeral += subtotal;
+          html += `
+            <div class="card flex items-center gap-3 !py-3 !px-4">
+              <div class="w-10 h-10 rounded-lg flex items-center justify-center shrink-0" style="background:${item.cor}15">
+                <span class="text-sm font-bold" style="color:${item.cor}">${item.nome.charAt(0).toUpperCase()}</span>
+              </div>
+              <div class="flex-1 min-w-0">
+                <p class="text-sm font-medium text-gray-800 truncate">${item.nome}</p>
+                <p class="text-xs text-gray-400">${brl(item.preco)} cada</p>
+              </div>
+              <div class="flex items-center gap-1.5">
+                <button onclick="simulador_alterarQtd('${item.uid}', -1)" class="w-7 h-7 rounded-md bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-sm font-bold text-gray-600 active:scale-90 transition-all">−</button>
+                <span class="text-sm font-semibold text-gray-800 w-6 text-center">${item.quantidade}</span>
+                <button onclick="simulador_alterarQtd('${item.uid}', 1)" class="w-7 h-7 rounded-md bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-sm font-bold text-gray-600 active:scale-90 transition-all">+</button>
+              </div>
+              <div class="text-right shrink-0">
+                <p class="text-sm font-bold text-marca-800">${brl(subtotal)}</p>
+              </div>
+              <button onclick="simulador_remover('${item.uid}')" class="w-7 h-7 rounded-md hover:bg-red-50 flex items-center justify-center shrink-0 transition-colors">
+                <svg class="w-4 h-4 text-gray-400 hover:text-red-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+              </button>
+            </div>
+          `;
+        });
+        listaEl.innerHTML = html;
+
+        totalItensEl.textContent = simulador_itens.reduce((s, i) => s + i.quantidade, 0);
+        totalSubtotalEl.textContent = brl(totalGeral);
+
+        const pct = simulador_limiteGasto > 0 ? (totalGeral / simulador_limiteGasto) * 100 : 0;
+        const dentroOrcamento = totalGeral <= simulador_limiteGasto;
+
+        if (!dentroOrcamento) {
+          statusOrcamentoEl.textContent = 'EXCEDIDO';
+          statusOrcamentoEl.className = 'text-lg font-display font-bold text-red-600';
+          alertaEl.classList.remove('hidden');
+          limiteCard.classList.remove('border-marca-100');
+          limiteCard.classList.add('border-red-300', 'bg-red-50');
+          limiteBadge.textContent = 'Excedido';
+          limiteBadge.className = 'badge badge-danger text-xs';
+        } else {
+          statusOrcamentoEl.textContent = pct > 80 ? 'ATENÇÃO' : 'OK';
+          statusOrcamentoEl.className = pct > 80 ? 'text-lg font-display font-bold text-amber-600' : 'text-lg font-display font-bold text-green-600';
+          alertaEl.classList.add('hidden');
+          limiteCard.classList.remove('border-red-300', 'bg-red-50');
+          limiteCard.classList.add('border-marca-100');
+          limiteBadge.textContent = pct > 80 ? 'Atenção' : 'Definido';
+          limiteBadge.className = pct > 80 ? 'badge badge-warning text-xs' : 'badge badge-success text-xs';
+        }
+
+        projGastoEl.textContent = brl(totalGeral);
+        const pctDisplay = pct.toFixed(1);
+        projPercentualEl.textContent = pctDisplay + '%';
+        const barraW = Math.min(100, pct);
+        projBarraEl.style.width = barraW + '%';
+        if (pct > 100) { projBarraEl.className = 'h-full bg-red-500 rounded-full transition-all duration-500 ease-out'; }
+        else if (pct > 80) { projBarraEl.className = 'h-full bg-amber-500 rounded-full transition-all duration-500 ease-out'; }
+        else { projBarraEl.className = 'h-full bg-marca-500 rounded-full transition-all duration-500 ease-out'; }
+        if (pct <= 50) projMsgEl.textContent = 'Ótimo! Você está usando pouco do seu orçamento.';
+        else if (pct <= 80) projMsgEl.textContent = 'Atenção: você já utilizou mais de metade do limite.';
+        else if (pct <= 100) projMsgEl.textContent = 'Cuidado: você está próximo do limite de gasto!';
+        else projMsgEl.textContent = 'Atenção: o total ultrapassa seu limite em ' + brl(totalGeral - simulador_limiteGasto);
+      }
+
+      const LIMITE_KEY = 'simulador_limite';
+      function simulador_init() {
+        try {
+          const saved = localStorage.getItem(LIMITE_KEY);
+          if (saved) {
+            simulador_limiteGasto = parseInt(saved);
+            document.getElementById('sim-input-limite').value = (simulador_limiteGasto / 100).toFixed(2).replace('.', ',');
+          }
+        } catch (e) {}
+      }
+      simulador_init();
+    </script>
+
     <!-- TELAS -->
       </main>
 
