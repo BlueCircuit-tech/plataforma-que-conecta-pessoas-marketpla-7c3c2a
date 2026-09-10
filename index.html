@@ -2214,6 +2214,399 @@ if (typeof lista_de_desejos_dados === 'undefined') {
 }
 </script>
 
+    <section data-tela="comparador" class="hidden">
+      <div class="px-4 py-3 space-y-3">
+        <!-- Cabeçalho -->
+        <div class="flex items-center justify-between">
+          <div>
+            <h1 class="font-display text-lg font-bold text-marca-900">Comparador de Produtos</h1>
+            <p class="text-xs text-slate-500 mt-0.5">Compare até 3 produtos lado a lado</p>
+          </div>
+          <button onclick="comparador_limpar()" class="text-xs text-marca-600 font-medium hover:text-marca-800 transition-colors">Limpar tudo</button>
+        </div>
+
+        <!-- Seletor de produtos -->
+        <div id="comparador-slots" class="space-y-2">
+          <div class="comparador-slot" data-slot="0">
+            <button onclick="comparador_abrirVitrine(0)" class="w-full border-2 border-dashed border-slate-300 rounded-xl p-4 flex items-center gap-3 hover:border-marca-400 hover:bg-marca-50 transition-all active:scale-[0.98]">
+              <div class="w-10 h-10 rounded-full bg-marca-100 flex items-center justify-center flex-shrink-0">
+                <svg class="w-5 h-5 text-marca-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>
+              </div>
+              <div class="text-left">
+                <p class="text-sm font-medium text-slate-600">Produto 1</p>
+                <p class="text-xs text-slate-400">Toque para adicionar</p>
+              </div>
+            </button>
+          </div>
+          <div class="comparador-slot" data-slot="1">
+            <button onclick="comparador_abrirVitrine(1)" class="w-full border-2 border-dashed border-slate-300 rounded-xl p-4 flex items-center gap-3 hover:border-marca-400 hover:bg-marca-50 transition-all active:scale-[0.98]">
+              <div class="w-10 h-10 rounded-full bg-marca-100 flex items-center justify-center flex-shrink-0">
+                <svg class="w-5 h-5 text-marca-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>
+              </div>
+              <div class="text-left">
+                <p class="text-sm font-medium text-slate-600">Produto 2</p>
+                <p class="text-xs text-slate-400">Toque para adicionar</p>
+              </div>
+            </button>
+          </div>
+          <div class="comparador-slot" data-slot="2">
+            <button onclick="comparador_abrirVitrine(2)" class="w-full border-2 border-dashed border-slate-300 rounded-xl p-4 flex items-center gap-3 hover:border-marca-400 hover:bg-marca-50 transition-all active:scale-[0.98]">
+              <div class="w-10 h-10 rounded-full bg-marca-100 flex items-center justify-center flex-shrink-0">
+                <svg class="w-5 h-5 text-marca-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>
+              </div>
+              <div class="text-left">
+                <p class="text-sm font-medium text-slate-600">Produto 3</p>
+                <p class="text-xs text-slate-400">Toque para adicionar</p>
+              </div>
+            </button>
+          </div>
+        </div>
+
+        <!-- Área de comparação -->
+        <div id="comparador-conteudo" class="hidden space-y-3">
+          <!-- Mini tabela resumo -->
+          <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+            <div class="bg-marca-900 px-4 py-2.5">
+              <p class="text-white text-xs font-medium">Tabela Comparativa</p>
+            </div>
+            <div id="comparador-tabela" class="divide-y divide-slate-100"></div>
+          </div>
+
+          <!-- Gráfico de barras -->
+          <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-4">
+            <p class="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-3">Comparação de Preços</p>
+            <div id="comparador-grafico" class="space-y-3"></div>
+          </div>
+
+          <!-- Veredito -->
+          <div id="comparador-veredito" class="bg-gradient-to-r from-marca-900 to-marca-700 rounded-2xl p-4 text-white hidden">
+            <div class="flex items-start gap-3">
+              <div class="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center flex-shrink-0">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+              </div>
+              <div>
+                <p class="text-sm font-semibold">Veredito Consciente</p>
+                <p id="comparador-veredito-texto" class="text-xs text-white/80 mt-1"></p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Observações -->
+          <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-4">
+            <label class="text-xs font-semibold text-slate-500 uppercase tracking-wide block mb-2">Minhas Observações</label>
+            <textarea id="comparador-observacoes" rows="3" placeholder="Anote diferenças relevantes entre os produtos..." class="w-full rounded-xl border border-slate-200 px-3 py-2.5 text-sm text-slate-700 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-marca-500/30 focus:border-marca-500 resize-none transition-all"></textarea>
+          </div>
+
+          <!-- Ações -->
+          <div class="grid grid-cols-2 gap-3">
+            <button onclick="comparador_veredito()" class="btn bg-marca-900 text-white rounded-xl py-3 text-sm font-medium active:scale-95 transition-all flex items-center justify-center gap-2">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+              Decidir
+            </button>
+            <button onclick="comparador_avaliarEscolhido()" class="btn bg-marca-600 text-white rounded-xl py-3 text-sm font-medium active:scale-95 transition-all flex items-center justify-center gap-2">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+              Simular Compra
+            </button>
+          </div>
+          <button onclick="comparador_adicionarLista()" class="btn w-full bg-white border-2 border-marca-600 text-marca-600 rounded-xl py-2.5 text-sm font-medium active:scale-95 transition-all">Salvar Comparação</button>
+        </div>
+
+        <!-- Estado vazio -->
+        <div id="comparador-vazio" class="text-center py-8">
+          <div class="w-16 h-16 rounded-full bg-marca-100 mx-auto flex items-center justify-center mb-3">
+            <svg class="w-8 h-8 text-marca-400" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z"/></svg>
+          </div>
+          <p class="text-sm font-medium text-slate-600">Nenhum produto selecionado</p>
+          <p class="text-xs text-slate-400 mt-1">Adicione produtos para comparar</p>
+        </div>
+      </div>
+
+      <!-- Modal Vitrine -->
+      <div id="modal-vitrine" class="fixed inset-0 z-50 hidden">
+        <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" onclick="comparador_fecharVitrine()"></div>
+        <div class="absolute bottom-0 left-0 right-0 bg-white rounded-t-3xl max-h-[80vh] flex flex-col animate-slide-up">
+          <div class="flex items-center justify-between px-4 py-3 border-b border-slate-100">
+            <h3 class="font-display font-bold text-marca-900">Adicionar Produto</h3>
+            <button onclick="comparador_fecharVitrine()" class="w-8 h-8 rounded-full hover:bg-slate-100 flex items-center justify-center transition-colors">
+              <svg class="w-5 h-5 text-slate-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+            </button>
+          </div>
+          <div class="px-4 py-2">
+            <div class="relative">
+              <svg class="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+              <input id="modal-busca" oninput="comparador_filtrar(this.value)" type="text" placeholder="Buscar produto..." class="w-full pl-9 pr-4 py-2.5 rounded-xl bg-slate-100 text-sm focus:outline-none focus:ring-2 focus:ring-marca-500/30">
+            </div>
+          </div>
+          <div id="modal-lista" class="flex-1 overflow-y-auto px-4 pb-4 space-y-2"></div>
+        </div>
+      </div>
+
+      <script>
+      (function(){
+        var produtosSelecionados = [null, null, null];
+        var slotAtual = 0;
+        var indiceSelecionado = -1;
+
+        var produtosCatalogo = [
+          { id:1, nome:'Notebook Dell Inspiron 15', preco:3899.90, categoria:'eletronicos', descricao:'Processador Intel i5, 8GB RAM, SSD 256GB, tela 15.6" Full HD. Ideal para trabalho e estudos.', imagem:'💻', sustentabilidade:72, custoBeneficio:8.2, caracteristicas:['8GB RAM','SSD 256GB','Windows 11','1.8kg','2 anos garantia'], necessidade:9 },
+          { id:2, nome:'Smartphone Samsung Galaxy A54', preco:2199.00, categoria:'eletronicos', descricao:'Tela AMOLED 6.4", câmera 50MP, 128GB, 5G, bateria 5000mAh. Excelente custo-benefício.', imagem:'📱', sustentabilidade:65, custoBeneficio:9.0, caracteristicas:['128GB','5G','Câmara 50MP','6.4" AMOLED','IP67'], necessidade:8 },
+          { id:3, nome:'Fone JBL Tune 520BT', preco:189.90, categoria:'eletronicos', descricao:'Fone de ouvido Bluetooth sem fio, graves potentes, 57h bateria, multiponto.', imagem:'🎧', sustentabilidade:58, custoBeneficio:9.5, caracteristicas:['Bluetooth 5.3','57h bateria','Multiponto','Dobrável','1 ano garantia'], necessidade:6 },
+          { id:4, nome:'Camiseta Algodão Orgânico', preco:89.90, categoria:'vestuario', descricao:'Camiseta 100% algodão orgânico certificado. Produzida com baixo impacto ambiental.', imagem:'👕', sustentabilidade:95, custoBeneficio:7.8, caracteristicas:['Algodão orgânico','Produção justa','Tamanho P/M/G/GG','Unissex','Lavável a máquina'], necessidade:5 },
+          { id:5, nome:'Liquidificador Philco PH800', preco:349.90, categoria:'eletrodomesticos', descricao:'Potência 800W, 12 velocidades, jarra de vidro 2L, lâminas de aço inoxidável.', imagem:'🍹', sustentabilidade:61, custoBeneficio:8.5, caracteristicas:['800W','Jarra 2L vidro','12 velocidades','Inox','2 anos garantia'], necessidade:7 },
+          { id:6, nome:'Smartwatch Xiaomi Band 8', preco:349.00, categoria:'eletronicos', descricao:'Monitor cardíaco, SpO2, GPS integrado, 16 dias bateria, resistência 5ATM.', imagem:'⌚', sustentabilidade:70, custoBeneficio:9.1, caracteristicas:['16 dias bateria','GPS','SpO2','5ATM','1.62" AMOLED'], necessidade:6 },
+          { id:7, nome:'Sapato Vegano Casual', preco:259.90, categoria:'vestuario', descricao:'Sapato 100% vegano, sem componentes animais. Solado de borracha reciclada.', imagem:'👟', sustentabilidade:90, custoBeneficio:7.5, caracteristicas:['Material vegano','Borracha reciclada','Antiderrapante','Tamanho 38-44','Conforto 8h'], necessidade:4 },
+          { id:8, nome:'Cafeteira French Press', preco:129.90, categoria:'casa', descricao:'Aço inoxidável e vidro, 600ml. Café puro sem papel filtro, preserva óleos naturais.', imagem:'☕', sustentabilidade:78, custoBeneficio:8.8, caracteristicas:['600ml','Aço inox + vidro','Sem filtro papel','Fácil limpeza','1 ano garantia'], necessidade:7 },
+        ];
+
+        function comparador_abrirVitrine(slot){
+          slotAtual = slot;
+          comparador_renderVitrine('');
+          document.getElementById('modal-vitrine').classList.remove('hidden');
+        }
+
+        function comparador_fecharVitrine(){
+          document.getElementById('modal-vitrine').classList.add('hidden');
+        }
+
+        function comparador_renderVitrine(filtro){
+          var lista = produtosCatalogo.filter(function(p){
+            if(!filtro) return true;
+            var jaSelecionado = produtosSelecionados.some(function(ps){ return ps && ps.id === p.id; });
+            if(jaSelecionado) return false;
+            return p.nome.toLowerCase().includes(filtro.toLowerCase());
+          });
+          var html = '';
+          lista.forEach(function(p){
+            html += '<button onclick="comparador_selecionar('+p.id+')" class="w-full bg-slate-50 rounded-xl p-3 flex items-center gap-3 hover:bg-marca-50 transition-all active:scale-[0.98] text-left">';
+            html += '<div class="w-12 h-12 rounded-xl bg-marca-100 flex items-center justify-center text-2xl flex-shrink-0">'+p.imagem+'</div>';
+            html += '<div class="flex-1 min-w-0">';
+            html += '<p class="text-sm font-semibold text-marca-900 truncate">'+p.nome+'</p>';
+            html += '<p class="text-xs text-slate-500 line-clamp-1">'+p.descricao+'</p>';
+            html += '<p class="text-sm font-bold text-marca-600 mt-1">'+brl(p.preco)+'</p>';
+            html += '</div>';
+            html += '<svg class="w-5 h-5 text-marca-400 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>';
+            html += '</button>';
+          });
+          if(lista.length === 0){
+            html = '<p class="text-center text-sm text-slate-400 py-8">Nenhum produto encontrado</p>';
+          }
+          document.getElementById('modal-lista').innerHTML = html;
+        }
+
+        function comparador_filtrar(val){
+          comparador_renderVitrine(val);
+        }
+
+        function comparador_selecionar(produtoId){
+          var jaSelecionado = produtosSelecionados.some(function(p){ return p && p.id === produtoId; });
+          if(jaSelecionado){
+            toast('Este produto já está na comparação','info');
+            return;
+          }
+          if(produtosSelecionados[slotAtual] !== null){
+            var idx = produtosSelecionados[slotAtual];
+            var nomeAntigo = idx.nome || '';
+            toast('Substituindo "'+nomeAntigo+'"','info');
+          }
+          var prod = produtosCatalogo.find(function(p){ return p.id === produtoId; });
+          produtosSelecionados[slotAtual] = prod;
+          comparador_fecharVitrine();
+          comparador_render();
+          toast(prod.nome+' adicionado à comparação','ok');
+        }
+
+        function comparador_render(){
+          var slots = document.querySelectorAll('.comparador-slot');
+          var conteudo = document.getElementById('comparador-conteudo');
+          var vazio = document.getElementById('comparador-vazio');
+          var qtd = produtosSelecionados.filter(function(p){ return p !== null; }).length;
+
+          if(qtd === 0){
+            conteudo.classList.add('hidden');
+            vazio.classList.remove('hidden');
+            return;
+          }
+          vazio.classList.add('hidden');
+          conteudo.classList.remove('hidden');
+
+          slots.forEach(function(slot, i){
+            var prod = produtosSelecionados[i];
+            slot.innerHTML = '';
+            if(prod){
+              var ini = prod.nome.split(' ').slice(0,2).map(function(w){ return w[0]; }).join('').toUpperCase();
+              var ini2 = prod.nome.split(' ').slice(0,2).map(function(w){ return w[0]; }).join('').toUpperCase();
+              slot.innerHTML = '<div class="w-full bg-white rounded-xl border-2 border-marca-200 p-3 flex items-center gap-3">';
+              slot.innerHTML += '<div class="w-11 h-11 rounded-xl flex items-center justify-center text-2xl flex-shrink-0" style="background:linear-gradient(135deg,#1E3A5F22,#2563EB22)">'+prod.imagem+'</div>';
+              slot.innerHTML += '<div class="flex-1 min-w-0"><p class="text-sm font-semibold text-marca-900 truncate">'+prod.nome+'</p>';
+              slot.innerHTML += '<p class="text-xs text-marca-600 font-bold">'+brl(prod.preco)+'</p></div>';
+              slot.innerHTML += '<button onclick="comparador_remover('+i+')" class="w-7 h-7 rounded-full hover:bg-red-50 flex items-center justify-center transition-colors flex-shrink-0"><svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg></button>';
+              slot.innerHTML += '</div>';
+            } else {
+              slot.innerHTML = '<button onclick="comparador_abrirVitrine('+i+')" class="w-full border-2 border-dashed border-slate-300 rounded-xl p-4 flex items-center gap-3 hover:border-marca-400 hover:bg-marca-50 transition-all active:scale-[0.98]"><div class="w-10 h-10 rounded-full bg-marca-100 flex items-center justify-center flex-shrink-0"><svg class="w-5 h-5 text-marca-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg></div><div class="text-left"><p class="text-sm font-medium text-slate-600">Produto '+(i+1)+'</p><p class="text-xs text-slate-400">Toque para adicionar</p></div></button>';
+            }
+          });
+
+          comparador_renderTabela();
+          comparador_renderGrafico();
+          comparador_gerarVeredito();
+        }
+
+        function comparador_renderTabela(){
+          var tbl = document.getElementById('comparador-tabela');
+          var prods = produtosSelecionados.filter(function(p){ return p !== null; });
+          var linhas = [
+            {label:'Preço', calc:function(p){ return brl(p.preco); }},
+            {label:'Sustentabilidade', calc:function(p){
+              var cor = p.sustentabilidade >= 80 ? 'text-green-600 bg-green-50' : p.sustentabilidade >= 60 ? 'text-yellow-600 bg-yellow-50' : 'text-red-500 bg-red-50';
+              return '<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-bold '+cor+'">'+p.sustentabilidade+'%</span>';
+            }},
+            {label:'Custo-Benefício', calc:function(p){
+              var estrelas = Math.round(p.custoBeneficio/2);
+              var s = '';
+              for(var i=0;i<5;i++) s += i < estrelas ? '⭐' : '☆';
+              return '<span class="text-sm">'+s+' <span class="text-xs text-slate-500">'+p.custoBeneficio.toFixed(1)+'</span></span>';
+            }},
+            {label:'Necessidade Pessoal', calc:function(p){
+              return '<div class="flex items-center gap-1.5"><div class="flex-1 bg-slate-200 rounded-full h-2"><div class="h-2 rounded-full bg-marca-500" style="width:'+p.necessidade*10+'%"></div></div><span class="text-xs font-medium text-slate-600 w-6 text-right">'+p.necessidade+'/10</span></div>';
+            }},
+            {label:'Característica 1', calc:function(p){ return p.caracteristicas[0] || '—'; }},
+            {label:'Característica 2', calc:function(p){ return p.caracteristicas[1] || '—'; }},
+            {label:'Característica 3', calc:function(p){ return p.caracteristicas[2] || '—'; }},
+            {label:'Garantia', calc:function(p){
+              var g = p.caracteristicas.find(function(c){ return c.includes('ano'); });
+              return g || '—';
+            }},
+          ];
+
+          var html = '';
+          linhas.forEach(function(l){
+            html += '<div class="grid" style="grid-template-columns: 110px repeat('+prods.length+', 1fr)">';
+            html += '<div class="px-3 py-2.5 bg-slate-50 text-xs font-semibold text-slate-500 uppercase tracking-wide flex items-center">'+l.label+'</div>';
+            prods.forEach(function(p){
+              html += '<div class="px-3 py-2.5 text-xs text-slate-700 border-l border-slate-100 flex items-center">'+l.calc(p)+'</div>';
+            });
+            html += '</div>';
+          });
+          tbl.innerHTML = html;
+        }
+
+        function comparador_renderGrafico(){
+          var graf = document.getElementById('comparador-grafico');
+          var prods = produtosSelecionados.filter(function(p){ return p !== null; });
+          if(prods.length === 0){ graf.innerHTML = ''; return; }
+          var max = Math.max.apply(null, prods.map(function(p){ return p.preco; }));
+          var cores = ['bg-marca-600','bg-blue-400','bg-sky-300'];
+          var html = '';
+          prods.forEach(function(p, i){
+            var pct = (p.preco / max * 100).toFixed(1);
+            html += '<div class="flex items-center gap-3">';
+            html += '<div class="w-8 text-right text-xs text-slate-500 truncate flex-shrink-0">'+p.nome.split(' ').slice(0,2).join(' ')+'</div>';
+            html += '<div class="flex-1 bg-slate-100 rounded-full h-7 relative overflow-hidden">';
+            html += '<div class="h-full rounded-full transition-all duration-700 ease-out '+cores[i]+'" style="width:'+pct+'%"></div>';
+            html += '<span class="absolute right-2 top-1/2 -translate-y-1/2 text-xs font-bold text-marca-900">'+brl(p.preco)+'</span>';
+            html += '</div>';
+            html += '</div>';
+          });
+          graf.innerHTML = html;
+        }
+
+        function comparador_gerarVeredito(){
+          var vereditoEl = document.getElementById('comparador-veredito');
+          var textoEl = document.getElementById('comparador-veredito-texto');
+          var prods = produtosSelecionados.filter(function(p){ return p !== null; });
+          if(prods.length < 2){ vereditoEl.classList.add('hidden'); return; }
+          vereditoEl.classList.remove('hidden');
+          var melhorCusto = prods.reduce(function(a,b){ return a.custoBeneficio > b.custoBeneficio ? a : b; });
+          var melhorSustentabilidade = prods.reduce(function(a,b){ return a.sustentabilidade > b.sustentabilidade ? a : b; });
+          var maisBarato = prods.reduce(function(a,b){ return a.preco < b.preco ? a : b; });
+          textoEl.textContent = 'Melhor custo-benefício: ' + melhorCusto.nome + '. Mais sustentável: ' + melhorSustentabilidade.nome + '. Opção mais econômica: ' + maisBarato.nome + '. Avalie se a necessidade realmente justifica a compra.';
+        }
+
+        function comparador_veredito(){
+          var prods = produtosSelecionados.filter(function(p){ return p !== null; });
+          if(prods.length === 0){ toast('Adicione pelo menos 1 produto','erro'); return; }
+          var melhorCusto = prods.reduce(function(a,b){ return a.custoBeneficio > b.custoBeneficio ? a : b; });
+          if(prods.length >= 2){
+            comparador_abrirModalVeredito(melhorCusto);
+          } else {
+            mostrarTela('avaliacao');
+          }
+        }
+
+        function comparador_abrirModalVeredito(produto){
+          var obs = document.getElementById('comparador-observacoes').value || '';
+          var html = '';
+          html += '<div class="space-y-3">';
+          html += '<div class="bg-marca-50 rounded-xl p-4 flex items-center gap-3">';
+          html += '<div class="w-12 h-12 rounded-xl bg-marca-100 flex items-center justify-center text-2xl">'+produto.imagem+'</div>';
+          html += '<div><p class="text-sm font-semibold text-marca-900">'+produto.nome+'</p>';
+          html += '<p class="text-xs text-marca-600">Custo-benefício: '+produto.custoBeneficio.toFixed(1)+'/10 · Sustentabilidade: '+produto.sustentabilidade+'%</p>';
+          html += '<p class="text-lg font-bold text-marca-700 mt-1">'+brl(produto.preco)+'</p></div></div>';
+          html += '<p class="text-sm text-slate-600">Com base nos critérios, este é o produto recomendado. Deseja avaliá-lo mais profundamente?</p>';
+          if(obs) html += '<div class="bg-slate-50 rounded-xl p-3"><p class="text-xs font-semibold text-slate-500 mb-1">Suas observações:</p><p class="text-xs text-slate-600">'+obs+'</p></div>';
+          html += '<div class="grid grid-cols-2 gap-2">';
+          html += '<button onclick="fecharModal();mostrarTela(\'avaliacao\')" class="btn bg-marca-600 text-white rounded-xl py-2.5 text-sm font-medium active:scale-95 transition-all">Avaliar Produto</button>';
+          html += '<button onclick="comparador_irSimulador('+produto.id+')" class="btn bg-white border-2 border-marca-600 text-marca-600 rounded-xl py-2.5 text-sm font-medium active:scale-95 transition-all">Simular Compra</button>';
+          html += '</div></div>';
+          abrirModal(html, 'Veredito Consciente');
+        }
+
+        function comparador_irSimulador(produtoId){
+          fecharModal();
+          window._comparador_paraSimulador = produtoId;
+          mostrarTela('simulador');
+        }
+
+        function comparador_avaliarEscolhido(){
+          var prods = produtosSelecionados.filter(function(p){ return p !== null; });
+          if(prods.length === 0){ toast('Adicione pelo menos 1 produto','erro'); return; }
+          if(prods.length >= 2){
+            comparador_veredito();
+          } else {
+            mostrarTela('avaliacao');
+          }
+        }
+
+        function comparador_adicionarLista(){
+          var prods = produtosSelecionados.filter(function(p){ return p !== null; });
+          if(prods.length < 2){ toast('Compare pelo menos 2 produtos','erro'); return; }
+          toast('Comparação salva com sucesso','ok');
+        }
+
+        function comparador_remover(slot){
+          produtosSelecionados[slot] = null;
+          comparador_render();
+          toast('Produto removido da comparação','info');
+        }
+
+        function comparador_limpar(){
+          produtosSelecionados = [null, null, null];
+          comparador_render();
+          document.getElementById('comparador-observacoes').value = '';
+          toast('Comparação limpa','info');
+        }
+
+        window.comparador_init = function(){
+          if(window._comparador_paraSimulador){
+            var pid = window._comparador_paraSimulador;
+            window._comparador_paraSimulador = null;
+            var prod = produtosCatalogo.find(function(p){ return p.id === pid; });
+            if(prod){
+              var slotVazio = produtosSelecionados.findIndex(function(p){ return p === null; });
+              if(slotVazio >= 0){
+                produtosSelecionados[slotVazio] = prod;
+              }
+              comparador_render();
+              toast(prod.nome+' adicionado ao simulador','ok');
+            }
+          }
+        };
+
+        comparador_render();
+      })();
+      </script>
+    </section>
+
     <!-- TELAS -->
       </main>
 
