@@ -2924,6 +2924,518 @@ if (typeof lista_de_desejos_dados === 'undefined') {
       </script>
     </section>
 
+    <section data-tela="painel-admin" class="hidden">
+    <!-- Cabeçalho -->
+    <div class="px-4 pt-4 pb-3">
+        <h2 class="font-display text-xl font-bold text-marca-900">Painel Administrativo</h2>
+        <p class="text-sm text-gray-500 mt-0.5">Visão geral e gestão da plataforma Mercado Consciente</p>
+    </div>
+
+    <!-- Filtro de período + ações -->
+    <div class="px-4 pb-3 flex items-center gap-2">
+        <div class="flex bg-gray-100 rounded-lg p-0.5 flex-1">
+            <button onclick="painel_admin_filtroPeriodo('7d')" id="filtro-7d" class="px-3 py-1.5 text-xs font-medium rounded-md bg-white shadow-sm text-marca-700 transition-all">7 dias</button>
+            <button onclick="painel_admin_filtroPeriodo('30d')" id="filtro-30d" class="px-3 py-1.5 text-xs font-medium rounded-md text-gray-500 hover:text-gray-700 transition-all">30 dias</button>
+            <button onclick="painel_admin_filtroPeriodo('90d')" id="filtro-90d" class="px-3 py-1.5 text-xs font-medium rounded-md text-gray-500 hover:text-gray-700 transition-all">90 dias</button>
+        </div>
+        <button onclick="painel_admin_exportarPDF()" class="flex items-center gap-1.5 px-3 py-1.5 bg-marca-900 text-white text-xs font-medium rounded-lg active:scale-95 transition-all shadow-sm">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3M3 17V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>
+            Exportar PDF
+        </button>
+    </div>
+
+    <!-- Cards de métricas -->
+    <div class="px-4 grid grid-cols-2 gap-3 pb-4">
+        <div class="bg-white rounded-xl p-4 shadow-sm border border-gray-100 active:scale-[0.98] transition-all cursor-default">
+            <div class="flex items-center justify-between mb-2">
+                <div class="w-9 h-9 rounded-lg bg-blue-50 flex items-center justify-center">
+                    <svg class="w-5 h-5 text-marca-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                </div>
+                <span class="text-xs font-medium text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded-full">+12%</span>
+            </div>
+            <p class="text-2xl font-bold text-marca-900">1.247</p>
+            <p class="text-xs text-gray-500 mt-0.5">Usuários cadastrados</p>
+        </div>
+        <div class="bg-white rounded-xl p-4 shadow-sm border border-gray-100 active:scale-[0.98] transition-all cursor-default">
+            <div class="flex items-center justify-between mb-2">
+                <div class="w-9 h-9 rounded-lg bg-indigo-50 flex items-center justify-center">
+                    <svg class="w-5 h-5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+                </div>
+                <span class="text-xs font-medium text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded-full">+23%</span>
+            </div>
+            <p class="text-2xl font-bold text-marca-900">3.891</p>
+            <p class="text-xs text-gray-500 mt-0.5">Simuladores realizados</p>
+        </div>
+        <div class="bg-white rounded-xl p-4 shadow-sm border border-gray-100 active:scale-[0.98] transition-all cursor-default">
+            <div class="flex items-center justify-between mb-2">
+                <div class="w-9 h-9 rounded-lg bg-amber-50 flex items-center justify-center">
+                    <svg class="w-5 h-5 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+                </div>
+                <span class="text-xs font-medium text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded-full">+5,2%</span>
+            </div>
+            <p class="text-2xl font-bold text-marca-900">34,7%</p>
+            <p class="text-xs text-gray-500 mt-0.5">Taxa de conversão</p>
+        </div>
+        <div class="bg-white rounded-xl p-4 shadow-sm border border-gray-100 active:scale-[0.98] transition-all cursor-default">
+            <div class="flex items-center justify-between mb-2">
+                <div class="w-9 h-9 rounded-lg bg-rose-50 flex items-center justify-center">
+                    <svg class="w-5 h-5 text-rose-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                </div>
+                <span class="text-xs font-medium text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded-full">+18%</span>
+            </div>
+            <p class="text-2xl font-bold text-marca-900">892</p>
+            <p class="text-xs text-gray-500 mt-0.5">Produtos consultados</p>
+        </div>
+    </div>
+
+    <!-- Gráfico: Simuladores por dia da semana -->
+    <div class="px-4 pb-4">
+        <div class="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="font-display text-sm font-semibold text-marca-900">Simuladores por dia da semana</h3>
+                <span class="text-xs text-gray-400">Últimos 7 dias</span>
+            </div>
+            <svg viewBox="0 0 340 140" class="w-full" style="max-height:140px">
+                <line x1="30" y1="10" x2="30" y2="110" stroke="#E5E7EB" stroke-width="1"/>
+                <line x1="30" y1="110" x2="330" y2="110" stroke="#E5E7EB" stroke-width="1"/>
+                <text x="26" y="14" text-anchor="end" font-size="8" fill="#9CA3AF">800</text>
+                <text x="26" y="46" text-anchor="end" font-size="8" fill="#9CA3AF">600</text>
+                <text x="26" y="78" text-anchor="end" font-size="8" fill="#9CA3AF">400</text>
+                <text x="26" y="110" text-anchor="end" font-size="8" fill="#9CA3AF">0</text>
+                <rect x="40" y="68" width="22" height="42" rx="3" fill="#1E3A5F" opacity="0.85"/>
+                <rect x="72" y="52" width="22" height="58" rx="3" fill="#2563EB"/>
+                <rect x="104" y="42" width="22" height="68" rx="3" fill="#2563EB"/>
+                <rect x="136" y="55" width="22" height="55" rx="3" fill="#1E3A5F" opacity="0.85"/>
+                <rect x="168" y="62" width="22" height="48" rx="3" fill="#1E3A5F" opacity="0.65"/>
+                <rect x="200" y="35" width="22" height="75" rx="3" fill="#2563EB"/>
+                <rect x="232" y="78" width="22" height="32" rx="3" fill="#1E3A5F" opacity="0.65"/>
+                <rect x="264" y="30" width="22" height="80" rx="3" fill="#2563EB"/>
+                <rect x="296" y="45" width="22" height="65" rx="3" fill="#1E3A5F" opacity="0.85"/>
+                <text x="51" y="126" text-anchor="middle" font-size="8" fill="#9CA3AF">Dom</text>
+                <text x="83" y="126" text-anchor="middle" font-size="8" fill="#9CA3AF">Seg</text>
+                <text x="115" y="126" text-anchor="middle" font-size="8" fill="#9CA3AF">Ter</text>
+                <text x="147" y="126" text-anchor="middle" font-size="8" fill="#9CA3AF">Qua</text>
+                <text x="179" y="126" text-anchor="middle" font-size="8" fill="#9CA3AF">Qui</text>
+                <text x="211" y="126" text-anchor="middle" font-size="8" fill="#9CA3AF">Sex</text>
+                <text x="243" y="126" text-anchor="middle" font-size="8" fill="#9CA3AF">Sáb</text>
+                <text x="275" y="126" text-anchor="middle" font-size="8" fill="#9CA3AF">Dom</text>
+                <text x="307" y="126" text-anchor="middle" font-size="8" fill="#9CA3AF">Seg</text>
+                <rect x="40" y="66" width="22" height="2" rx="1" fill="#2563EB"/><text x="51" y="62" text-anchor="middle" font-size="7" fill="#2563EB" font-weight="600">540</text>
+                <rect x="104" y="40" width="22" height="2" rx="1" fill="#2563EB"/><text x="115" y="36" text-anchor="middle" font-size="7" fill="#2563EB" font-weight="600">710</text>
+                <rect x="200" y="33" width="22" height="2" rx="1" fill="#2563EB"/><text x="211" y="29" text-anchor="middle" font-size="7" fill="#2563EB" font-weight="600">780</text>
+            </svg>
+        </div>
+    </div>
+
+    <!-- Mapa de calor: horários de acesso -->
+    <div class="px-4 pb-4">
+        <div class="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="font-display text-sm font-semibold text-marca-900">Mapa de calor — Horários de acesso</h3>
+                <span class="text-xs text-gray-400">Distribuição diária</span>
+            </div>
+            <div id="heatmap-container" class="flex items-end gap-1" style="height:80px"></div>
+            <div class="flex justify-between mt-1.5">
+                <span class="text-[10px] text-gray-400">00h</span>
+                <span class="text-[10px] text-gray-400">06h</span>
+                <span class="text-[10px] text-gray-400">12h</span>
+                <span class="text-[10px] text-gray-400">18h</span>
+                <span class="text-[10px] text-gray-400">23h</span>
+            </div>
+            <div class="flex items-center justify-center gap-1 mt-2">
+                <span class="text-[10px] text-gray-400">Menos</span>
+                <div class="w-3 h-2.5 rounded-sm" style="background:#E0E7FF"></div>
+                <div class="w-3 h-2.5 rounded-sm" style="background:#818CF8"></div>
+                <div class="w-3 h-2.5 rounded-sm" style="background:#6366F1"></div>
+                <div class="w-3 h-2.5 rounded-sm" style="background:#4F46E5"></div>
+                <div class="w-3 h-2.5 rounded-sm" style="background:#3730A3"></div>
+                <span class="text-[10px] text-gray-400">Mais</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tabela de produtos cadastrados -->
+    <div class="px-4 pb-4">
+        <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+            <div class="p-4 pb-3 flex items-center justify-between">
+                <h3 class="font-display text-sm font-semibold text-marca-900">Produtos cadastrados</h3>
+                <button onclick="painel_admin_novoProduto()" class="flex items-center gap-1 px-3 py-1.5 bg-marca-600 text-white text-xs font-medium rounded-lg active:scale-95 transition-all shadow-sm">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+                    Novo
+                </button>
+            </div>
+            <div class="px-4 pb-3">
+                <div class="relative">
+                    <svg class="w-4 h-4 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                    <input type="text" id="busca-produtos" oninput="painel_admin_filtrarProdutos()" placeholder="Buscar produto..." class="w-full pl-9 pr-4 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-marca-200 focus:border-marca-400 transition-all bg-gray-50">
+                </div>
+                <select id="filtro-categoria-produtos" onchange="painel_admin_filtrarProdutos()" class="mt-2 w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-marca-200 bg-gray-50 text-gray-600">
+                    <option value="">Todas as categorias</option>
+                    <option value="Alimentação">Alimentação</option>
+                    <option value="Eletrônicos">Eletrônicos</option>
+                    <option value="Casa & Decoração">Casa & Decoração</option>
+                    <option value="Saúde">Saúde</option>
+                    <option value="Educação">Educação</option>
+                </select>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-xs">
+                    <thead>
+                        <tr class="bg-gray-50 border-b border-gray-100">
+                            <th class="text-left px-4 py-2.5 font-semibold text-gray-500">Produto</th>
+                            <th class="text-left px-3 py-2.5 font-semibold text-gray-500">Categoria</th>
+                            <th class="text-right px-3 py-2.5 font-semibold text-gray-500">Preço</th>
+                            <th class="text-center px-3 py-2.5 font-semibold text-gray-500">Consultas</th>
+                            <th class="text-center px-3 py-2.5 font-semibold text-gray-500">Status</th>
+                            <th class="text-center px-3 py-2.5 font-semibold text-gray-500">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabela-produtos"></tbody>
+                </table>
+            </div>
+            <div id="produtos-vazio" class="hidden px-4 py-8 text-center">
+                <svg class="w-12 h-12 text-gray-300 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                <p class="text-sm text-gray-400">Nenhum produto encontrado</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Categorias mais acessadas + gestão -->
+    <div class="px-4 pb-4 grid grid-cols-1 gap-4">
+        <div class="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
+            <h3 class="font-display text-sm font-semibold text-marca-900 mb-3">Categorias mais acessadas</h3>
+            <div id="lista-categorias" class="space-y-2.5"></div>
+        </div>
+        <div class="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
+            <h3 class="font-display text-sm font-semibold text-marca-900 mb-3">Gerenciar categorias</h3>
+            <div class="flex gap-2 mb-3">
+                <input type="text" id="nova-categoria" placeholder="Nova categoria..." class="flex-1 px-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-marca-200 bg-gray-50" onkeydown="if(event.key==='Enter')painel_admin_adicionarCategoria()">
+                <button onclick="painel_admin_adicionarCategoria()" class="px-4 py-2 bg-marca-600 text-white text-sm font-medium rounded-lg active:scale-95 transition-all shadow-sm">Adicionar</button>
+            </div>
+            <div id="lista-gestao-categorias" class="space-y-2"></div>
+        </div>
+    </div>
+
+    <!-- Configurações de avaliação -->
+    <div class="px-4 pb-6">
+        <div class="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
+            <h3 class="font-display text-sm font-semibold text-marca-900 mb-4">Configurações de avaliação</h3>
+            <div class="space-y-4">
+                <div>
+                    <div class="flex items-center justify-between mb-1.5">
+                        <label class="text-xs text-gray-600">Período de reflexão padrão</label>
+                        <span id="periodo-reflexao-valor" class="text-xs font-semibold text-marca-700">7 dias</span>
+                    </div>
+                    <input type="range" id="periodo-reflexao" min="1" max="30" value="7" oninput="painel_admin_atualizarPeriodo(this.value)" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-marca-600">
+                    <div class="flex justify-between mt-1">
+                        <span class="text-[10px] text-gray-400">1 dia</span>
+                        <span class="text-[10px] text-gray-400">30 dias</span>
+                    </div>
+                </div>
+                <div class="flex items-center justify-between py-2 border-t border-gray-100">
+                    <div>
+                        <p class="text-sm text-gray-700 font-medium">Exibir perguntas de avaliação</p>
+                        <p class="text-xs text-gray-400">Mostrar questionário antes de simular</p>
+                    </div>
+                    <button onclick="painel_admin_toggleSwitch(this)" class="w-11 h-6 bg-marca-600 rounded-full relative transition-colors" data-ativo="true">
+                        <span class="absolute right-0.5 top-0.5 w-5 h-5 bg-white rounded-full shadow transition-all translate-x-0"></span>
+                    </button>
+                </div>
+                <div class="flex items-center justify-between py-2 border-t border-gray-100">
+                    <div>
+                        <p class="text-sm text-gray-700 font-medium">Notificações WhatsApp</p>
+                        <p class="text-xs text-gray-400">Enviar lembretes de reflexão</p>
+                    </div>
+                    <button onclick="painel_admin_toggleSwitch(this)" class="w-11 h-6 bg-marca-600 rounded-full relative transition-colors" data-ativo="true">
+                        <span class="absolute right-0.5 top-0.5 w-5 h-5 bg-white rounded-full shadow transition-all translate-x-0"></span>
+                    </button>
+                </div>
+                <div class="flex items-center justify-between py-2 border-t border-gray-100">
+                    <div>
+                        <p class="text-sm text-gray-700 font-medium">Notificações Push</p>
+                        <p class="text-xs text-gray-400">Alertas de novas ofertas</p>
+                    </div>
+                    <button onclick="painel_admin_toggleSwitch(this)" class="w-11 h-6 bg-gray-300 rounded-full relative transition-colors" data-ativo="false">
+                        <span class="absolute left-0.5 top-0.5 w-5 h-5 bg-white rounded-full shadow transition-all -translate-x-0.5"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    (function(){
+        // --- dados ---
+        var produtos = [
+            {id:1, nome:'Smart TV 55" 4K', categoria:'Eletrônicos', preco:2899.90, consultas:342, status:'ativo', icone:'TV'},
+            {id:2, nome:'Fone Bluetooth Pro', categoria:'Eletrônicos', preco:249.90, consultas:218, status:'ativo', icone:'FN'},
+            {id:3, nome:'Cafeteira Express', categoria:'Eletrodomésticos', preco:599.00, consultas:186, status:'ativo', icone:'CF'},
+            {id:4, nome:'Kit Ferramentas 42pç', categoria:'Casa & Decoração', preco:189.90, consultas:154, status:'ativo', icone:'FT'},
+            {id:5, nome:'Curso de Finanças Pessoais', categoria:'Educação', preco:197.00, consultas:128, status:'ativo', icone:'ED'},
+            {id:6, nome:'Suplemento Vitamínico', categoria:'Saúde', preco:89.90, consultas:96, status:'rascunho', icone:'SU'},
+            {id:7, nome:'Plano de Assinatura Premium', categoria:'Serviços', preco:29.90, consultas:410, status:'ativo', icone:'PL'},
+            {id:8, nome:'Smartwatch Fit', categoria:'Eletrônicos', preco:1299.00, consultas:267, status:'ativo', icone:'SW'}
+        ];
+
+        var categorias = [
+            {nome:'Eletrônicos', acessos:842, cor:'#1E3A5F'},
+            {nome:'Alimentação', acessos:634, cor:'#2563EB'},
+            {nome:'Casa & Decoração', acessos:521, cor:'#3B82F6'},
+            {nome:'Saúde', acessos:398, cor:'#60A5FA'},
+            {nome:'Educação', acessos:356, cor:'#93C5FD'},
+            {nome:'Serviços', acessos:289, cor:'#BFDBFE'}
+        ];
+
+        var categoriasGerenciadas = ['Eletrônicos','Alimentação','Casa & Decoração','Saúde','Educação','Serviços','Transporte','Lazer'];
+
+        var heatmapData = [5,3,2,1,1,2,8,25,42,55,48,40,35,30,28,35,50,65,78,72,60,42,25,12];
+
+        function corHeat(valor, max) {
+            var p = valor / max;
+            if (p < 0.15) return '#EEF2FF';
+            if (p < 0.3) return '#C7D2FE';
+            if (p < 0.5) return '#818CF8';
+            if (p < 0.7) return '#6366F1';
+            return '#3730A3';
+        }
+
+        window.painel_admin_init = function() {
+            renderizarTabela(produtos);
+            renderizarCategorias();
+            renderizarHeatmap();
+            renderizarGestaoCategorias();
+        };
+
+        function renderizarTabela(lista) {
+            var tbody = document.getElementById('tabela-produtos');
+            var vazio = document.getElementById('produtos-vazio');
+            if (!lista.length) {
+                tbody.innerHTML = '';
+                vazio.classList.remove('hidden');
+                return;
+            }
+            vazio.classList.add('hidden');
+            tbody.innerHTML = lista.map(function(p) {
+                var badge = p.status === 'ativo'
+                    ? '<span class="badge badge-verde">Ativo</span>'
+                    : '<span class="badge badge-amarelo">Rascunho</span>';
+                var initials = p.icone;
+                return '<tr class="border-b border-gray-50 hover:bg-gray-50 transition-colors cursor-pointer" onclick="painel_admin_detalheProduto('+p.id+')">' +
+                    '<td class="px-4 py-3">' +
+                        '<div class="flex items-center gap-2.5">' +
+                            '<div class="w-8 h-8 rounded-lg bg-marca-50 flex items-center justify-center text-[10px] font-bold text-marca-700 shrink-0">'+initials+'</div>' +
+                            '<span class="font-medium text-marca-900 truncate max-w-[130px]">'+p.nome+'</span>' +
+                        '</div>' +
+                    '</td>' +
+                    '<td class="px-3 py-3 text-gray-600">'+p.categoria+'</td>' +
+                    '<td class="px-3 py-3 text-right font-medium text-marca-900">R$ '+p.preco.toFixed(2).replace('.',',')+'</td>' +
+                    '<td class="px-3 py-3 text-center text-gray-600">'+p.consultas+'</td>' +
+                    '<td class="px-3 py-3 text-center">'+badge+'</td>' +
+                    '<td class="px-3 py-3 text-center" onclick="event.stopPropagation()">' +
+                        '<div class="flex items-center justify-center gap-1">' +
+                            '<button onclick="painel_admin_editarProduto('+p.id+')" class="p-1.5 rounded-lg hover:bg-marca-50 text-gray-400 hover:text-marca-600 transition-colors" title="Editar">' +
+                                '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>' +
+                            '</button>' +
+                            '<button onclick="painel_admin_removerProduto('+p.id+')" class="p-1.5 rounded-lg hover:bg-red-50 text-gray-400 hover:text-red-600 transition-colors" title="Remover">' +
+                                '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>' +
+                            '</button>' +
+                        '</div>' +
+                    '</td>' +
+                '</tr>';
+            }).join('');
+        }
+
+        function renderizarCategorias() {
+            var el = document.getElementById('lista-categorias');
+            var maxA = Math.max.apply(null, categorias.map(function(c){return c.acessos;}));
+            el.innerHTML = categorias.map(function(c) {
+                var pct = Math.round((c.acessos / maxA) * 100);
+                return '<div class="flex items-center gap-3">' +
+                    '<div class="w-2 h-2 rounded-full shrink-0" style="background:'+c.cor+'"></div>' +
+                    '<span class="text-sm text-gray-700 w-28 shrink-0 truncate">'+c.nome+'</span>' +
+                    '<div class="flex-1 h-2 bg-gray-100 rounded-full overflow-hidden">' +
+                        '<div class="h-full rounded-full transition-all duration-500" style="width:'+pct+'%;background:'+c.cor+'"></div>' +
+                    '</div>' +
+                    '<span class="text-xs text-gray-500 w-10 text-right">'+c.acessos+'</span>' +
+                '</div>';
+            }).join('');
+        }
+
+        function renderizarHeatmap() {
+            var el = document.getElementById('heatmap-container');
+            var maxV = Math.max.apply(null, heatmapData);
+            el.innerHTML = heatmapData.map(function(v, i) {
+                var pct = (v / maxV) * 100;
+                var h = Math.max(4, pct * 0.76);
+                return '<div class="flex-1 rounded-sm transition-all hover:opacity-80 cursor-default" style="height:'+h+'px;background:'+corHeat(v,maxV)+'" title="'+String(i).padStart(2,'0')+'h — '+v+' acessos"></div>';
+            }).join('');
+        }
+
+        function renderizarGestaoCategorias() {
+            var el = document.getElementById('lista-gestao-categorias');
+            el.innerHTML = categoriasGerenciadas.map(function(c, i) {
+                return '<div class="flex items-center justify-between py-2 border-b border-gray-50 last:border-0">' +
+                    '<span class="text-sm text-gray-700">'+c+'</span>' +
+                    '<button onclick="painel_admin_removerCategoria('+i+')" class="p-1 rounded hover:bg-red-50 text-gray-300 hover:text-red-500 transition-colors">' +
+                        '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>' +
+                    '</button>' +
+                '</div>';
+            }).join('');
+        }
+
+        // --- ações ---
+        window.painel_admin_filtroPeriodo = function(periodo) {
+            ['7d','30d','90d'].forEach(function(p) {
+                var btn = document.getElementById('filtro-'+p);
+                if (p === periodo) {
+                    btn.className = 'px-3 py-1.5 text-xs font-medium rounded-md bg-white shadow-sm text-marca-700 transition-all';
+                } else {
+                    btn.className = 'px-3 py-1.5 text-xs font-medium rounded-md text-gray-500 hover:text-gray-700 transition-all';
+                }
+            });
+            toast('Período alterado para ' + (periodo === '7d' ? '7 dias' : periodo === '30d' ? '30 dias' : '90 dias'), 'info');
+        };
+
+        window.painel_admin_filtrarProdutos = function() {
+            var busca = document.getElementById('busca-produtos').value.toLowerCase();
+            var catFiltro = document.getElementById('filtro-categoria-produtos').value;
+            var filtrados = produtos.filter(function(p) {
+                var matchBusca = !busca || p.nome.toLowerCase().indexOf(busca) !== -1;
+                var matchCat = !catFiltro || p.categoria === catFiltro;
+                return matchBusca && matchCat;
+            });
+            renderizarTabela(filtrados);
+        };
+
+        window.painel_admin_detalheProduto = function(id) {
+            var p = produtos.find(function(x){return x.id===id;});
+            if (!p) return;
+            var html = '<div class="p-4 space-y-3">' +
+                '<div class="flex items-center gap-3 mb-4">' +
+                    '<div class="w-12 h-12 rounded-xl bg-marca-50 flex items-center justify-center text-sm font-bold text-marca-700">'+p.icone+'</div>' +
+                    '<div><p class="font-display font-bold text-marca-900 text-base">'+p.nome+'</p>' +
+                    '<p class="text-xs text-gray-500">'+p.categoria+'</p></div>' +
+                '</div>' +
+                '<div class="grid grid-cols-2 gap-3">' +
+                    '<div class="bg-gray-50 rounded-lg p-3"><p class="text-xs text-gray-500">Preço</p><p class="text-sm font-bold text-marca-900">R$ '+p.preco.toFixed(2).replace('.',',')+'</p></div>' +
+                    '<div class="bg-gray-50 rounded-lg p-3"><p class="text-xs text-gray-500">Consultas</p><p class="text-sm font-bold text-marca-900">'+p.consultas+'</p></div>' +
+                    '<div class="bg-gray-50 rounded-lg p-3"><p class="text-xs text-gray-500">Status</p><p class="text-sm font-bold capitalize">'+p.status+'</p></div>' +
+                    '<div class="bg-gray-50 rounded-lg p-3"><p class="text-xs text-gray-500">Simulações</p><p class="text-sm font-bold text-marca-900">'+Math.floor(p.consultas*0.34)+'</p></div>' +
+                '</div>' +
+                '<div class="pt-3 flex gap-2">' +
+                    '<button onclick="painel_admin_editarProduto('+p.id+');fecharModal()" class="flex-1 py-2.5 bg-marca-600 text-white text-sm font-medium rounded-lg active:scale-95 transition-all">Editar produto</button>' +
+                    '<button onclick="fecharModal()" class="px-4 py-2.5 border border-gray-200 text-gray-600 text-sm font-medium rounded-lg active:scale-95 transition-all">Fechar</button>' +
+                '</div>' +
+            '</div>';
+            abrirModal(html, 'Detalhes do Produto');
+        };
+
+        window.painel_admin_editarProduto = function(id) {
+            var p = produtos.find(function(x){return x.id===id;});
+            if (!p) return;
+            var html = '<div class="p-4 space-y-3">' +
+                '<div><label class="text-xs text-gray-500 block mb-1">Nome do produto</label><input type="text" value="'+p.nome+'" class="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-marca-200"></div>' +
+                '<div><label class="text-xs text-gray-500 block mb-1">Categoria</label><select class="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-lg bg-gray-50">' +
+                    ['Alimentação','Eletrônicos','Casa & Decoração','Saúde','Educação','Serviços'].map(function(c) {
+                        return '<option value="'+c+'"'+(c===p.categoria?' selected':'')+'>'+c+'</option>';
+                    }).join('') +
+                '</select></div>' +
+                '<div><label class="text-xs text-gray-500 block mb-1">Preço (R$)</label><input type="text" value="'+p.preco.toFixed(2).replace('.',',')+'" class="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-marca-200 bg-gray-50"></div>' +
+                '<div class="flex items-center justify-between py-2">' +
+                    '<span class="text-sm text-gray-700">Produto ativo</span>' +
+                    '<button onclick="painel_admin_toggleSwitch(this)" class="w-11 h-6 bg-marca-600 rounded-full relative transition-colors" data-ativo="true"><span class="absolute right-0.5 top-0.5 w-5 h-5 bg-white rounded-full shadow transition-all"></span></button>' +
+                '</div>' +
+                '<div class="pt-3 flex gap-2">' +
+                    '<button onclick="p.status = p.status===\"ativo\"?\"rascunho\":\"ativo\";renderizarTabela(produtos);fecharModal();toast(\'Produto atualizado\',\'ok\')" class="flex-1 py-2.5 bg-marca-600 text-white text-sm font-medium rounded-lg active:scale-95 transition-all">Salvar</button>' +
+                    '<button onclick="fecharModal()" class="px-4 py-2.5 border border-gray-200 text-gray-600 text-sm font-medium rounded-lg active:scale-95 transition-all">Cancelar</button>' +
+                '</div>' +
+            '</div>';
+            abrirModal(html, 'Editar Produto');
+        };
+
+        window.painel_admin_removerProduto = function(id) {
+            var p = produtos.find(function(x){return x.id===id;});
+            if (!p) return;
+            var html = '<div class="p-5 text-center">' +
+                '<div class="w-14 h-14 rounded-full bg-red-50 flex items-center justify-center mx-auto mb-3">' +
+                    '<svg class="w-7 h-7 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>' +
+                '</div>' +
+                '<p class="text-sm text-gray-700 mb-1">Remover <strong>'+p.nome+'</strong>?</p>' +
+                '<p class="text-xs text-gray-400 mb-4">Esta ação não pode ser desfeita.</p>' +
+                '<div class="flex gap-2">' +
+                    '<button onclick="painel_admin_confirmarRemocao('+id+')" class="flex-1 py-2.5 bg-red-600 text-white text-sm font-medium rounded-lg active:scale-95 transition-all">Remover</button>' +
+                    '<button onclick="fecharModal()" class="flex-1 py-2.5 border border-gray-200 text-gray-600 text-sm font-medium rounded-lg active:scale-95 transition-all">Cancelar</button>' +
+                '</div>' +
+            '</div>';
+            abrirModal(html, 'Confirmar remoção');
+        };
+
+        window.painel_admin_confirmarRemocao = function(id) {
+            produtos = produtos.filter(function(x){return x.id!==id;});
+            renderizarTabela(produtos);
+            fecharModal();
+            toast('Produto removido com sucesso', 'ok');
+        };
+
+        window.painel_admin_novoProduto = function() {
+            var html = '<div class="p-4 space-y-3">' +
+                '<div><label class="text-xs text-gray-500 block mb-1">Nome do produto</label><input type="text" placeholder="Ex: Cesta básica" class="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-marca-200"></div>' +
+                '<div><label class="text-xs text-gray-500 block mb-1">Categoria</label><select class="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-lg bg-gray-50">' +
+                    ['Alimentação','Eletrônicos','Casa & Decoração','Saúde','Educação','Serviços'].map(function(c){return '<option>'+c+'</option>';}).join('') +
+                '</select></div>' +
+                '<div><label class="text-xs text-gray-500 block mb-1">Preço (R$)</label><input type="text" placeholder="0,00" class="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-marca-200 bg-gray-50"></div>' +
+                '<div class="pt-3 flex gap-2">' +
+                    '<button onclick="toast(\'Produto cadastrado!\',\'ok\');fecharModal()" class="flex-1 py-2.5 bg-marca-600 text-white text-sm font-medium rounded-lg active:scale-95 transition-all">Cadastrar</button>' +
+                    '<button onclick="fecharModal()" class="px-4 py-2.5 border border-gray-200 text-gray-600 text-sm font-medium rounded-lg active:scale-95 transition-all">Cancelar</button>' +
+                '</div>' +
+            '</div>';
+            abrirModal(html, 'Novo Produto');
+        };
+
+        window.painel_admin_adicionarCategoria = function() {
+            var input = document.getElementById('nova-categoria');
+            var nome = input.value.trim();
+            if (!nome) { toast('Informe o nome da categoria', 'erro'); return; }
+            if (categoriasGerenciadas.indexOf(nome) !== -1) { toast('Categoria já existe', 'erro'); return; }
+            categoriasGerenciadas.push(nome);
+            categorias.push({nome: nome, acessos: Math.floor(Math.random()*200)+50, cor: '#93C5FD'});
+            input.value = '';
+            renderizarGestaoCategorias();
+            renderizarCategorias();
+            toast('Categoria "'+nome+'" adicionada', 'ok');
+        };
+
+        window.painel_admin_removerCategoria = function(index) {
+            var nome = categoriasGerenciadas[index];
+            categoriasGerenciadas.splice(index, 1);
+            renderizarGestaoCategorias();
+            renderizarCategorias();
+            toast('Categoria "'+nome+'" removida', 'info');
+        };
+
+        window.painel_admin_atualizarPeriodo = function(valor) {
+            document.getElementById('periodo-reflexao-valor').textContent = valor + (valor === '1' ? ' dia' : ' dias');
+        };
+
+        window.painel_admin_toggleSwitch = function(btn) {
+            var ativo = btn.dataset.ativo === 'true';
+            btn.dataset.ativo = String(!ativo);
+            if (!ativo) {
+                btn.className = 'w-11 h-6 bg-marca-600 rounded-full relative transition-colors';
+                btn.querySelector('span').className = 'absolute right-0.5 top-0.5 w-5 h-5 bg-white rounded-full shadow transition-all translate-x-0';
+            } else {
+                btn.className = 'w-11 h-6 bg-gray-300 rounded-full relative transition-colors';
+                btn.querySelector('span').className = 'absolute left-0.5 top-0.5 w-5 h-5 bg-white rounded-full shadow transition-all -translate-x-0.5';
+            }
+        };
+
+        window.painel_admin_exportarPDF = function() {
+            toast('Relatório PDF gerado e enviado por e-mail', 'ok');
+        };
+    })();
+    </script>
+</section>
+
     <!-- TELAS -->
       </main>
 
