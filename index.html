@@ -2607,6 +2607,323 @@ if (typeof lista_de_desejos_dados === 'undefined') {
       </script>
     </section>
 
+    <section data-tela="meus-pedidos" class="hidden">
+      <div class="animate-enter">
+        <!-- Cabeçalho da tela -->
+        <div class="mb-5">
+          <h1 class="text-xl font-display font-bold text-marca-900">Meus Pedidos</h1>
+          <p class="text-sm text-gray-500 mt-0.5">Histórico de compras e controle de gastos</p>
+        </div>
+
+        <!-- Cartões de estatísticas -->
+        <div class="grid grid-cols-3 gap-2.5 mb-5">
+          <div class="card p-3">
+            <div class="flex items-center gap-1.5 mb-1.5">
+              <svg class="w-4 h-4 text-marca" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+              <span class="text-[10px] text-gray-500 uppercase tracking-wide">Mês atual</span>
+            </div>
+            <p class="text-base font-display font-bold text-marca-900">R$ 1.847</p>
+            <span class="text-[10px] text-emerald-600 flex items-center gap-0.5">
+              <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"/></svg>
+              -12% vs mês anterior
+            </span>
+          </div>
+          <div class="card p-3">
+            <div class="flex items-center gap-1.5 mb-1.5">
+              <svg class="w-4 h-4 text-marca" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+              <span class="text-[10px] text-gray-500 uppercase tracking-wide">Média/compra</span>
+            </div>
+            <p class="text-base font-display font-bold text-marca-900">R$ 204</p>
+            <span class="text-[10px] text-emerald-600 flex items-center gap-0.5">
+              <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"/></svg>
+              -8% vs média
+            </span>
+          </div>
+          <div class="card p-3">
+            <div class="flex items-center gap-1.5 mb-1.5">
+              <svg class="w-4 h-4 text-marca" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/></svg>
+              <span class="text-[10px] text-gray-500 uppercase tracking-wide">Top categoria</span>
+            </div>
+            <p class="text-sm font-display font-bold text-marca-900">Alimentação</p>
+            <span class="text-[10px] text-gray-500">42% dos gastos</span>
+          </div>
+        </div>
+
+        <!-- Gráfico de linha: evolução de gastos 6 meses -->
+        <div class="card p-4 mb-5">
+          <div class="flex items-center justify-between mb-3">
+            <h2 class="text-sm font-display font-semibold text-marca-900">Evolução de Gastos</h2>
+            <span class="text-[10px] text-gray-500 bg-gray-100 rounded-full px-2 py-0.5">Últimos 6 meses</span>
+          </div>
+          <svg viewBox="0 0 320 140" class="w-full h-36">
+            <defs>
+              <linearGradient id="chartArea" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#2563EB" stop-opacity="0.15"/>
+                <stop offset="100%" stop-color="#2563EB" stop-opacity="0.01"/>
+              </linearGradient>
+            </defs>
+            <!-- linhas de grade -->
+            <line x1="30" y1="20" x2="310" y2="20" stroke="#E5E7EB" stroke-width="0.5" stroke-dasharray="3,3"/>
+            <line x1="30" y1="50" x2="310" y2="50" stroke="#E5E7EB" stroke-width="0.5" stroke-dasharray="3,3"/>
+            <line x1="30" y1="80" x2="310" y2="80" stroke="#E5E7EB" stroke-width="0.5" stroke-dasharray="3,3"/>
+            <line x1="30" y1="110" x2="310" y2="110" stroke="#E5E7EB" stroke-width="0.5" stroke-dasharray="3,3"/>
+            <!-- área preenchida -->
+            <polygon points="30,95 84,78 138,88 192,52 246,62 300,30 300,120 30,120" fill="url(#chartArea)"/>
+            <!-- linha principal -->
+            <polyline points="30,95 84,78 138,88 192,52 246,62 300,30" fill="none" stroke="#2563EB" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <!-- pontos -->
+            <circle cx="30" cy="95" r="3.5" fill="#2563EB" stroke="#fff" stroke-width="1.5"/>
+            <circle cx="84" cy="78" r="3.5" fill="#2563EB" stroke="#fff" stroke-width="1.5"/>
+            <circle cx="138" cy="88" r="3.5" fill="#2563EB" stroke="#fff" stroke-width="1.5"/>
+            <circle cx="192" cy="52" r="3.5" fill="#2563EB" stroke="#fff" stroke-width="1.5"/>
+            <circle cx="246" cy="62" r="3.5" fill="#2563EB" stroke="#fff" stroke-width="1.5"/>
+            <circle cx="300" cy="30" r="4.5" fill="#1E3A5F" stroke="#fff" stroke-width="2"/>
+            <!-- labels eixo X -->
+            <text x="30" y="133" text-anchor="middle" class="text-[9px] fill-gray-400" font-size="8">Jan</text>
+            <text x="84" y="133" text-anchor="middle" class="text-[9px] fill-gray-400" font-size="8">Fev</text>
+            <text x="138" y="133" text-anchor="middle" class="text-[9px] fill-gray-400" font-size="8">Mar</text>
+            <text x="192" y="133" text-anchor="middle" class="text-[9px] fill-gray-400" font-size="8">Abr</text>
+            <text x="246" y="133" text-anchor="middle" class="text-[9px] fill-gray-400" font-size="8">Mai</text>
+            <text x="300" y="133" text-anchor="middle" class="text-[9px] fill-gray-400" font-size="8">Jun</text>
+            <!-- valores nos pontos -->
+            <text x="30" y="90" text-anchor="middle" font-size="7" fill="#9CA3AF">1.420</text>
+            <text x="84" y="73" text-anchor="middle" font-size="7" fill="#9CA3AF">1.680</text>
+            <text x="138" y="83" text-anchor="middle" font-size="7" fill="#9CA3AF">1.550</text>
+            <text x="192" y="47" text-anchor="middle" font-size="7" fill="#9CA3AF">2.130</text>
+            <text x="246" y="57" text-anchor="middle" font-size="7" fill="#9CA3AF">2.010</text>
+            <text x="300" y="25" text-anchor="middle" font-size="8" fill="#1E3A5F" font-weight="bold">2.410</text>
+          </svg>
+          <div class="flex items-center justify-center gap-4 mt-1">
+            <span class="flex items-center gap-1 text-[10px] text-gray-500">
+              <span class="w-3 h-0.5 bg-marca rounded inline-block"></span> Gastos
+            </span>
+            <span class="flex items-center gap-1 text-[10px] text-gray-500">
+              <span class="w-3 h-2 bg-marca/15 rounded-sm inline-block"></span> Projeção
+            </span>
+          </div>
+        </div>
+
+        <!-- Filtros -->
+        <div class="flex gap-2 mb-4 overflow-x-auto pb-1 scrollbar-hide">
+          <select id="filtro-periodo" onchange="meus_pedidos_filtrar()" class="text-xs border border-gray-200 rounded-lg px-3 py-2 bg-white text-gray-700 appearance-none min-w-[120px] cursor-pointer focus:outline-none focus:ring-2 focus:ring-marca/30">
+            <option value="todos">Todos os períodos</option>
+            <option value="30">Últimos 30 dias</option>
+            <option value="90">Últimos 3 meses</option>
+            <option value="180">Últimos 6 meses</option>
+          </select>
+          <select id="filtro-categoria" onchange="meus_pedidos_filtrar()" class="text-xs border border-gray-200 rounded-lg px-3 py-2 bg-white text-gray-700 appearance-none min-w-[130px] cursor-pointer focus:outline-none focus:ring-2 focus:ring-marca/30">
+            <option value="todos">Todas categorias</option>
+            <option value="alimentação">Alimentação</option>
+            <option value="transporte">Transporte</option>
+            <option value="moradia">Moradia</option>
+            <option value="saúde">Saúde</option>
+            <option value="lazer">Lazer</option>
+            <option value="educação">Educação</option>
+          </select>
+          <button onclick="meus_pedidos_limparFiltros()" class="text-xs text-marca font-medium px-3 py-2 hover:bg-marca-50 rounded-lg transition-colors whitespace-nowrap">Limpar</button>
+        </div>
+
+        <!-- Campo de busca -->
+        <div class="relative mb-4">
+          <svg class="w-4 h-4 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+          <input type="text" id="busca-pedidos" oninput="meus_pedidos_filtrar()" placeholder="Buscar pedido ou produto..." class="w-full text-sm border border-gray-200 rounded-lg pl-9 pr-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-marca/30 focus:border-marca transition-all">
+        </div>
+
+        <!-- Lista de pedidos -->
+        <div id="lista-pedidos" class="space-y-3 mb-6"></div>
+
+        <!-- Estado vazio -->
+        <div id="estado-vazio" class="hidden text-center py-10">
+          <svg class="w-14 h-14 text-gray-300 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/></svg>
+          <p class="text-sm text-gray-500 font-medium">Nenhum pedido encontrado</p>
+          <p class="text-xs text-gray-400 mt-1">Tente ajustar os filtros de busca</p>
+        </div>
+
+        <!-- Botão de ação principal -->
+        <div class="mt-2 mb-8">
+          <button onclick="mostrarTela('simulador')" class="btn w-full py-3 rounded-xl text-sm font-semibold flex items-center justify-center gap-2 active:scale-[0.97] transition-transform">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg>
+            Novo Simulador de Compra
+          </button>
+        </div>
+      </div>
+
+      <script>
+        (function() {
+          const pedidos = [
+            { id: 'PED-0041', data: '2025-06-12', produtos: ['Arroz integral 1kg', 'Feijão carioca 1kg', 'Macarrão espaguete 500g', 'Azeite de oliva 500ml', 'Leite integral 1L'], categoria: 'alimentação', valor: 67.90, statusGasto: 'dentro do planejado', statusLabel: 'Dentro do planejado', satisfacao: null, observacao: '' },
+            { id: 'PED-0040', data: '2025-06-08', produtos: ['Fone de ouvido Bluetooth', 'Carregador portátil 10000mAh'], categoria: 'eletrônicos', valor: 189.90, statusGasto: 'acima do esperado', statusLabel: 'Acima do esperado', satisfacao: null, observacao: '' },
+            { id: 'PED-0039', data: '2025-06-02', produtos: ['Consulta odontológica', 'Radiografia panorâmica'], categoria: 'saúde', valor: 340.00, statusGasto: 'uso essencial', statusLabel: 'Uso essencial', satisfacao: 5, observacao: '' },
+            { id: 'PED-0038', data: '2025-05-27', produtos: ['Camiseta algodão masculina', 'Calça jeans slim'], categoria: 'vestuário', valor: 219.80, statusGasto: 'acima do esperado', statusLabel: 'Acima do esperado', satisfacao: 4, observacao: '' },
+            { id: 'PED-0037', data: '2025-05-20', produtos: ['Livro: Hábitos Atômicos', 'Marcador de páginas magnético'], categoria: 'educação', valor: 54.70, statusGasto: 'dentro do planejado', statusLabel: 'Dentro do planejado', satisfacao: 5, observacao: '' },
+            { id: 'PED-0036', data: '2025-05-15', produtos: ['Combustível (etanol)', 'Estacionamento shopping'], categoria: 'transporte', valor: 175.50, statusGasto: 'dentro do planejado', statusLabel: 'Dentro do planejado', satisfacao: null, observacao: '' },
+            { id: 'PED-0035', data: '2025-05-10', produtos: ['Plano de saúde mensalidade'], categoria: 'saúde', valor: 420.00, statusGasto: 'uso essencial', statusLabel: 'Uso essencial', satisfacao: 3, observacao: '' },
+            { id: 'PED-0034', data: '2025-05-01', produtos: ['Smart TV 43"', 'Suporte para TV'], categoria: 'eletrônicos', valor: 1890.00, statusGasto: 'acima do esperado', statusLabel: 'Acima do esperado', satisfacao: 4, observacao: '' },
+            { id: 'PED-0033', data: '2025-04-22', produtos: ['Aluguel do mês', 'Condomínio', 'IPTU parcela'], categoria: 'moradia', valor: 2350.00, statusGasto: 'uso essencial', statusLabel: 'Uso essencial', satisfacao: null, observacao: '' },
+            { id: 'PED-0032', data: '2025-04-15', produtos: ['Ingresso cinema', 'Pipoca + refrigerante', 'Estacionamento'], categoria: 'lazer', valor: 78.90, statusGasto: 'dentro do planejado', statusLabel: 'Dentro do planejado', satisfacao: 5, observacao: '' },
+          ];
+
+          const catLabels = { 'alimentação': 'Alimentação', 'transporte': 'Transporte', 'moradia': 'Moradia', 'saúde': 'Saúde', 'lazer': 'Lazer', 'educação': 'Educação', 'eletrônicos': 'Eletrônicos', 'vestuário': 'Vestuário' };
+          const catColors = { 'alimentação': '#059669', 'transporte': '#2563EB', 'moradia': '#1E3A5F', 'saúde': '#DC2626', 'lazer': '#F59E0B', 'educação': '#7C3AED', 'eletrônicos': '#0891B2', 'vestuário': '#EC4899' };
+          const catIcons = { 'alimentação': '🛒', 'transporte': '🚗', 'moradia': '🏠', 'saúde': '🏥', 'lazer': '🎬', 'educação': '📚', 'eletrônicos': '📱', 'vestuário': '👕' };
+
+          function statusBadge(status) {
+            const cls = status === 'dentro do planejado' ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : status === 'acima do esperado' ? 'bg-amber-50 text-amber-700 border-amber-200' : 'bg-blue-50 text-blue-700 border-blue-200';
+            const check = status === 'dentro do planejado' ? '✓' : status === 'acima do esperado' ? '!' : '★';
+            return '<span class="badge text-[10px] px-2 py-0.5 rounded-full border ' + cls + '">' + check + ' ' + (status === 'dentro do planejado' ? 'Planejado' : status === 'acima do esperado' ? 'Acima do orçamento' : 'Essencial') + '</span>';
+          }
+
+          function estrelas(n) {
+            let s = '';
+            for (let i = 1; i <= 5; i++) s += i <= n ? '★' : '☆';
+            return s;
+          }
+
+          function renderList(lista) {
+            const container = document.getElementById('lista-pedidos');
+            const vazio = document.getElementById('estado-vazio');
+            if (lista.length === 0) {
+              container.innerHTML = '';
+              vazio.classList.remove('hidden');
+              return;
+            }
+            vazio.classList.add('hidden');
+            container.innerHTML = lista.map(function(p) {
+              const produtosStr = p.produtos.length > 2 ? p.produtos.slice(0, 2).join(', ') + ' +' + (p.produtos.length - 2) + ' itens' : p.produtos.join(', ');
+              const cor = catColors[p.categoria] || '#6B7280';
+              const satisfacaoHtml = p.satisfacao !== null
+                ? '<div class="text-[11px] text-amber-500 mt-1.5">' + estrelas(p.satisfacao) + '</div>'
+                : '';
+              return '<div class="card p-4 cursor-pointer active:scale-[0.98] transition-transform" onclick="abrirModal(meus_pedidos_detalhe(\'' + p.id + '\'), \'Pedido ' + p.id + '\')">' +
+                '<div class="flex items-start justify-between mb-2.5">' +
+                  '<div class="flex items-center gap-2.5">' +
+                    '<div class="w-10 h-10 rounded-xl flex items-center justify-center text-lg" style="background:' + cor + '18;">' + (catIcons[p.categoria] || '📦') + '</div>' +
+                    '<div>' +
+                      '<p class="text-sm font-semibold text-marca-900">' + p.id + '</p>' +
+                      '<p class="text-[11px] text-gray-400">' + dataBR(p.data) + '</p>' +
+                    '</div>' +
+                  '</div>' +
+                  '<span class="text-sm font-display font-bold text-marca-900 whitespace-nowrap">' + brl(p.valor) + '</span>' +
+                '</div>' +
+                '<p class="text-xs text-gray-500 mb-2.5 line-clamp-1">' + produtosStr + '</p>' +
+                '<div class="flex items-center justify-between">' +
+                  '<span class="text-[10px] font-medium px-2 py-0.5 rounded-full border" style="color:' + cor + ';border-color:' + cor + '30;background:' + cor + '10;">' + (catLabels[p.categoria] || p.categoria) + '</span>' +
+                  statusBadge(p.statusGasto) +
+                '</div>' +
+                satisfacaoHtml +
+              '</div>';
+            }).join('');
+          }
+
+          function filtrar() {
+            const periodo = document.getElementById('filtro-periodo').value;
+            const categoria = document.getElementById('filtro-categoria').value;
+            const busca = document.getElementById('busca-pedidos').value.toLowerCase().trim();
+            const now = new Date();
+            let lista = pedidos.slice().reverse();
+            if (periodo !== 'todos') {
+              const dias = parseInt(periodo);
+              const limite = new Date(now.getTime() - dias * 86400000);
+              lista = lista.filter(function(p) { return new Date(p.data) >= limite; });
+            }
+            if (categoria !== 'todos') {
+              lista = lista.filter(function(p) { return p.categoria === categoria; });
+            }
+            if (busca) {
+              lista = lista.filter(function(p) {
+                const txt = (p.id + ' ' + p.produtos.join(' ') + ' ' + catLabels[p.categoria]).toLowerCase();
+                return txt.indexOf(busca) !== -1;
+              });
+            }
+            renderList(lista);
+          }
+
+          window.meus_pedidos_filtrar = filtrar;
+
+          window.meus_pedidos_limparFiltros = function() {
+            document.getElementById('filtro-periodo').value = 'todos';
+            document.getElementById('filtro-categoria').value = 'todos';
+            document.getElementById('busca-pedidos').value = '';
+            renderList(pedidos.slice().reverse());
+            toast('Filtros limpos com sucesso', 'ok');
+          };
+
+          window.meus_pedidos_detalhe = function(id) {
+            var p = null;
+            for (var i = 0; i < pedidos.length; i++) { if (pedidos[i].id === id) { p = pedidos[i]; break; } }
+            if (!p) return '';
+            var cor = catColors[p.categoria] || '#6B7280';
+            var satisfacaoHtml = p.satisfacao !== null
+              ? '<div class="text-sm text-amber-500">' + estrelas(p.satisfacao) + '</div>'
+              : '<span class="text-xs text-gray-400">Ainda não avaliado</span>';
+            return '<div class="p-5">' +
+              '<div class="flex items-center gap-3 mb-5">' +
+                '<div class="w-12 h-12 rounded-xl flex items-center justify-center text-xl" style="background:' + cor + '18;">' + (catIcons[p.categoria] || '📦') + '</div>' +
+                '<div>' +
+                  '<h3 class="font-display font-bold text-marca-900 text-lg">' + p.id + '</h3>' +
+                  '<p class="text-xs text-gray-500">' + dataBR(p.data) + '</p>' +
+                '</div>' +
+              '</div>' +
+              '<div class="space-y-3 mb-5">' +
+                '<div class="bg-gray-50 rounded-lg p-3">' +
+                  '<p class="text-[10px] uppercase tracking-wide text-gray-400 mb-1.5">Valor total</p>' +
+                  '<p class="text-xl font-display font-bold text-marca-900">' + brl(p.valor) + '</p>' +
+                '</div>' +
+                '<div class="bg-gray-50 rounded-lg p-3">' +
+                  '<p class="text-[10px] uppercase tracking-wide text-gray-400 mb-1.5">Status de gasto</p>' +
+                  statusBadge(p.statusGasto) +
+                '</div>' +
+                '<div class="bg-gray-50 rounded-lg p-3">' +
+                  '<p class="text-[10px] uppercase tracking-wide text-gray-400 mb-1.5">Categoria</p>' +
+                  '<p class="text-sm font-medium text-marca-800">' + (catLabels[p.categoria] || p.categoria) + '</p>' +
+                '</div>' +
+                '<div class="bg-gray-50 rounded-lg p-3">' +
+                  '<p class="text-[10px] uppercase tracking-wide text-gray-400 mb-2">Satisfação pós-compra</p>' +
+                  satisfacaoHtml +
+                  (p.satisfacao === null ? '<div class="mt-2.5">' +
+                    '<p class="text-xs text-gray-500 mb-2">Avalie sua experiência:</p>' +
+                    '<div class="flex gap-1.5">' +
+                      [1,2,3,4,5].map(function(s) {
+                        return '<button onclick="meus_pedidos_avaliar(\'' + p.id + '\', ' + s + ')" class="w-9 h-9 rounded-lg border border-gray-200 text-lg hover:bg-amber-50 hover:border-amber-300 transition-all active:scale-90 flex items-center justify-center text-gray-300 hover:text-amber-400" title="' + s + ' estrela' + (s > 1 ? 's' : '') + '">☆</button>';
+                      }).join('') +
+                    '</div>' +
+                  '</div>' : '') +
+                '</div>' +
+                '<div class="bg-gray-50 rounded-lg p-3">' +
+                  '<p class="text-[10px] uppercase tracking-wide text-gray-400 mb-2">Produtos (' + p.produtos.length + ')</p>' +
+                  '<ul class="space-y-1.5">' +
+                    p.produtos.map(function(pr) {
+                      return '<li class="text-xs text-gray-600 flex items-start gap-2"><svg class="w-3.5 h-3.5 text-marca mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>' + pr + '</li>';
+                    }).join('') +
+                  '</ul>' +
+                '</div>' +
+              '</div>' +
+              '<button onclick="fecharModal(); mostrarTela(\'avaliacao\'); toast(\'Redirecionando para reavaliação...\', \'info\')" class="btn w-full py-3 rounded-xl text-sm font-semibold flex items-center justify-center gap-2 mb-2.5 active:scale-[0.97] transition-transform">' +
+                '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>' +
+                'Reavaliar Compra' +
+              '</button>' +
+              '<button onclick="fecharModal(); toast(\'Compartilhamento enviado!\', \'ok\')" class="w-full py-2.5 rounded-xl text-sm text-marca font-medium border border-marca/20 hover:bg-marca-50 transition-colors flex items-center justify-center gap-1.5">' +
+                '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 110 2.684M5.636 10.636a9 9 0 1012.728 0M5.636 10.636a9 9 0 0112.728 0M12 18a3 3 0 100-6 3 3 0 000 6z"/></svg>' +
+                'Compartilhar' +
+              '</button>' +
+            '</div>';
+          };
+
+          window.meus_pedidos_avaliar = function(id, nota) {
+            var p = null;
+            for (var i = 0; i < pedidos.length; i++) { if (pedidos[i].id === id) { p = pedidos[i]; break; } }
+            if (!p) return;
+            p.satisfacao = nota;
+            var msgs = { 1: 'Sentimos muito por sua experiência. Vamos melhorar!', 2: 'Obrigado pelo feedback. Trabalharemos para melhorar.', 3: 'Obrigado por sua avaliação!', 4: 'Que bom que gostou!', 5: 'Excelente! Ficamos muito felizes!' };
+            toast(msgs[nota] || 'Avaliação registrada!', 'ok');
+            abrirModal(meus_pedidos_detalhe(id), 'Pedido ' + id);
+          };
+
+          renderList(pedidos.slice().reverse());
+        })();
+      </script>
+    </section>
+
     <!-- TELAS -->
       </main>
 
