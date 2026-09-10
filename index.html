@@ -699,6 +699,337 @@
     </script>
 </section>
 
+    <section data-tela="vitrine" class="hidden">
+      <div class="px-4 pt-2 pb-1">
+        <!-- Cabeçalho da tela -->
+        <div class="mb-4">
+          <h1 class="text-xl font-display font-bold text-marca-900 leading-tight">Catálogo de Produtos</h1>
+          <p class="text-sm text-gray-500 mt-1 font-body">Encontre, simule e compre com consciência</p>
+        </div>
+
+        <!-- Barra de busca -->
+        <div class="relative mb-4">
+          <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+          <input id="vitrine-busca" type="text" placeholder="Buscar produtos..." class="w-full pl-10 pr-4 py-3 bg-white border border-gray-200 rounded-xl text-sm font-body text-marca-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-destaque/30 focus:border-destaque transition-all" oninput="vitrine_buscar(this.value)">
+          <button id="vitrine-limpar-busca" class="hidden absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600" onclick="vitrine_buscar('')">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+          </button>
+        </div>
+
+        <!-- Categorias -->
+        <div class="flex gap-2 overflow-x-auto pb-2 mb-4 scrollbar-hide" style="-webkit-overflow-scrolling:touch">
+          <button onclick="vitrine_filtrarCategoria('todos')" data-cat-btn="todos" class="vitrine-cat-btn flex-shrink-0 px-4 py-2 rounded-full text-sm font-medium font-body bg-marca-900 text-white transition-all active:scale-95">Todos</button>
+          <button onclick="vitrine_filtrarCategoria('alimentacao')" data-cat-btn="alimentacao" class="vitrine-cat-btn flex-shrink-0 px-4 py-2 rounded-full text-sm font-medium font-body bg-white text-marca-700 border border-gray-200 hover:border-destaque hover:text-destaque transition-all active:scale-95">🥬 Alimentação</button>
+          <button onclick="vitrine_filtrarCategoria('eletronicos')" data-cat-btn="eletronicos" class="vitrine-cat-btn flex-shrink-0 px-4 py-2 rounded-full text-sm font-medium font-body bg-white text-marca-700 border border-gray-200 hover:border-destaque hover:text-destaque transition-all active:scale-95">📱 Eletrônicos</button>
+          <button onclick="vitrine_filtrarCategoria('vestuario')" data-cat-btn="vestuario" class="vitrine-cat-btn flex-shrink-0 px-4 py-2 rounded-full text-sm font-medium font-body bg-white text-marca-700 border border-gray-200 hover:border-destaque hover:text-destaque transition-all active:scale-95">👕 Vestuário</button>
+          <button onclick="vitrine_filtrarCategoria('casa')" data-cat-btn="casa" class="vitrine-cat-btn flex-shrink-0 px-4 py-2 rounded-full text-sm font-medium font-body bg-white text-marca-700 border border-gray-200 hover:border-destaque hover:text-destaque transition-all active:scale-95">🏠 Casa</button>
+        </div>
+
+        <!-- Filtros expandíveis -->
+        <button onclick="vitrine_toggleFiltros()" class="w-full flex items-center justify-between py-2 mb-3 text-sm text-marca-700 font-body font-medium">
+          <span class="flex items-center gap-2">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"/></svg>
+            Filtros avançados
+          </span>
+          <svg id="vitrine-icone-filtro" class="w-4 h-4 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+        </button>
+
+        <div id="vitrine-painel-filtros" class="hidden bg-white rounded-xl border border-gray-100 p-4 mb-4 shadow-sm">
+          <div class="mb-3">
+            <label class="text-xs font-semibold text-marca-800 font-body uppercase tracking-wide mb-2 block">Faixa de preço</label>
+            <div class="flex gap-2">
+              <select id="vitrine-filtro-preco" onchange="vitrine_aplicarFiltros()" class="flex-1 px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm font-body text-marca-800 focus:outline-none focus:ring-2 focus:ring-destaque/30">
+                <option value="todos">Qualquer valor</option>
+                <option value="0-50">Até R$ 50</option>
+                <option value="50-200">R$ 50 a R$ 200</option>
+                <option value="200-500">R$ 200 a R$ 500</option>
+                <option value="500+">Acima de R$ 500</option>
+              </select>
+            </div>
+          </div>
+          <div>
+            <label class="text-xs font-semibold text-marca-800 font-body uppercase tracking-wide mb-2 block">Nota mínima de sustentabilidade</label>
+            <div class="flex gap-2">
+              <button onclick="vitrine_filtroSustentabilidade(0)" data-sust-btn="0" class="vitrine-sust-btn flex-1 py-2 rounded-lg text-xs font-medium font-body bg-marca-900 text-white transition-all">Todas</button>
+              <button onclick="vitrine_filtroSustentabilidade(3)" data-sust-btn="3" class="vitrine-sust-btn flex-1 py-2 rounded-lg text-xs font-medium font-body bg-gray-100 text-gray-600 hover:bg-gray-200 transition-all">3★+</button>
+              <button onclick="vitrine_filtroSustentabilidade(4)" data-sust-btn="4" class="vitrine-sust-btn flex-1 py-2 rounded-lg text-xs font-medium font-body bg-gray-100 text-gray-600 hover:bg-gray-200 transition-all">4★+</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Contador de resultados -->
+        <div class="flex items-center justify-between mb-3">
+          <p id="vitrine-contador" class="text-xs text-gray-500 font-body">10 produtos encontrados</p>
+          <button onclick="vitrine_limparFiltros()" class="text-xs text-destaque font-body font-medium hover:underline">Limpar filtros</button>
+        </div>
+
+        <!-- Grid de produtos -->
+        <div id="vitrine-grid" class="grid grid-cols-2 gap-3 pb-6">
+          <!-- Cards são renderizados por JS -->
+        </div>
+
+        <!-- Estado vazio -->
+        <div id="vitrine-vazio" class="hidden text-center py-12 px-4">
+          <svg class="w-16 h-16 mx-auto text-gray-300 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.172 16.172a4 4 0 015.656 0M9 12h6m-6 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          <p class="text-marca-800 font-display font-semibold text-lg mb-1">Nenhum produto encontrado</p>
+          <p class="text-gray-500 text-sm font-body mb-4">Tente ajustar seus filtros ou buscar outro termo.</p>
+          <button onclick="vitrine_limparFiltros()" class="px-5 py-2.5 bg-destaque text-white rounded-xl text-sm font-body font-medium active:scale-95 transition-all">Limpar filtros</button>
+        </div>
+      </div>
+
+      <script>
+      (function() {
+        const produtos = [
+          { id: 1, nome: 'Café Orgânico 500g', categoria: 'alimentacao', preco: 28.90, sustentabilidade: 5, selo: true, visualizacoes: 142, imagem: 'cafe', marca: 'Terra Viva', descricao: 'Café especial cultivado sem agrotóxicos, certificado orgânico pelo IBD. Torra média com notas de caramelo e frutas secas. Produzido por pequenos produtores do Sul de Minas.', origem: 'Minas Gerais', peso: '500g', sku: 'CAF-ORG-001' },
+          { id: 2, nome: 'Fone Bluetooth Eco', categoria: 'eletronicos', preco: 189.90, sustentabilidade: 4, selo: true, visualizacoes: 89, imagem: 'fone', marca: 'EcoSound', descricao: 'Fone de ouvido Bluetooth com corpo de plástico reciclado de garrafas PET. Bateria de 20h, cancelamento de ruído ativo e embalagem 100% reciclável.', origem: 'São Paulo', peso: '180g', sku: 'ELT-FON-042' },
+          { id: 3, nome: 'Camiseta Algodão Orgânico', categoria: 'vestuario', preco: 119.90, sustentabilidade: 5, selo: true, visualizacoes: 67, imagem: 'camiseta', marca: 'VesteBem', descricao: 'Camiseta 100% algodão orgânico certificado GOTS. Corantes naturais sem metais pesados. Produção fair trade com garantia de trabalho decente.', origem: 'Nordeste', peso: '200g', sku: 'VES-CAM-017' },
+          { id: 4, nome: 'Detergente Biodegradável', categoria: 'casa', preco: 12.50, sustentabilidade: 4, selo: false, visualizacoes: 215, imagem: 'detergente', marca: 'LimpaBem', descricao: 'Detergente biodegradável à base de óleos vegetais. Livre de fosfatos e corantes artificiais. Embalagem reciclável. Testado dermatologicamente.', origem: 'Rio de Janeiro', peso: '500ml', sku: 'CAS-DET-009' },
+          { id: 5, nome: 'Arroz Integral 1kg', categoria: 'alimentacao', preco: 16.90, sustentabilidade: 4, selo: false, visualizacoes: 320, imagem: 'arroz', marca: 'Campo Limpo', descricao: 'Arroz integral cultivado com manejo agroecológico. Sem transgênicos. Grãos selecionados, cozimento rápido e sabor adocicado característico.', origem: 'Rio Grande do Sul', peso: '1kg', sku: 'ALI-ARR-023' },
+          { id: 6, nome: 'Lâmpada LED 9W', categoria: 'eletronicos', preco: 34.90, sustentabilidade: 4, selo: true, visualizacoes: 178, imagem: 'lampada', marca: 'LuzEco', descricao: 'Lâmpada LED 9W equivalente a 60W incandescente. Vida útil de 25.000 horas. Economia de até 85% de energia. Bivolt automático.', origem: 'Santa Catarina', peso: '80g', sku: 'ELT-LAM-055' },
+          { id: 7, nome: 'Tênis Vegano Casual', categoria: 'vestuario', preco: 299.90, sustentabilidade: 4, selo: true, visualizacoes: 95, imagem: 'tenis', marca: 'PassoSustentavel', descricao: 'Tênis casual com cabedal de material vegano à base de milho. Solado de borracha natural reciclada. Sem componentes de origem animal.', origem: 'Ceará', peso: '680g', sku: 'VES-TEN-031' },
+          { id: 8, nome: 'Difusor de Aromas Bambu', categoria: 'casa', preco: 59.90, sustentabilidade: 5, selo: true, visualizacoes: 54, imagem: 'difusor', marca: 'AromaNatural', descricao: 'Difusor de aromas com base de bambu certificado FSC. Inclui óleos essenciais de lavanda e eucalipto 100% puros. Durável e biodegradável.', origem: 'Paraná', peso: '350g', sku: 'CAS-DIF-012' },
+          { id: 9, nome: 'Mel Orgânico 300g', categoria: 'alimentacao', preco: 22.90, sustentabilidade: 5, selo: true, visualizacoes: 190, imagem: 'mel', marca: 'Apiar Natural', descricao: 'Mel orgânico puro de florada silvestre. Extraído a frio sem agrotóxicos. Rico em enzimas e antioxidantes naturais. Certificado IBD.', origem: 'Bahia', peso: '300g', sku: 'ALI-MEL-008' },
+          { id: 10, nome: 'Carregador Solar Portátil', categoria: 'eletronicos', preco: 149.90, sustentabilidade: 5, selo: true, visualizacoes: 112, imagem: 'carregador', marca: 'SunCharge', descricao: 'Carregador solar portátil 20.000mAh com painéis de silício monocristalino. Carrega 2 dispositivos simultaneamente. À prova d\'água IP65.', origem: 'Rio Grande do Sul', peso: '420g', sku: 'ELT-CAR-019' }
+        ];
+
+        let categoriaAtual = 'todos';
+        let buscaAtual = '';
+        let precoFiltro = 'todos';
+        let sustFiltro = 0;
+
+        const imagens = {
+          cafe: 'bg-gradient-to-br from-amber-700 to-amber-900',
+          fone: 'bg-gradient-to-br from-emerald-600 to-teal-800',
+          camiseta: 'bg-gradient-to-br from-sky-500 to-blue-700',
+          detergente: 'bg-gradient-to-br from-cyan-400 to-blue-500',
+          arroz: 'bg-gradient-to-br from-yellow-100 to-yellow-200',
+          lampada: 'bg-gradient-to-br from-yellow-300 to-orange-400',
+          tenis: 'bg-gradient-to-br from-stone-600 to-stone-800',
+          difusor: 'bg-gradient-to-br from-green-400 to-emerald-600',
+          mel: 'bg-gradient-to-br from-yellow-500 to-amber-600',
+          carregador: 'bg-gradient-to-br from-blue-400 to-indigo-600'
+        };
+
+        const iconesCategoria = {
+          alimentacao: '🥬',
+          eletronicos: '📱',
+          vestuario: '👕',
+          casa: '🏠'
+        };
+
+        function vitrine_inicializar() {
+          vitrine_renderizar(produtos);
+        }
+
+        function vitrine_renderizar(lista) {
+          const grid = document.getElementById('vitrine-grid');
+          const vazio = document.getElementById('vitrine-vazio');
+          const contador = document.getElementById('vitrine-contador');
+
+          if (lista.length === 0) {
+            grid.classList.add('hidden');
+            vazio.classList.remove('hidden');
+            contador.textContent = '0 produtos encontrados';
+            return;
+          }
+
+          grid.classList.remove('hidden');
+          vazio.classList.add('hidden');
+          contador.textContent = lista.length + ' produto' + (lista.length > 1 ? 's' : '') + ' encontrado' + (lista.length > 1 ? 's' : '');
+
+          grid.innerHTML = lista.map(function(p) {
+            var estrelas = '';
+            for (var i = 0; i < 5; i++) {
+              estrelas += i < p.sustentabilidade
+                ? '<svg class="w-3 h-3 text-amber-400 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>'
+                : '<svg class="w-3 h-3 text-gray-300" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>';
+            }
+
+            return '<div class="card bg-white rounded-2xl border border-gray-100 overflow-hidden cursor-pointer hover:shadow-lg hover:border-destaque/20 transition-all duration-300 active:scale-[0.97]" onclick="vitrine_abrirDetalhe(' + p.id + ')">' +
+              '<div class="relative aspect-square ' + imagens[p.imagem] + ' flex items-center justify-center">' +
+                '<span class="text-4xl">' + iconesCategoria[p.categoria] + '</span>' +
+                (p.selo ? '<span class="absolute top-2 left-2 bg-emerald-500 text-white text-[10px] font-bold font-body px-2 py-0.5 rounded-full flex items-center gap-1"><svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>Consumo Resp.</span>' : '') +
+                '<span class="absolute top-2 right-2 bg-black/40 text-white text-[10px] font-medium font-body px-1.5 py-0.5 rounded-full">' + p.visualizacoes + ' views</span>' +
+              '</div>' +
+              '<div class="p-3">' +
+                '<p class="text-[11px] text-gray-400 font-body uppercase tracking-wide mb-1">' + p.marca + '</p>' +
+                '<h3 class="text-sm font-display font-semibold text-marca-900 leading-snug mb-1.5 line-clamp-2">' + p.nome + '</h3>' +
+                '<div class="flex items-center gap-1 mb-2">' + estrelas + '<span class="text-[11px] text-gray-500 font-body ml-1">' + p.sustentabilidade + '/5</span></div>' +
+                '<div class="flex items-center justify-between">' +
+                  '<p class="text-base font-display font-bold text-destaque">' + brl(p.preco) + '</p>' +
+                  '<button onclick="event.stopPropagation(); vitrine_simular(' + p.id + ')" class="btn w-8 h-8 bg-destaque hover:bg-destaque/90 text-white rounded-full flex items-center justify-center active:scale-90 transition-all shadow-sm" title="Simular compra">' +
+                    '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg>' +
+                  '</button>' +
+                '</div>' +
+              '</div>' +
+            '</div>';
+          }).join('');
+        }
+
+        function vitrine_buscar(valor) {
+          buscaAtual = valor.toLowerCase().trim();
+          document.getElementById('vitrine-limpar-busca').classList.toggle('hidden', !buscaAtual);
+          vitrine_aplicarFiltros();
+        }
+
+        function vitrine_filtrarCategoria(cat) {
+          categoriaAtual = cat;
+          document.querySelectorAll('.vitrine-cat-btn').forEach(function(btn) {
+            var isActive = btn.getAttribute('data-cat-btn') === cat;
+            btn.className = 'vitrine-cat-btn flex-shrink-0 px-4 py-2 rounded-full text-sm font-medium font-body transition-all active:scale-95 ' + (isActive ? 'bg-marca-900 text-white' : 'bg-white text-marca-700 border border-gray-200 hover:border-destaque hover:text-destaque');
+          });
+          vitrine_aplicarFiltros();
+        }
+
+        function vitrine_filtroSustentabilidade(nota) {
+          sustFiltro = nota;
+          document.querySelectorAll('.vitrine-sust-btn').forEach(function(btn) {
+            var isActive = parseInt(btn.getAttribute('data-sust-btn')) === nota;
+            btn.className = 'vitrine-sust-btn flex-1 py-2 rounded-lg text-xs font-medium font-body transition-all ' + (isActive ? 'bg-marca-900 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200');
+          });
+          vitrine_aplicarFiltros();
+        }
+
+        function vitrine_toggleFiltros() {
+          var painel = document.getElementById('vitrine-painel-filtros');
+          var icone = document.getElementById('vitrine-icone-filtro');
+          var isOpen = !painel.classList.contains('hidden');
+          if (isOpen) {
+            painel.classList.add('hidden');
+            icone.style.transform = 'rotate(0deg)';
+          } else {
+            painel.classList.remove('hidden');
+            icone.style.transform = 'rotate(180deg)';
+          }
+        }
+
+        function vitrine_aplicarFiltros() {
+          precoFiltro = document.getElementById('vitrine-filtro-preco').value;
+          var filtrados = produtos.filter(function(p) {
+            if (categoriaAtual !== 'todos' && p.categoria !== categoriaAtual) return false;
+            if (buscaAtual && !p.nome.toLowerCase().includes(buscaAtual) && !p.marca.toLowerCase().includes(buscaAtual)) return false;
+            if (precoFiltro !== 'todos') {
+              if (precoFiltro === '0-50' && p.preco > 50) return false;
+              if (precoFiltro === '50-200' && (p.preco < 50 || p.preco > 200)) return false;
+              if (precoFiltro === '200-500' && (p.preco < 200 || p.preco > 500)) return false;
+              if (precoFiltro === '500+' && p.preco < 500) return false;
+            }
+            if (sustFiltro > 0 && p.sustentabilidade < sustFiltro) return false;
+            return true;
+          });
+          vitrine_renderizar(filtrados);
+        }
+
+        function vitrine_limparFiltros() {
+          categoriaAtual = 'todos';
+          buscaAtual = '';
+          precoFiltro = 'todos';
+          sustFiltro = 0;
+          document.getElementById('vitrine-busca').value = '';
+          document.getElementById('vitrine-limpar-busca').classList.add('hidden');
+          document.getElementById('vitrine-filtro-preco').value = 'todos';
+          vitrine_filtrarCategoria('todos');
+          vitrine_filtroSustentabilidade(0);
+          vitrine_renderizar(produtos);
+        }
+
+        function vitrine_simular(id) {
+          var p = produtos.find(function(x) { return x.id === id; });
+          if (!p) return;
+          abrirModal(
+            '<div class="space-y-4">' +
+              '<div class="flex items-start gap-4">' +
+                '<div class="w-16 h-16 ' + imagens[p.imagem] + ' rounded-xl flex items-center justify-center flex-shrink-0"><span class="text-2xl">' + iconesCategoria[p.categoria] + '</span></div>' +
+                '<div class="flex-1 min-w-0">' +
+                  '<h3 class="font-display font-bold text-marca-900 text-base leading-snug">' + p.nome + '</h3>' +
+                  '<p class="text-xs text-gray-500 font-body mt-0.5">' + p.marca + ' · ' + p.sku + '</p>' +
+                  '<p class="text-lg font-display font-bold text-destaque mt-1">' + brl(p.preco) + '</p>' +
+                '</div>' +
+              '</div>' +
+              '<div class="bg-gray-50 rounded-xl p-3">' +
+                '<label class="text-xs font-semibold text-marca-800 font-body uppercase tracking-wide block mb-2">Quantidade</label>' +
+                '<div class="flex items-center gap-3">' +
+                  '<button onclick="this.nextElementSibling.value=Math.max(1,parseInt(this.nextElementSibling.value||1)-1);this.nextElementSibling.dispatchEvent(new Event('input'))" class="w-9 h-9 bg-white border border-gray-200 rounded-lg flex items-center justify-center text-marca-700 active:scale-95 transition-all"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"/></svg></button>' +
+                  '<input id="vitrine-qtd-simular" type="number" value="1" min="1" max="99" class="w-14 text-center py-2 bg-white border border-gray-200 rounded-lg text-sm font-body font-semibold text-marca-900 focus:outline-none focus:ring-2 focus:ring-destaque/30" oninput="vitrine_atualizarTotal(' + p.preco + ', this.value)">' +
+                  '<button onclick="this.previousElementSibling.value=Math.min(99,parseInt(this.previousElementSibling.value||1)+1);this.previousElementSibling.dispatchEvent(new Event('input'))" class="w-9 h-9 bg-white border border-gray-200 rounded-lg flex items-center justify-center text-marca-700 active:scale-95 transition-all"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg></button>' +
+                '</div>' +
+              '</div>' +
+              '<div class="bg-marca-50 rounded-xl p-3 flex items-center justify-between">' +
+                '<span class="text-sm font-body text-marca-700">Subtotal estimado</span>' +
+                '<span id="vitrine-total-simular" class="text-lg font-display font-bold text-marca-900">' + brl(p.preco) + '</span>' +
+              '</div>' +
+              (p.selo ? '<div class="flex items-center gap-2 bg-emerald-50 rounded-lg p-2.5"><svg class="w-4 h-4 text-emerald-600 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg><span class="text-xs font-body text-emerald-700">Este produto possui certificação de Consumo Responsável.</span></div>' : '') +
+            '</div>',
+            'Simular Compra'
+          );
+          setTimeout(function() {
+            var btn = document.getElementById('vitrine-btn-confirmar-simular');
+            if (btn) {
+              btn.onclick = function() {
+                fecharModal();
+                mostrarTela('simulador');
+                toast('Produto adicionado ao simulador!', 'ok');
+              };
+            }
+          }, 100);
+        }
+
+        window.vitrine_atualizarTotal = function(preco, qtd) {
+          var el = document.getElementById('vitrine-total-simular');
+          if (el) el.textContent = brl(preco * (parseInt(qtd) || 1));
+        };
+
+        function vitrine_abrirDetalhe(id) {
+          var p = produtos.find(function(x) { return x.id === id; });
+          if (!p) return;
+          var estrelas = '';
+          for (var i = 0; i < 5; i++) {
+            estrelas += i < p.sustentabilidade
+              ? '<svg class="w-4 h-4 text-amber-400 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>'
+              : '<svg class="w-4 h-4 text-gray-300" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>';
+          }
+          abrirModal(
+            '<div class="space-y-5">' +
+              '<div class="flex gap-4">' +
+                '<div class="w-24 h-24 ' + imagens[p.imagem] + ' rounded-xl flex items-center justify-center flex-shrink-0"><span class="text-4xl">' + iconesCategoria[p.categoria] + '</span></div>' +
+                '<div class="flex-1 min-w-0">' +
+                  '<h3 class="font-display font-bold text-marca-900 text-lg leading-tight">' + p.nome + '</h3>' +
+                  '<p class="text-sm text-gray-500 font-body mt-0.5">' + p.marca + '</p>' +
+                  '<p class="text-xl font-display font-bold text-destaque mt-2">' + brl(p.preco) + '</p>' +
+                '</div>' +
+              '</div>' +
+              '<div class="flex items-center gap-2">' + estrelas + '<span class="text-sm font-body font-medium text-marca-800">' + p.sustentabilidade + '.0</span><span class="text-sm text-gray-500 font-body">/5.0 sustentabilidade</span></div>' +
+              (p.selo ? '<span class="inline-flex items-center gap-1.5 bg-emerald-100 text-emerald-700 text-xs font-body font-semibold px-3 py-1.5 rounded-full"><svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>Consumo Responsável Certificado</span>' : '') +
+              '<p class="text-sm text-gray-600 font-body leading-relaxed">' + p.descricao + '</p>' +
+              '<div class="bg-gray-50 rounded-xl p-3 space-y-2">' +
+                '<div class="flex justify-between text-sm"><span class="text-gray-500 font-body">Código (SKU)</span><span class="font-body font-medium text-marca-800">' + p.sku + '</span></div>' +
+                '<div class="flex justify-between text-sm"><span class="text-gray-500 font-body">Origem</span><span class="font-body font-medium text-marca-800">' + p.origem + '</span></div>' +
+                '<div class="flex justify-between text-sm"><span class="text-gray-500 font-body">Peso/Volume</span><span class="font-body font-medium text-marca-800">' + p.peso + '</span></div>' +
+                '<div class="flex justify-between text-sm"><span class="text-gray-500 font-body">Visualizações</span><span class="font-body font-medium text-marca-800">' + p.visualizacoes + ' vezes</span></div>' +
+              '</div>' +
+              '<div class="flex gap-3 pt-1">' +
+                '<button onclick="fecharModal();vitrine_simular(' + p.id + ')" class="flex-1 btn bg-destaque text-white py-3 rounded-xl font-body font-semibold text-sm active:scale-95 transition-all">Simular Compra</button>' +
+                '<button onclick="fecharModal();mostrarTela(\'lista-de-desejos\');toast('Adicionado à lista de desejos!', 'ok')" class="flex-1 btn bg-white border border-gray-200 text-marca-700 py-3 rounded-xl font-body font-semibold text-sm active:scale-95 transition-all hover:border-destaque hover:text-destaque">❤️ Desejos</button>' +
+              '</div>' +
+            '</div>',
+            'Detalhe do Produto'
+          );
+        }
+
+        window.vitrine_abrirDetalhe = vitrine_abrirDetalhe;
+        window.vitrine_buscar = vitrine_buscar;
+        window.vitrine_filtrarCategoria = vitrine_filtrarCategoria;
+        window.vitrine_filtroSustentabilidade = vitrine_filtroSustentabilidade;
+        window.vitrine_toggleFiltros = vitrine_toggleFiltros;
+        window.vitrine_aplicarFiltros = vitrine_aplicarFiltros;
+        window.vitrine_limparFiltros = vitrine_limparFiltros;
+        window.vitrine_simular = vitrine_simular;
+
+        vitrine_inicializar();
+      })();
+      </script>
+    </section>
+
     <!-- TELAS -->
       </main>
 
