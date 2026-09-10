@@ -214,7 +214,492 @@
 
       <!-- ===== CONTEÚDO DAS TELAS ===== -->
       <main>
-        <!-- TELAS -->
+        <section data-tela="painel-inicial" class="hidden">
+    <div class="px-5 pt-4 pb-24 space-y-5">
+        <div class="animate-fadeIn">
+            <div class="flex items-center justify-between mb-1">
+                <div>
+                    <p class="text-sm text-slate-400 font-body">Bom dia,</p>
+                    <h1 class="text-2xl font-display font-bold text-slate-800 leading-tight">Marina Costa</h1>
+                </div>
+                <div class="relative">
+                    <button onclick="painel_inicial_abrirNotificacoes()" class="w-10 h-10 rounded-full bg-white border border-slate-200 flex items-center justify-center active:scale-95 transition-all shadow-sm" aria-label="Notificações">
+                        <svg class="w-5 h-5 text-slate-600" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0"/></svg>
+                    </button>
+                    <span id="badge-notificacoes" class="absolute -top-0.5 -right-0.5 w-4 h-4 bg-red-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center">3</span>
+                </div>
+            </div>
+            <p class="text-xs text-slate-400 font-body">Acompanhe seu consumo e realize sonhos com propósito.</p>
+        </div>
+
+        <div class="bg-gradient-to-br from-marca-800 to-marca-600 rounded-2xl p-5 text-white shadow-lg shadow-marca-800/20 animate-fadeIn relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full -translate-y-8 translate-x-8"></div>
+            <div class="absolute bottom-0 right-12 w-20 h-20 bg-white/5 rounded-full translate-y-10"></div>
+            <div class="relative z-10">
+                <p class="text-xs text-white/70 font-body mb-1">Economia acumulada</p>
+                <p class="text-3xl font-display font-bold" id="economia-total">R$ 4.280,50</p>
+                <div class="flex items-center gap-1 mt-1">
+                    <svg class="w-4 h-4 text-green-300" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M12 7a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0V8.414l-4.293 4.293a1 1 0 01-1.414 0L8 10.414l-4.293 4.293a1 1 0 01-1.414-1.414l5-5a1 1 0 011.414 0L11 10.586 14.586 7H12z" clip-rule="evenodd"/></svg>
+                    <span class="text-xs text-green-300 font-medium">+15,3% este mês</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+            <div class="card bg-white border border-slate-100 p-3.5 cursor-pointer active:scale-[0.97] transition-transform" onclick="mostrarTela('simulador')">
+                <div class="w-9 h-9 rounded-xl bg-marca-50 flex items-center justify-center mb-2.5">
+                    <svg class="w-5 h-5 text-marca-600" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+                </div>
+                <p class="text-sm font-display font-semibold text-slate-800">Simular Compra</p>
+                <p class="text-[11px] text-slate-400 mt-0.5 font-body">Planeje antes de gastar</p>
+            </div>
+            <div class="card bg-white border border-slate-100 p-3.5 cursor-pointer active:scale-[0.97] transition-transform" onclick="painel_inicial_novaLista()">
+                <div class="w-9 h-9 rounded-xl bg-emerald-50 flex items-center justify-center mb-2.5">
+                    <svg class="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>
+                </div>
+                <p class="text-sm font-display font-semibold text-slate-800">Nova Lista</p>
+                <p class="text-[11px] text-slate-400 mt-0.5 font-body">Organize suas compras</p>
+            </div>
+            <div class="card bg-white border border-slate-100 p-3.5 cursor-pointer active:scale-[0.97] transition-transform" onclick="mostrarTela('lista-de-desejos')">
+                <div class="w-9 h-9 rounded-xl bg-rose-50 flex items-center justify-center mb-2.5">
+                    <svg class="w-5 h-5 text-rose-500" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"/></svg>
+                </div>
+                <p class="text-sm font-display font-semibold text-slate-800">Desejos</p>
+                <p class="text-[11px] text-slate-400 mt-0.5 font-body">7 itens na lista</p>
+            </div>
+            <div class="card bg-white border border-slate-100 p-3.5 cursor-pointer active:scale-[0.97] transition-transform" onclick="mostrarTela('avaliacao')">
+                <div class="w-9 h-9 rounded-xl bg-amber-50 flex items-center justify-center mb-2.5">
+                    <svg class="w-5 h-5 text-amber-600" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9 5.25h.008v.008H12v-.008z"/></svg>
+                </div>
+                <p class="text-sm font-display font-semibold text-slate-800">Avaliar</p>
+                <p class="text-[11px] text-slate-400 mt-0.5 font-body">Reflita sobre necessidades</p>
+            </div>
+        </div>
+
+        <div class="animate-fadeIn">
+            <div class="flex items-center justify-between mb-3">
+                <h2 class="text-base font-display font-bold text-slate-800">Visão Geral do Mês</h2>
+                <button onclick="mostrarTela('comparador')" class="text-xs text-marca-600 font-medium hover:underline">Ver detalhes</button>
+            </div>
+            <div class="bg-white rounded-2xl border border-slate-100 p-4 shadow-sm">
+                <div class="flex items-center gap-4">
+                    <div class="relative flex-shrink-0">
+                        <svg viewBox="0 0 120 120" class="w-28 h-28 -rotate-90">
+                            <circle cx="60" cy="60" r="48" fill="none" stroke="#F1F5F9" stroke-width="14"/>
+                            <circle cx="60" cy="60" r="48" fill="none" stroke="#1E3A5F" stroke-width="14" stroke-dasharray="104.7 302.1" stroke-dashoffset="0" stroke-linecap="round"/>
+                            <circle cx="60" cy="60" r="48" fill="none" stroke="#2563EB" stroke-width="14" stroke-dasharray="75.4 302.1" stroke-dashoffset="-104.7" stroke-linecap="round"/>
+                            <circle cx="60" cy="60" r="48" fill="none" stroke="#3B82F6" stroke-width="14" stroke-dasharray="56.5 302.1" stroke-dashoffset="-180.1" stroke-linecap="round"/>
+                            <circle cx="60" cy="60" r="48" fill="none" stroke="#60A5FA" stroke-width="14" stroke-dasharray="37.7 302.1" stroke-dashoffset="-236.6" stroke-linecap="round"/>
+                            <circle cx="60" cy="60" r="48" fill="none" stroke="#93C5FD" stroke-width="14" stroke-dasharray="18.8 302.1" stroke-dashoffset="-274.3" stroke-linecap="round"/>
+                            <circle cx="60" cy="60" r="48" fill="none" stroke="#BFDBFE" stroke-width="14" stroke-dasharray="9.4 302.1" stroke-dashoffset="-293.1" stroke-linecap="round"/>
+                        </svg>
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <div class="text-center">
+                                <p class="text-[10px] text-slate-400 font-body">Total</p>
+                                <p class="text-sm font-display font-bold text-slate-800">R$ 3.840</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex-1 space-y-2">
+                        <div class="flex items-center justify-between"><div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-marca-800"></span><span class="text-xs text-slate-500 font-body">Alimentação</span></div><span class="text-xs font-semibold text-slate-700">35%</span></div>
+                        <div class="flex items-center justify-between"><div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-marca-600"></span><span class="text-xs text-slate-500 font-body">Transporte</span></div><span class="text-xs font-semibold text-slate-700">20%</span></div>
+                        <div class="flex items-center justify-between"><div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-marca-500"></span><span class="text-xs text-slate-500 font-body">Lazer</span></div><span class="text-xs font-semibold text-slate-700">15%</span></div>
+                        <div class="flex items-center justify-between"><div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-marca-400"></span><span class="text-xs text-slate-500 font-body">Saúde</span></div><span class="text-xs font-semibold text-slate-700">10%</span></div>
+                        <div class="flex items-center justify-between"><div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-marca-300"></span><span class="text-xs text-slate-500 font-body">Educação</span></div><span class="text-xs font-semibold text-slate-700">10%</span></div>
+                        <div class="flex items-center justify-between"><div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-marca-200"></span><span class="text-xs text-slate-500 font-body">Outros</span></div><span class="text-xs font-semibold text-slate-700">10%</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="animate-fadeIn">
+            <div class="flex items-center justify-between mb-3">
+                <h2 class="text-base font-display font-bold text-slate-800">Em Período de Reflexão</h2>
+                <span class="text-xs text-slate-400 font-body" id="reflexao-contador">7 itens</span>
+            </div>
+            <div class="relative mb-3">
+                <svg class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"/></svg>
+                <input type="text" id="input-busca-reflexao" placeholder="Buscar item em reflexão..." oninput="painel_inicial_filtrarReflexao()" class="w-full pl-9 pr-4 py-2.5 bg-white border border-slate-200 rounded-xl text-sm text-slate-700 font-body placeholder:text-slate-300 focus:outline-none focus:ring-2 focus:ring-marca-500/30 focus:border-marca-500 transition-all"/>
+            </div>
+            <div id="lista-reflexao" class="space-y-2.5"></div>
+            <div id="lista-reflexao-vazia" class="hidden text-center py-8">
+                <svg class="w-10 h-10 text-slate-300 mx-auto mb-2" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"/></svg>
+                <p class="text-sm text-slate-400 font-body">Nenhum item encontrado</p>
+            </div>
+        </div>
+
+        <div class="animate-fadeIn">
+            <h2 class="text-base font-display font-bold text-slate-800 mb-3">Alertas de Reflexão</h2>
+            <div id="lista-alertas" class="space-y-2.5"></div>
+        </div>
+
+        <div class="animate-fadeIn">
+            <div class="flex items-center justify-between mb-3">
+                <h2 class="text-base font-display font-bold text-slate-800">Indicadores</h2>
+            </div>
+            <div class="grid grid-cols-2 gap-3">
+                <div class="bg-white rounded-xl border border-slate-100 p-3.5 shadow-sm">
+                    <div class="flex items-center gap-2 mb-1.5">
+                        <div class="w-7 h-7 rounded-lg bg-marca-50 flex items-center justify-center"><svg class="w-4 h-4 text-marca-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18.75a60.07 60.07 0 0115.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 013 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 00-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 01-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 003 15h-.75M15 10.5a3 3 0 11-6 0 3 3 0 016 0zm3 0h.008v.008H18V10.5zm-12 0h.008v.008H6V10.5z"/></svg></div>
+                        <span class="text-[11px] text-slate-400 font-body">Planejados</span>
+                    </div>
+                    <p class="text-lg font-display font-bold text-slate-800">R$ 2.450</p>
+                    <span class="text-[11px] text-slate-400 font-body">12 itens este mês</span>
+                </div>
+                <div class="bg-white rounded-xl border border-slate-100 p-3.5 shadow-sm">
+                    <div class="flex items-center gap-2 mb-1.5">
+                        <div class="w-7 h-7 rounded-lg bg-emerald-50 flex items-center justify-center"><svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div>
+                        <span class="text-[11px] text-slate-400 font-body">Realizados</span>
+                    </div>
+                    <p class="text-lg font-display font-bold text-slate-800">R$ 1.820</p>
+                    <span class="text-[11px] text-emerald-600 font-medium">-26% vs planejado</span>
+                </div>
+                <div class="bg-white rounded-xl border border-slate-100 p-3.5 shadow-sm">
+                    <div class="flex items-center gap-2 mb-1.5">
+                        <div class="w-7 h-7 rounded-lg bg-amber-50 flex items-center justify-center"><svg class="w-4 h-4 text-amber-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div>
+                        <span class="text-[11px] text-slate-400 font-body">Em Reflexão</span>
+                    </div>
+                    <p class="text-lg font-display font-bold text-slate-800">7</p>
+                    <span class="text-[11px] text-amber-600 font-medium">3 expiram em breve</span>
+                </div>
+                <div class="bg-white rounded-xl border border-slate-100 p-3.5 shadow-sm">
+                    <div class="flex items-center gap-2 mb-1.5">
+                        <div class="w-7 h-7 rounded-lg bg-rose-50 flex items-center justify-center"><svg class="w-4 h-4 text-rose-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"/></svg></div>
+                        <span class="text-[11px] text-slate-400 font-body">Desejos</span>
+                    </div>
+                    <p class="text-lg font-display font-bold text-slate-800">7</p>
+                    <span class="text-[11px] text-slate-400 font-body">Total estimado: R$ 4.144</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="animate-fadeIn">
+            <div class="flex items-center justify-between mb-3">
+                <h2 class="text-base font-display font-bold text-slate-800">Ações Rápidas</h2>
+            </div>
+            <div class="flex gap-3 overflow-x-auto pb-2 -mx-5 px-5 scrollbar-hide">
+                <button onclick="mostrarTela('simulador')" class="flex-shrink-0 flex items-center gap-2.5 bg-marca-600 hover:bg-marca-700 text-white px-4 py-3 rounded-xl text-sm font-display font-semibold active:scale-95 transition-all shadow-md shadow-marca-600/20">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+                    Simular Compra
+                </button>
+                <button onclick="painel_inicial_novaLista()" class="flex-shrink-0 flex items-center gap-2.5 bg-white border border-slate-200 hover:border-marca-300 text-slate-700 px-4 py-3 rounded-xl text-sm font-display font-semibold active:scale-95 transition-all shadow-sm">
+                    <svg class="w-5 h-5 text-marca-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>
+                    Nova Lista
+                </button>
+                <button onclick="mostrarTela('meus-pedidos')" class="flex-shrink-0 flex items-center gap-2.5 bg-white border border-slate-200 hover:border-marca-300 text-slate-700 px-4 py-3 rounded-xl text-sm font-display font-semibold active:scale-95 transition-all shadow-sm">
+                    <svg class="w-5 h-5 text-marca-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 00-3.213-9.193 2.056 2.056 0 00-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 00-10.026 0 1.106 1.106 0 00-.987 1.106v7.635m12-6.677v6.677m0 4.5v-3.375m0 0c0-.621-.504-1.125-1.125-1.125H9.375c-.621 0-1.125.504-1.125 1.125v3.375m0 0h12.75"/></svg>
+                    Meus Pedidos
+                </button>
+            </div>
+        </div>
+
+        <div class="animate-fadeIn">
+            <div class="flex items-center justify-between mb-3">
+                <h2 class="text-base font-display font-bold text-slate-800">Histórico Recente</h2>
+                <button onclick="mostrarTela('meus-pedidos')" class="text-xs text-marca-600 font-medium hover:underline">Ver todos</button>
+            </div>
+            <div id="lista-historico" class="space-y-2.5"></div>
+        </div>
+    </div>
+
+    <script>
+    (function() {
+        const itensReflexao = [
+            { id: 1, nome: 'Fone de Ouvido Bluetooth JBL', categoria: 'Lazer', valor: 299.90, diasRestantes: 5, cor: 'bg-blue-100 text-blue-700', imagem: 'bg-gradient-to-br from-blue-400 to-blue-600', inicial: 'JB', status: 'reflexao' },
+            { id: 2, nome: 'Smartwatch FitPro X200', categoria: 'Saúde', valor: 1299.00, diasRestantes: 12, cor: 'bg-emerald-100 text-emerald-700', imagem: 'bg-gradient-to-br from-emerald-400 to-emerald-600', inicial: 'SF', status: 'reflexao' },
+            { id: 3, nome: 'Cafeteira Expresso Automática', categoria: 'Cozinha', valor: 450.00, diasRestantes: 3, cor: 'bg-amber-100 text-amber-700', imagem: 'bg-gradient-to-br from-amber-400 to-amber-600', inicial: 'CE', status: 'reflexao' },
+            { id: 4, nome: 'Kit 3 Livros Desenvolvimento', categoria: 'Educação', valor: 189.90, diasRestantes: 8, cor: 'bg-purple-100 text-purple-700', imagem: 'bg-gradient-to-br from-purple-400 to-purple-600', inicial: 'LD', status: 'reflexao' },
+            { id: 5, nome: 'Tênis de Corrida Ultraboost', categoria: 'Esporte', valor: 599.90, diasRestantes: 15, cor: 'bg-rose-100 text-rose-700', imagem: 'bg-gradient-to-br from-rose-400 to-rose-600', inicial: 'TC', status: 'reflexao' },
+            { id: 6, nome: 'Assinatura Premium Streaming', categoria: 'Lazer', valor: 29.90, diasRestantes: 2, cor: 'bg-red-100 text-red-700', imagem: 'bg-gradient-to-br from-red-400 to-red-600', inicial: 'AS', status: 'reflexao' },
+            { id: 7, nome: 'Airfryer Digital 4L', categoria: 'Cozinha', valor: 780.00, diasRestantes: 10, cor: 'bg-teal-100 text-teal-700', imagem: 'bg-gradient-to-br from-teal-400 to-teal-600', inicial: 'AF', status: 'reflexao' }
+        ];
+
+        const historico = [
+            { id: 101, nome: 'Supermercado Extra', categoria: 'Alimentação', valor: 342.50, data: '2026-04-10', status: 'realizado', cor: 'bg-emerald-100 text-emerald-700' },
+            { id: 102, nome: 'Uber para Trabalho', categoria: 'Transporte', valor: 28.90, data: '2026-04-09', status: 'realizado', cor: 'bg-emerald-100 text-emerald-700' },
+            { id: 103, nome: 'Plano de Saúde Mensal', categoria: 'Saúde', valor: 420.00, data: '2026-04-05', status: 'realizado', cor: 'bg-emerald-100 text-emerald-700' },
+            { id: 104, nome: 'Curso de Fotografia', categoria: 'Educação', valor: 197.00, data: '2026-04-01', status: 'realizado', cor: 'bg-emerald-100 text-emerald-700' },
+            { id: 105, nome: 'Cinema com amigos', categoria: 'Lazer', valor: 75.00, data: '2026-03-28', status: 'realizado', cor: 'bg-emerald-100 text-emerald-700' },
+            { id: 106, nome: 'Conta de Luz', categoria: 'Moradia', valor: 185.30, data: '2026-03-25', status: 'realizado', cor: 'bg-emerald-100 text-emerald-700' }
+        ];
+
+        function painel_inicial_formatarMoeda(valor) {
+            return valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        }
+
+        function painel_inicial_getDiasTexto(dias) {
+            if (dias <= 0) return { texto: 'Expira hoje!', cor: 'text-red-600', badge: 'bg-red-100 text-red-700' };
+            if (dias === 1) return { texto: '1 dia restante', cor: 'text-amber-600', badge: 'bg-amber-100 text-amber-700' };
+            if (dias <= 3) return { texto: dias + ' dias restantes', cor: 'text-amber-600', badge: 'bg-amber-100 text-amber-700' };
+            return { texto: dias + ' dias restantes', cor: 'text-slate-500', badge: 'bg-slate-100 text-slate-600' };
+        }
+
+        function painel_inicial_renderizarReflexao() {
+            const termo = (document.getElementById('input-busca-reflexao').value || '').toLowerCase().trim();
+            const container = document.getElementById('lista-reflexao');
+            const vazio = document.getElementById('lista-reflexao-vazia');
+            const itens = itensReflexao.filter(item => item.nome.toLowerCase().includes(termo) || item.categoria.toLowerCase().includes(termo));
+            const contador = document.getElementById('reflexao-contador');
+            contador.textContent = itens.length + ' de ' + itensReflexao.length + ' itens';
+            if (itens.length === 0) {
+                container.innerHTML = '';
+                vazio.classList.remove('hidden');
+                return;
+            }
+            vazio.classList.add('hidden');
+            container.innerHTML = itens.map(item => {
+                const dias = painel_inicial_getDiasTexto(item.diasRestantes);
+                return '<div class="bg-white rounded-xl border border-slate-100 p-3.5 shadow-sm cursor-pointer hover:border-marca-200 hover:shadow-md active:scale-[0.98] transition-all" onclick="painel_inicial_abrirDetalhe(' + item.id + ')">' +
+                    '<div class="flex items-start gap-3">' +
+                        '<div class="w-11 h-11 rounded-xl ' + item.imagem + ' flex items-center justify-center text-white text-sm font-bold flex-shrink-0 shadow-sm">' + item.inicial + '</div>' +
+                        '<div class="flex-1 min-w-0">' +
+                            '<div class="flex items-start justify-between gap-2">' +
+                                '<div class="min-w-0">' +
+                                    '<p class="text-sm font-display font-semibold text-slate-800 truncate">' + item.nome + '</p>' +
+                                    '<p class="text-[11px] text-slate-400 font-body">' + item.categoria + '</p>' +
+                                '</div>' +
+                                '<span class="text-sm font-display font-bold text-slate-800 whitespace-nowrap">' + painel_inicial_formatarMoeda(item.valor) + '</span>' +
+                            '</div>' +
+                            '<div class="flex items-center justify-between mt-2">' +
+                                '<span class="inline-flex items-center gap-1 text-[11px] font-medium px-2 py-0.5 rounded-full ' + dias.badge + '">' +
+                                    '<svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>' +
+                                    dias.texto +
+                                '</span>' +
+                                '<div class="flex items-center gap-1">' +
+                                    '<button onclick="event.stopPropagation(); painel_inicial_avaliar(' + item.id + ')" class="w-7 h-7 rounded-lg bg-amber-50 hover:bg-amber-100 flex items-center justify-center active:scale-90 transition-all" aria-label="Avaliar">' +
+                                        '<svg class="w-3.5 h-3.5 text-amber-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9 5.25h.008v.008H12v-.008z"/></svg>' +
+                                    '</button>' +
+                                    '<button onclick="event.stopPropagation(); painel_inicial_removerReflexao(' + item.id + ')" class="w-7 h-7 rounded-lg bg-red-50 hover:bg-red-100 flex items-center justify-center active:scale-90 transition-all" aria-label="Remover">' +
+                                        '<svg class="w-3.5 h-3.5 text-red-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>' +
+                                    '</button>' +
+                                '</div>' +
+                            '</div>' +
+                        '</div>' +
+                    '</div>' +
+                '</div>';
+            }).join('');
+        }
+
+        function painel_inicial_renderizarAlertas() {
+            const alertados = itensReflexao.filter(i => i.diasRestantes <= 3).sort((a, b) => a.diasRestantes - b.diasRestantes);
+            const container = document.getElementById('lista-alertas');
+            if (alertados.length === 0) { container.innerHTML = ''; return; }
+            container.innerHTML = alertados.map(item => {
+                const cor = item.diasRestantes <= 2 ? 'border-red-200 bg-red-50' : 'border-amber-200 bg-amber-50';
+                const iconeCor = item.diasRestantes <= 2 ? 'text-red-500' : 'text-amber-500';
+                const texto = item.diasRestantes === 0 ? 'Expira hoje!' : item.diasRestantes === 1 ? 'Expira amanhã' : 'Expira em ' + item.diasRestantes + ' dias';
+                return '<div class="flex items-start gap-3 p-3 rounded-xl border ' + cor + '">' +
+                    '<div class="flex-shrink-0 mt-0.5">' +
+                        '<svg class="w-5 h-5 ' + iconeCor + '" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM10 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>' +
+                    '</div>' +
+                    '<div class="flex-1 min-w-0">' +
+                        '<p class="text-xs font-semibold ' + iconeCor + '">' + texto + '</p>' +
+                        '<p class="text-xs text-slate-600 mt-0.5 font-body">' + item.nome + ' — ' + painel_inicial_formatarMoeda(item.valor) + '</p>' +
+                    '</div>' +
+                    '<button onclick="painel_inicial_avaliar(' + item.id + ')" class="flex-shrink-0 text-[11px] font-semibold text-marca-600 bg-white px-2.5 py-1.5 rounded-lg border border-marca-200 hover:bg-marca-50 active:scale-95 transition-all">Avaliar</button>' +
+                '</div>';
+            }).join('');
+        }
+
+        function painel_inicial_renderizarHistorico() {
+            const container = document.getElementById('lista-historico');
+            container.innerHTML = historico.map(item => {
+                const dataFormatada = painel_inicial_dataBR(item.data);
+                return '<div class="bg-white rounded-xl border border-slate-100 p-3.5 shadow-sm cursor-pointer hover:border-marca-200 hover:shadow-md active:scale-[0.98] transition-all" onclick="painel_inicial_detalheHistorico(' + item.id + ')">' +
+                    '<div class="flex items-center gap-3">' +
+                        '<div class="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center flex-shrink-0">' +
+                            '<svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z"/></svg>' +
+                        '</div>' +
+                        '<div class="flex-1 min-w-0">' +
+                            '<p class="text-sm font-display font-semibold text-slate-800 truncate">' + item.nome + '</p>' +
+                            '<p class="text-[11px] text-slate-400 font-body">' + item.categoria + ' · ' + dataFormatada + '</p>' +
+                        '</div>' +
+                        '<div class="text-right flex-shrink-0">' +
+                            '<p class="text-sm font-display font-bold text-slate-800">' + painel_inicial_formatarMoeda(item.valor) + '</p>' +
+                            '<span class="inline-block text-[10px] font-medium px-1.5 py-0.5 rounded-full ' + item.cor + ' mt-0.5">Realizado</span>' +
+                        '</div>' +
+                    '</div>' +
+                '</div>';
+            }).join('');
+        }
+
+        window.painel_inicial_filtrarReflexao = function() { painel_inicial_renderizarReflexao(); };
+
+        window.painel_inicial_abrirDetalhe = function(id) {
+            const item = itensReflexao.find(i => i.id === id);
+            if (!item) return;
+            const dias = painel_inicial_getDiasTexto(item.diasRestantes);
+            const html = '<div class="space-y-4">' +
+                '<div class="flex items-center gap-4">' +
+                    '<div class="w-16 h-16 rounded-2xl ' + item.imagem + ' flex items-center justify-center text-white text-xl font-bold shadow-md">' + item.inicial + '</div>' +
+                    '<div>' +
+                        '<p class="text-lg font-display font-bold text-slate-800">' + item.nome + '</p>' +
+                        '<p class="text-sm text-slate-500 font-body">' + item.categoria + '</p>' +
+                        '<span class="inline-block text-[11px] font-medium px-2 py-0.5 rounded-full ' + dias.badge + ' mt-1">' + dias.texto + '</span>' +
+                    '</div>' +
+                '</div>' +
+                '<div class="bg-slate-50 rounded-xl p-4 space-y-2.5">' +
+                    '<div class="flex justify-between"><span class="text-sm text-slate-500 font-body">Valor estimado</span><span class="text-sm font-semibold text-slate-800">' + painel_inicial_formatarMoeda(item.valor) + '</span></div>' +
+                    '<div class="flex justify-between"><span class="text-sm text-slate-500 font-body">Parcelado em 3x</span><span class="text-sm font-semibold text-slate-800">' + painel_inicial_formatarMoeda(item.valor / 3) + '/mês</span></div>' +
+                    '<div class="flex justify-between"><span class="text-sm text-slate-500 font-body">Impacto no orçamento</span><span class="text-sm font-semibold text-amber-600">Alto</span></div>' +
+                '</div>' +
+                '<div class="bg-amber-50 border border-amber-200 rounded-xl p-4">' +
+                    '<p class="text-sm text-amber-800 font-body leading-relaxed">Este item está em período de reflexão. Reflita se você realmente precisa dele agora ou se pode esperar.</p>' +
+                '</div>' +
+                '<div class="grid grid-cols-2 gap-2.5">' +
+                    '<button onclick="painel_inicial_avaliar(' + item.id + '); fecharModal();" class="btn bg-marca-600 text-white py-3 rounded-xl text-sm font-display font-semibold">Avaliar Necessidade</button>' +
+                    '<button onclick="painel_inicial_comprarAgora(' + item.id + '); fecharModal();" class="btn bg-white border border-slate-200 text-slate-700 py-3 rounded-xl text-sm font-display font-semibold hover:border-emerald-300">Comprar Agora</button>' +
+                '</div>' +
+                '<button onclick="painel_inicial_removerReflexao(' + item.id + '); fecharModal();" class="w-full text-center text-sm text-red-500 font-medium hover:text-red-600 py-2">Remover da reflexão</button>' +
+            '</div>';
+            abrirModal(html, 'Detalhes do Item');
+        };
+
+        window.painel_inicial_avaliar = function(id) {
+            const item = itensReflexao.find(i => i.id === id);
+            if (!item) return;
+            mostrarTela('avaliacao');
+            setTimeout(function() {
+                const tituloEl = document.getElementById('avaliacao-titulo');
+                if (tituloEl) tituloEl.textContent = item.nome;
+                const valorEl = document.getElementById('avaliacao-valor');
+                if (valorEl) valorEl.textContent = painel_inicial_formatarMoeda(item.valor);
+                const itemIdEl = document.getElementById('avaliacao-item-id');
+                if (itemIdEl) itemIdEl.value = String(item.id);
+            }, 100);
+        };
+
+        window.painel_inicial_comprarAgora = function(id) {
+            toast('Item adicionado ao simulador de compra!', 'ok');
+            mostrarTela('simulador');
+        };
+
+        window.painel_inicial_removerReflexao = function(id) {
+            const idx = itensReflexao.findIndex(i => i.id === id);
+            if (idx < 0) return;
+            const nome = itensReflexao[idx].nome;
+            itensReflexao.splice(idx, 1);
+            painel_inicial_renderizarReflexao();
+            painel_inicial_renderizarAlertas();
+            toast('"' + nome + '" removido da reflexão.', 'info');
+        };
+
+        window.painel_inicial_novaLista = function() {
+            const html = '<div class="space-y-4">' +
+                '<p class="text-sm text-slate-500 font-body">Crie uma nova lista de compras para organizar seus gastos.</p>' +
+                '<div>' +
+                    '<label class="block text-sm font-medium text-slate-700 mb-1.5 font-body">Nome da lista</label>' +
+                    '<input type="text" id="nova-lista-nome" placeholder="Ex: Feira da semana" class="w-full px-4 py-2.5 bg-white border border-slate-200 rounded-xl text-sm text-slate-700 font-body focus:outline-none focus:ring-2 focus:ring-marca-500/30 focus:border-marca-500 transition-all" value=""/>' +
+                '</div>' +
+                '<div>' +
+                    '<label class="block text-sm font-medium text-slate-700 mb-1.5 font-body">Orçamento máximo</label>' +
+                    '<div class="relative">' +
+                        '<span class="absolute left-4 top-1/2 -translate-y-1/2 text-sm text-slate-400 font-body">R$</span>' +
+                        '<input type="text" id="nova-lista-orcamento" placeholder="0,00" oninput="painel_inicial_mascaraMoeda(this)" class="w-full pl-12 pr-4 py-2.5 bg-white border border-slate-200 rounded-xl text-sm text-slate-700 font-body focus:outline-none focus:ring-2 focus:ring-marca-500/30 focus:border-marca-500 transition-all" value=""/>' +
+                    '</div>' +
+                '</div>' +
+                '<div>' +
+                    '<label class="block text-sm font-medium text-slate-700 mb-1.5 font-body">Categoria</label>' +
+                    '<select id="nova-lista-categoria" class="w-full px-4 py-2.5 bg-white border border-slate-200 rounded-xl text-sm text-slate-700 font-body focus:outline-none focus:ring-2 focus:ring-marca-500/30 focus:border-marca-500 transition-all appearance-none">' +
+                        '<option value="">Selecione...</option>' +
+                        '<option>Alimentação</option>' +
+                        '<option>Transporte</option>' +
+                        '<option>Lazer</option>' +
+                        '<option>Saúde</option>' +
+                        '<option>Educação</option>' +
+                        '<option>Casa</option>' +
+                        '<option>Outros</option>' +
+                    '</select>' +
+                '</div>' +
+                '<button onclick="painel_inicial_criarLista()" class="btn w-full bg-marca-600 text-white py-3 rounded-xl text-sm font-display font-semibold">Criar Lista</button>' +
+            '</div>';
+            abrirModal(html, 'Nova Lista de Compras');
+        };
+
+        window.painel_inicial_criarLista = function() {
+            const nome = document.getElementById('nova-lista-nome').value.trim();
+            if (!nome) { toast('Informe o nome da lista.', 'erro'); return; }
+            const orcamento = document.getElementById('nova-lista-orcamento').value;
+            if (!orcamento || parseFloat(orcamento.replace(/[^\d,]/g, '').replace(',', '.')) <= 0) { toast('Informe um orçamento válido.', 'erro'); return; }
+            const categoria = document.getElementById('nova-lista-categoria').value;
+            if (!categoria) { toast('Selecione uma categoria.', 'erro'); return; }
+            fecharModal();
+            toast('Lista "' + nome + '" criada com sucesso!', 'ok');
+        };
+
+        window.painel_inicial_mascaraMoeda = function(input) {
+            let v = input.value.replace(/[^\d]/g, '');
+            if (v.length > 0) {
+                const num = parseInt(v) / 100;
+                input.value = num.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            }
+        };
+
+        window.painel_inicial_abrirNotificacoes = function() {
+            const alertados = itensReflexao.filter(i => i.diasRestantes <= 3);
+            const html = '<div class="space-y-3">';
+            if (alertados.length === 0) {
+                html += '<p class="text-sm text-slate-500 font-body text-center py-4">Nenhuma notificação no momento.</p>';
+            } else {
+                html += alertados.map(item => {
+                    const cor = item.diasRestantes <= 2 ? 'border-l-red-400' : 'border-l-amber-400';
+                    return '<div class="flex items-start gap-3 p-3 bg-white rounded-lg border border-slate-100 border-l-4 ' + cor + '">' +
+                        '<div class="flex-1">' +
+                            '<p class="text-sm font-semibold text-slate-800">' + item.nome + '</p>' +
+                            '<p class="text-xs text-slate-500 font-body">' + (item.diasRestantes <= 0 ? 'Expira hoje!' : item.diasRestantes + ' dias restantes') + '</p>' +
+                        '</div>' +
+                        '<span class="text-sm font-bold text-slate-800">' + painel_inicial_formatarMoeda(item.valor) + '</span>' +
+                    '</div>';
+                }).join('');
+            }
+            html += '</div>';
+            abrirModal(html, 'Notificações');
+            const badge = document.getElementById('badge-notificacoes');
+            if (badge) badge.classList.add('hidden');
+        };
+
+        window.painel_inicial_detalheHistorico = function(id) {
+            const item = historico.find(i => i.id === id);
+            if (!item) return;
+            const dataFormatada = painel_inicial_dataBR(item.data);
+            const html = '<div class="space-y-4">' +
+                '<div class="flex items-center gap-3">' +
+                    '<div class="w-12 h-12 rounded-xl bg-marca-50 flex items-center justify-center">' +
+                        '<svg class="w-6 h-6 text-marca-600" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM10 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"/></svg>' +
+                    '</div>' +
+                    '<div>' +
+                        '<p class="text-base font-display font-bold text-slate-800">' + item.nome + '</p>' +
+                        '<p class="text-xs text-slate-500 font-body">' + item.categoria + '</p>' +
+                    '</div>' +
+                '</div>' +
+                '<div class="bg-slate-50 rounded-xl p-4 space-y-2.5">' +
+                    '<div class="flex justify-between"><span class="text-sm text-slate-500 font-body">Valor gasto</span><span class="text-sm font-semibold text-slate-800">' + painel_inicial_formatarMoeda(item.valor) + '</span></div>' +
+                    '<div class="flex justify-between"><span class="text-sm text-slate-500 font-body">Data da compra</span><span class="text-sm font-semibold text-slate-800">' + dataFormatada + '</span></div>' +
+                    '<div class="flex justify-between"><span class="text-sm text-slate-500 font-body">Status</span><span class="inline-block text-xs font-medium px-2 py-0.5 rounded-full ' + item.cor + '">Realizado</span></div>' +
+                '</div>' +
+                '<button onclick="fecharModal()" class="btn w-full bg-marca-600 text-white py-3 rounded-xl text-sm font-display font-semibold">Fechar</button>' +
+            '</div>';
+            abrirModal(html, 'Detalhes da Compra');
+        };
+
+        function painel_inicial_dataBR(iso) {
+            if (!iso) return '';
+            const d = new Date(iso + 'T00:00:00');
+            return d.toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' });
+        }
+
+        function painel_inicial_init() {
+            painel_inicial_renderizarReflexao();
+            painel_inicial_renderizarAlertas();
+            painel_inicial_renderizarHistorico();
+        }
+
+        painel_inicial_init();
+    })();
+    </script>
+</section>
+
+    <!-- TELAS -->
       </main>
 
       <!-- ===== NAVEGAÇÃO INFERIOR ===== -->
